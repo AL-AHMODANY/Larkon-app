@@ -1,0 +1,401 @@
+/* ========== Global theme variables ========== */
+:root {
+  --bg-primary: #ffffff;
+  --text-primary: #1f2937;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --text-primary: #e2e8f0;
+}
+
+/* ========== Header ========== */
+[data-topbar="dark"] .header {
+  background: #1e293b !important;
+  visibility: visible !important;
+  display: flex !important;
+}
+
+/* ========== Sidebar Background Colors ========== */
+/* Fix: dark menu should have dark sidebar bg, light menu light bg */
+[data-menu="dark"] .sidebar {
+  background: var(--bg-primary) !important; /* Use theme bg */
+}
+
+/* ========== Sidebar Widths and Behavior ========== */
+[data-sidebar-size="condensed"] .sidebar,
+body.sidebar-condensed .sidebar {
+  width: 70px !important;
+}
+
+[data-sidebar-size="hidden"] .sidebar,
+body.sidebar-hidden .sidebar {
+  width: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+}
+
+
+
+body.sidebar-collapsed .sidebar {
+  width: 70px !important;
+}
+
+/* ========== Sidebar Content Visibility ========== */
+/* Hide labels, badges, icons in condensed/collapsed/hover states */
+body.sidebar-condensed .sidebar .logo-text,
+body.sidebar-condensed .sidebar .nav-label,
+body.sidebar-condensed .sidebar .section-title,
+body.sidebar-condensed .sidebar .badge,
+body.sidebar-condensed .sidebar .dropdown-icon,
+body.sidebar-sm-hover .sidebar:not(:hover) .logo-text,
+body.sidebar-sm-hover .sidebar:not(:hover) .nav-label,
+body.sidebar-sm-hover .sidebar:not(:hover) .section-title,
+body.sidebar-sm-hover .sidebar:not(:hover) .badge,
+body.sidebar-sm-hover .sidebar:not(:hover) .dropdown-icon,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .logo-text,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .nav-label,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .section-title,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .badge,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .dropdown-icon,
+body.sidebar-collapsed .sidebar .logo-text,
+body.sidebar-collapsed .sidebar .nav-label,
+body.sidebar-collapsed .sidebar .section-title,
+body.sidebar-collapsed .sidebar .badge,
+body.sidebar-collapsed .sidebar .dropdown-icon {
+  display: none !important;
+}
+
+/* Sidebar nav links centering when collapsed/condensed */
+body.sidebar-condensed .sidebar .nav-link,
+body.sidebar-sm-hover .sidebar:not(:hover) .nav-link,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .nav-link,
+body.sidebar-collapsed .sidebar .nav-link {
+  justify-content: center !important;
+  padding: 10px !important;
+}
+
+/* Sidebar dropdown items hidden when collapsed/condensed */
+body.sidebar-condensed .sidebar .dropdown-items,
+body.sidebar-sm-hover .sidebar:not(:hover) .dropdown-items,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .dropdown-items,
+body.sidebar-collapsed .sidebar .dropdown-items {
+  display: none !important;
+}
+
+
+body.sidebar-sm-hover .sidebar:hover .logo-text,
+body.sidebar-sm-hover .sidebar:hover .nav-label,
+body.sidebar-sm-hover .sidebar:hover .section-title,
+body.sidebar-sm-hover .sidebar:hover .badge,
+body.sidebar-sm-hover .sidebar:hover .dropdown-icon,
+body.sidebar-sm-hover-active .sidebar:hover .logo-text,
+body.sidebar-sm-hover-active .sidebar:hover .nav-label,
+body.sidebar-sm-hover-active .sidebar:hover .section-title,
+body.sidebar-sm-hover-active .sidebar:hover .badge,
+body.sidebar-sm-hover-active .sidebar:hover .dropdown-icon {
+  display: inline-block !important;
+}
+
+body.sidebar-sm-hover .sidebar:hover .nav-link,
+body.sidebar-sm-hover-active .sidebar:hover .nav-link {
+  justify-content: flex-start !important;
+  padding: 10px 16px !important;
+}
+
+body.sidebar-sm-hover .sidebar:hover .dropdown-items,
+body.sidebar-sm-hover-active .sidebar:hover .dropdown-items {
+  display: block !important;
+}
+
+/* ========== Sidebar Base ========== */
+.sidebar {
+  transition: width 0.3s ease !important;
+  overflow-x: hidden !important;
+}
+/* ========== Theme Variables ========== */
+:root {
+  --bg-light: #ffffff;
+  --bg-dark: #0f172a;
+  --text-light: #1f2937;
+  --text-dark: #e2e8f0;
+  --text-secondary-light: #475569;
+  --text-secondary-dark: #cbd5e1;
+  --hover-orange-light: #f97316;
+  --hover-orange-dark: #f97316;
+  --active-color: #f97316;
+  --transition-speed: 0.2s;
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 70px;
+}
+
+/* ========== Header ========== */
+.header {
+  visibility: visible !important;
+  display: flex !important;
+  transition: background 0.3s ease;
+}
+
+[data-topbar="dark"] .header {
+  background: #1e293b !important;
+}
+
+/* ========== Sidebar ========== */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.3s ease, background 0.2s ease, color 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Light mode */
+[data-theme="light"] .sidebar {
+  background: var(--bg-light);
+  color: var(--text-light);
+}
+[data-theme="light"] .sidebar .nav-link {
+  color: var(--text-secondary-light);
+}
+[data-theme="light"] .sidebar .nav-link:hover {
+  color: var(--hover-orange-light);
+}
+[data-theme="light"] .sidebar .dropdown-link {
+  color: var(--text-secondary-light);
+}
+[data-theme="light"] .sidebar .dropdown-link:hover {
+  color: var(--hover-orange-light);
+}
+
+/* Dark mode */
+[data-theme="dark"] .sidebar {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+[data-theme="dark"] .sidebar .nav-link {
+  color: var(--text-secondary-dark);
+}
+[data-theme="dark"] .sidebar .nav-link:hover {
+  color: var(--hover-orange-dark);
+}
+[data-theme="dark"] .sidebar .dropdown-link {
+  color: var(--text-secondary-dark);
+}
+[data-theme="dark"] .sidebar .dropdown-link:hover {
+  color: var(--hover-orange-dark);
+}
+
+/* Active links */
+.sidebar .nav-link.active,
+.sidebar .dropdown-link.active {
+  color: var(--active-color);
+}
+
+/* Collapsed sidebar */
+body.sidebar-collapsed .sidebar {
+  width: var(--sidebar-collapsed-width) !important;
+}
+body.sidebar-collapsed .sidebar .nav-label,
+body.sidebar-collapsed .sidebar .section-title,
+body.sidebar-collapsed .sidebar .badge,
+body.sidebar-collapsed .sidebar .dropdown-icon {
+  display: none !important;
+}
+
+/* Hover for small sidebar */
+body.sidebar-sm-hover .sidebar:hover,
+body.sidebar-sm-hover-active .sidebar:hover {
+  width: var(--sidebar-width) !important;
+}
+body.sidebar-sm-hover .sidebar:hover .nav-label,
+body.sidebar-sm-hover-active .sidebar:hover .nav-label {
+  display: inline-block !important;
+}
+/* ========== SMALL HOVER MODES (sidebar-sm-hover & sidebar-sm-hover-active) ========== */
+
+/* Initial width: 70px */
+body.sidebar-sm-hover .sidebar,
+body.sidebar-sm-hover-active .sidebar {
+  width: 70px !important;
+}
+
+/* On hover: expand to 250px */
+body.sidebar-sm-hover .sidebar:hover,
+body.sidebar-sm-hover-active .sidebar:hover {
+  width: 250px !important;
+}
+
+/* Hide text labels when not hovered */
+body.sidebar-sm-hover .sidebar:not(:hover) .logo-text,
+body.sidebar-sm-hover .sidebar:not(:hover) .nav-label,
+body.sidebar-sm-hover .sidebar:not(:hover) .section-title,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .logo-text,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .nav-label,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .section-title {
+  display: none !important;
+}
+
+/* NEVER hide icons (badge, chevron, nav-icon) */
+body.sidebar-sm-hover .sidebar .badge,
+body.sidebar-sm-hover .sidebar .dropdown-icon,
+body.sidebar-sm-hover .sidebar .nav-icon,
+body.sidebar-sm-hover-active .sidebar .badge,
+body.sidebar-sm-hover-active .sidebar .dropdown-icon,
+body.sidebar-sm-hover-active .sidebar .nav-icon {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Center nav links when collapsed */
+body.sidebar-sm-hover .sidebar:not(:hover) .nav-link,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .nav-link {
+  justify-content: center !important;
+  padding: 10px !important;
+}
+
+/* Left-align nav links on hover */
+body.sidebar-sm-hover .sidebar:hover .nav-link,
+body.sidebar-sm-hover-active .sidebar:hover .nav-link {
+  justify-content: flex-start !important;
+  padding: 10px 16px !important;
+}
+
+/* Hide dropdown items when collapsed */
+body.sidebar-sm-hover .sidebar:not(:hover) .dropdown-items,
+body.sidebar-sm-hover-active .sidebar:not(:hover) .dropdown-items {
+  display: none !important;
+}
+
+/* Show dropdown items on hover */
+body.sidebar-sm-hover .sidebar:hover .dropdown-items,
+body.sidebar-sm-hover-active .sidebar:hover .dropdown-items {
+  display: block !important;
+}
+
+/* Show text labels on hover */
+body.sidebar-sm-hover .sidebar:hover .logo-text,
+body.sidebar-sm-hover .sidebar:hover .nav-label,
+body.sidebar-sm-hover .sidebar:hover .section-title,
+body.sidebar-sm-hover-active .sidebar:hover .logo-text,
+body.sidebar-sm-hover-active .sidebar:hover .nav-label,
+body.sidebar-sm-hover-active .sidebar:hover .section-title {
+  display: inline-block !important;
+}
+/* Hide scrollbar for entire page */
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+html {
+  scrollbar-width: none;
+}
+body {
+  -ms-overflow-style: none;
+}
+
+/* ========== GLOBAL SIDEBAR STYLES (must be global, not scoped) ========== */
+:root {
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #eef2f6;
+}
+
+.sidebar {
+  transition: width 0.3s ease, background 0.2s;
+  overflow-x: hidden;
+  white-space: nowrap;
+  width: 280px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+}
+
+/* Default sidebar */
+body.sidebar-default .sidebar {
+  width: 280px;
+}
+
+/* Condensed sidebar */
+body.sidebar-condensed .sidebar {
+  width: 80px;
+}
+body.sidebar-condensed .sidebar .menu-text {
+  display: none;
+}
+
+/* Hidden sidebar */
+body.sidebar-hidden .sidebar {
+  width: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Small Hover */
+body.sidebar-sm-hover .sidebar {
+  width: 80px;
+}
+body.sidebar-sm-hover .sidebar:hover {
+  width: 280px;
+}
+body.sidebar-sm-hover .sidebar:not(:hover) .menu-text {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  display: inline-block;
+  overflow: hidden;
+}
+body.sidebar-sm-hover .sidebar:hover .menu-text {
+  opacity: 1;
+  visibility: visible;
+  width: auto;
+}
+
+/* Small Hover Active */
+body.sidebar-sm-hover-active .sidebar {
+  width: 80px;
+}
+body.sidebar-sm-hover-active .sidebar:hover {
+  width: 280px;
+}
+body.sidebar-sm-hover-active .sidebar:not(:hover) .menu-text {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  display: inline-block;
+  overflow: hidden;
+}
+body.sidebar-sm-hover-active .sidebar:hover .menu-text {
+  opacity: 1;
+  visibility: visible;
+  width: auto;
+}
+body.sidebar-sm-hover-active .sidebar .menu-item.active {
+  background: rgba(249, 115, 22, 0.15);
+  border-left: 3px solid #f97316;
+  position: relative;
+}
+body.sidebar-sm-hover-active .sidebar:not(:hover) .menu-item.active .menu-text {
+  border-left: none;
+}
+body.sidebar-sm-hover-active .sidebar:not(:hover) .menu-item.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #f97316;
+}
+
+/* Dark theme overrides */
+.dark-theme {
+  --sidebar-bg: #0f172a;
+  --sidebar-border: #1e293b;
+}
+.header-right {
+  overflow: visible !important;
+}
+.notif-wrapper {
+  overflow: visible !important;
+}
