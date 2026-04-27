@@ -152,7 +152,7 @@ const routes = [
 
 // Create the router
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHashHistory('/'),
   routes,
 });
 
