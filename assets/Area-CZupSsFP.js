@@ -1,0 +1,1 @@
+import{O as e,c as t,d as n,t as r}from"./_plugin-vue_export-helper-Ct9996Xc.js";var i={},a={class:`chart-container`};function o(r,i){return e(),n(`div`,a,[...i[0]||=[t(`h2`,null,`Area Chart`,-1),t(`p`,null,`Area chart component coming soon.`,-1)]])}var s=r(i,[[`render`,o],[`__scopeId`,`data-v-93ac126b`]]);export{s as default};
