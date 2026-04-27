@@ -1,5 +1,5 @@
 // src/router/index.js or src/router.js
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 import Home from "../components/layout/Dashboard.vue";
 
