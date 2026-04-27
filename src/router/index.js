@@ -126,7 +126,7 @@ const routes = [
     component: Swiperslider,
   },
   {
-    path: "/AreaChart",
+    path: "/Area",
     name: "AreaChart",
     component: Area,
   },
@@ -152,7 +152,7 @@ const routes = [
 
 // Create the router
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 });
 
