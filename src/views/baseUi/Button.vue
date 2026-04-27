@@ -283,57 +283,109 @@
             </button>
           </header>
           <div class="showcase-body">
+            <!-- Horizontal Button Groups -->
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <div
+                class="btn-group mb-1 me-1"
+                role="group"
+                aria-label="Horizontal group 1"
+              >
+                <button type="button" class="btn btn-light">Left</button>
+                <button type="button" class="btn btn-light">Middle</button>
+                <button type="button" class="btn btn-light">Right</button>
+              </div>
 
+              <div
+                class="btn-group mb-1 me-1"
+                role="group"
+                aria-label="Horizontal group 2"
+              >
+                <button type="button" class="btn btn-light">1</button>
+                <button type="button" class="btn btn-light">2</button>
+                <button type="button" class="btn btn-secondary">3</button>
+                <button type="button" class="btn btn-light">4</button>
+              </div>
 
-<!-- Horizontal Button Groups -->
-<div class="d-flex flex-wrap gap-2 mb-3">
-  <div class="btn-group mb-1 me-1" role="group" aria-label="Horizontal group 1">
-    <button type="button" class="btn btn-light">Left</button>
-    <button type="button" class="btn btn-light">Middle</button>
-    <button type="button" class="btn btn-light">Right</button>
-  </div>
+              <div
+                class="btn-group mb-1 me-1"
+                role="group"
+                aria-label="Horizontal group 3"
+              >
+                <button type="button" class="btn btn-light">5</button>
+                <button type="button" class="btn btn-secondary">6</button>
+                <button type="button" class="btn btn-light">7</button>
+                <button
+                  id="dropdown"
+                  type="button"
+                  class="btn btn-light dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </button>
+                <ul
+                  class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="dropdown"
+                >
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      >Dropdown link</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      >Dropdown link</a
+                    >
+                  </li>
+                </ul>
+              </div>
 
-  <div class="btn-group mb-1 me-1" role="group" aria-label="Horizontal group 2">
-    <button type="button" class="btn btn-light">1</button>
-    <button type="button" class="btn btn-light">2</button>
-    <button type="button" class="btn btn-secondary">3</button>
-    <button type="button" class="btn btn-light">4</button>
-  </div>
+              <!-- Vertical Button Groups -->
+              <div class="d-flex gap-3">
+                <div
+                  class="btn-group-vertical me-4"
+                  role="group"
+                  aria-label="Vertical group 1"
+                >
+                  <button type="button" class="btn btn-light">Top</button>
+                  <button type="button" class="btn btn-light">Middle</button>
+                  <button type="button" class="btn btn-light">Bottom</button>
+                </div>
 
-  <div class="btn-group mb-1 me-1" role="group" aria-label="Horizontal group 3">
-    <button type="button" class="btn btn-light">5</button>
-    <button type="button" class="btn btn-secondary">6</button>
-    <button type="button" class="btn btn-light">7</button>
-    <button id="dropdown" type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Dropdown
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown">
-        <li><a class="dropdown-item" href="javascript:void(0);">Dropdown link</a></li>
-        <li><a class="dropdown-item" href="javascript:void(0);">Dropdown link</a></li>
-    </ul>
-  </div>
-
-<!-- Vertical Button Groups -->
-<div class="d-flex gap-3">
-  <div class="btn-group-vertical me-4" role="group" aria-label="Vertical group 1">
-    <button type="button" class="btn btn-light">Top</button>
-    <button type="button" class="btn btn-light">Middle</button>
-    <button type="button" class="btn btn-light">Bottom</button>
-  </div>
-
-  <div class="btn-group-vertical" role="group" aria-label="Vertical group 2">
-    <button type="button" class="btn btn-light">Button 1</button>
-    <button type="button" class="btn btn-light">Button 2</button>
-    <button id="verticalDropdown" type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Button 3
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="verticalDropdown">
-        <li><a class="dropdown-item" href="javascript:void(0);">Dropdown link</a></li>
-        <li><a class="dropdown-item" href="javascript:void(0);">Dropdown link</a></li>
-    </ul>
-  </div>
-</div>
-</div>
+                <div
+                  class="btn-group-vertical"
+                  role="group"
+                  aria-label="Vertical group 2"
+                >
+                  <button type="button" class="btn btn-light">Button 1</button>
+                  <button type="button" class="btn btn-light">Button 2</button>
+                  <button
+                    id="verticalDropdown"
+                    type="button"
+                    class="btn btn-light dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Button 3
+                  </button>
+                  <ul
+                    class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="verticalDropdown"
+                  >
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);"
+                        >Dropdown link</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);"
+                        >Dropdown link</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <pre class="code-box mb-0"><code>{{ codes.groups }}</code></pre>
           </div>
         </section>
@@ -670,17 +722,17 @@ onBeforeUnmount(() => {
 .page-heading {
   font-size: 1.08rem;
   font-weight: 600;
-  color: #495057;
+  color: var(--text-primary);
 }
 
 .page-subtitle {
   font-size: 0.84rem;
-  color: #8f99ab;
+  color: var(--text-muted);
 }
 
 .showcase-card {
-  background: #fff;
-  border: 1px solid #e8ebf1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   margin-bottom: 18px;
   overflow: hidden;
@@ -689,7 +741,7 @@ onBeforeUnmount(() => {
 
 .showcase-head {
   padding: 10px 14px;
-  border-bottom: 1px solid #edf0f5;
+  border-bottom: 1px solid var(--border-strong);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -697,7 +749,7 @@ onBeforeUnmount(() => {
 
 .showcase-head h6 {
   font-size: 0.9rem;
-  color: #495057;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -713,11 +765,11 @@ onBeforeUnmount(() => {
 }
 
 .btn-copy {
-  --bs-btn-color: #34c38f;
-  --bs-btn-border-color: #34c38f;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #34c38f;
-  --bs-btn-hover-border-color: #34c38f;
+  --bs-btn-color: var(--color-success);
+  --bs-btn-border-color: var(--color-success);
+  --bs-btn-hover-color: var(--text-inverse);
+  --bs-btn-hover-bg: var(--color-success);
+  --bs-btn-hover-border-color: var(--color-success);
   font-size: 0.73rem;
   border-radius: 3px;
   padding: 0.24rem 0.5rem;
@@ -727,17 +779,17 @@ onBeforeUnmount(() => {
   margin: 0;
   padding: 12px;
   border-radius: 6px;
-  border: 1px solid #edf0f5;
-  background: #f8fafc;
-  color: #5b6372;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-input);
+  color: var(--text-secondary);
   font-size: 0.78rem;
   line-height: 1.5;
   overflow: auto;
 }
 
 .toc-card {
-  background: #f5f5f7;
-  border: 1px solid #e8e8ec;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 10px 8px;
   max-height: none;

@@ -1,1176 +1,844 @@
 <template>
-  <header class="header">
-    <div class="header-left">
-      <button class="icon-btn hamburger" @click="toggleSidebarMode">
-        <svg class="icon-size" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-      <div class="welcome-text">{{ greeting }}! Welcome!</div>
-      <div class="time-icon" @click="toggleTime">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10" />
-          <polyline points="12 6 12 12 16 14" />
-        </svg>
-        <span v-if="showTime" class="time-display">{{ currentTime }}</span>
-      </div>
+  <header class="topbar">
+
+    <!-- ── Left: Page Title ──────────────────────────────── -->
+    <div class="topbar__left">
+      <h4 class="topbar__title">{{ pageTitle }}</h4>
     </div>
 
-    <div class="header-right">
-      <!-- Search -->
-      <div class="search-wrapper" ref="searchContainerRef">
-        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input type="text" placeholder="Search..." class="search-input" v-model="searchQuery" @input="handleSearch" @keyup.enter="executeSearch" />
-        <div v-if="searchResults.length && searchQuery" class="search-results-dropdown">
-          <div v-for="result in searchResults" :key="result.id" class="search-result-item" @click="selectSearchResult(result)">
-            <span>{{ result.name }}</span>
-          </div>
-        </div>
-      </div>
+    <!-- ── Right: Actions ───────────────────────────────── -->
+    <div class="topbar__right">
 
       <!-- Dark mode toggle -->
-      <button class="icon-btn" @click="toggleDarkMode">
-        <svg v-if="!isDark" class="icon-size" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <svg v-else class="icon-size" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
+      <button
+        class="topbar__icon-btn"
+        :title="isDark ? 'Switch to Light' : 'Switch to Dark'"
+        @click="toggleTheme"
+      >
+        <MoonIcon v-if="!isDark" class="topbar__icon" />
+        <SunIcon v-else class="topbar__icon" />
       </button>
 
-      <!-- Notifications Dropdown -->
-      <div class="notif-wrapper" ref="notificationsContainerRef">
-        <button class="icon-btn" @click="toggleNotificationsDropdown">
-          <svg class="icon-size" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-          <span class="notif-badge" v-if="unreadCount > 0">{{ unreadCount }}</span>
+      <!-- Notifications -->
+      <div class="topbar__dropdown-wrap" ref="notifRef">
+        <button
+          class="topbar__icon-btn"
+          :class="{ active: notifOpen }"
+          title="Notifications"
+          @click="notifOpen = !notifOpen"
+        >
+          <BellIcon class="topbar__icon" />
+          <span v-if="unreadCount" class="topbar__badge">{{ unreadCount }}</span>
         </button>
 
-        <div v-if="notificationsDropdownOpen" class="dropdown-menu notifications-dropdown">
-          <div class="dropdown-header">
-            <h4>Notifications</h4>
-            <button class="clear-all-btn" @click.stop="clearAllNotifications">Clear All</button>
-          </div>
-          <div class="notifications-list">
-            <div v-for="notif in notifications" :key="notif.id" class="notification-item" :class="{ unread: !notif.read }" @click.stop="markAsRead(notif.id)">
-              <img :src="notif.avatar" class="notif-avatar" />
-              <div class="notif-content">
-                <p><strong>{{ notif.name }}</strong> {{ notif.message }}</p>
-                <span class="notif-time">{{ notif.time }}</span>
+        <Transition name="dropdown">
+          <div v-if="notifOpen" class="dropdown dropdown--notif">
+            <div class="dropdown__header">
+              <span class="dropdown__title">Notifications</span>
+              <button class="dropdown__mark-all" @click="markAllRead">Mark all read</button>
+            </div>
+            <div class="dropdown__body">
+              <div
+                v-for="notif in notifications"
+                :key="notif.id"
+                class="notif-item"
+                :class="{ unread: !notif.read }"
+                @click="readNotif(notif)"
+              >
+                <div class="notif-item__icon" :style="{ background: notif.iconBg }">
+                  <component :is="notif.icon" class="notif-item__svg" />
+                </div>
+                <div class="notif-item__body">
+                  <p class="notif-item__text">{{ notif.text }}</p>
+                  <span class="notif-item__time">{{ notif.time }}</span>
+                </div>
+                <span v-if="!notif.read" class="notif-item__dot"></span>
               </div>
             </div>
-            <div v-if="notifications.length === 0" class="empty-notifications">No notifications</div>
+            <div class="dropdown__footer">
+              <a href="#" class="dropdown__footer-link">View all notifications</a>
+            </div>
           </div>
-          <div class="dropdown-footer">
-            <button class="view-all-btn" @click.stop="viewAllNotifications">View All Notification</button>
-          </div>
-        </div>
+        </Transition>
       </div>
 
-      <!-- Settings button -->
-      <button class="icon-btn" @click.stop="openSettingsPanel">
-        <svg class="icon-size" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
+      <!-- Settings / Cog -->
+      <button class="topbar__icon-btn" title="Settings" @click="$emit('open-settings')">
+        <Cog6ToothIcon class="topbar__icon" />
       </button>
 
-      <!-- Profile / Auth Section -->
-      <div class="profile-dropdown-container" ref="profileContainerRef">
-        <!-- Logged In -->
-        <template v-if="isLoggedIn">
-          <button class="profile-btn" @click.stop="toggleProfileDropdown">
-            <img :src="user.avatar" alt="Profile" class="profile-image" />
-            <span class="profile-name">{{ user.name }}</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </button>
+      <!-- Language / Globe -->
+      <div class="topbar__dropdown-wrap" ref="langRef">
+        <button
+          class="topbar__icon-btn"
+          :class="{ active: langOpen }"
+          title="Language"
+          @click="langOpen = !langOpen"
+        >
+          <GlobeAltIcon class="topbar__icon" />
+        </button>
 
-          <div v-if="profileDropdownOpen" class="profile-dropdown-menu">
-            <div class="profile-welcome">
-              <img :src="user.avatar" alt="Profile" class="profile-image-large" />
-              <div>
-                <h4>Welcome {{ user.name }}!</h4>
-                <p>{{ user.email }}</p>
+        <Transition name="dropdown">
+          <div v-if="langOpen" class="dropdown dropdown--lang">
+            <div class="dropdown__header">
+              <span class="dropdown__title">Language</span>
+            </div>
+            <div class="dropdown__body">
+              <button
+                v-for="lang in languages"
+                :key="lang.code"
+                class="lang-item"
+                :class="{ active: activeLang === lang.code }"
+                @click="setLang(lang.code)"
+              >
+                <span class="lang-item__flag">{{ lang.flag }}</span>
+                <span class="lang-item__name">{{ lang.name }}</span>
+                <CheckIcon v-if="activeLang === lang.code" class="lang-item__check" />
+              </button>
+            </div>
+          </div>
+        </Transition>
+      </div>
+
+      <!-- User Avatar + Dropdown -->
+      <div class="topbar__dropdown-wrap" ref="userRef">
+        <button
+          class="topbar__user-btn"
+          :class="{ active: userOpen }"
+          @click="userOpen = !userOpen"
+        >
+          <img
+            :src="user.avatar"
+            :alt="user.name"
+            class="topbar__avatar"
+            @error="onAvatarError"
+          />
+          <span class="topbar__avatar-fallback" v-if="avatarError">
+            {{ userInitials }}
+          </span>
+        </button>
+
+        <Transition name="dropdown">
+          <div v-if="userOpen" class="dropdown dropdown--user">
+            <div class="dropdown__user-head">
+              <div class="dropdown__avatar">{{ userInitials }}</div>
+              <div class="dropdown__user-info">
+                <p class="dropdown__user-name">{{ user.name }}</p>
+                <p class="dropdown__user-role">{{ user.role }}</p>
               </div>
             </div>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item" @click.prevent="handleMenuClick('Profile')">Profile</a>
-            <a href="#" class="dropdown-item" @click.prevent="handleMenuClick('Messages')">Messages</a>
-            <a href="#" class="dropdown-item" @click.prevent="handleMenuClick('Pricing')">Pricing</a>
-            <a href="#" class="dropdown-item" @click.prevent="handleMenuClick('Help')">Help</a>
-            <a href="#" class="dropdown-item" @click.prevent="handleMenuClick('Lock screen')">Lock screen</a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item text-danger" @click.prevent="logout">Logout</a>
+            <div class="dropdown__body">
+              <a
+                v-for="item in userMenuItems"
+                :key="item.label"
+                href="#"
+                class="user-menu-item"
+                @click.prevent="handleUserMenu(item)"
+              >
+                <component :is="item.icon" class="user-menu-item__icon" />
+                <span>{{ item.label }}</span>
+                <span v-if="item.badge" class="user-menu-item__badge">{{ item.badge }}</span>
+              </a>
+            </div>
+            <div class="dropdown__footer">
+              <button class="logout-btn" @click="handleLogout">
+                <ArrowRightOnRectangleIcon class="logout-btn__icon" />
+                Logout
+              </button>
+            </div>
           </div>
-        </template>
-
-        <!-- Logged Out -->
-        <template v-else>
-          <div class="auth-buttons">
-            <button class="auth-btn login-btn" @click="showLoginModal = true">Login</button>
-            <button class="auth-btn signup-btn" @click="showSignupModal = true">Sign Up</button>
-          </div>
-        </template>
+        </Transition>
       </div>
+
+      <!-- Search -->
+      <div class="topbar__search" :class="{ focused: searchFocused }">
+        <MagnifyingGlassIcon class="topbar__search-icon" />
+        <input
+          ref="searchInput"
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search..."
+          class="topbar__search-input"
+          @focus="searchFocused = true"
+          @blur="onSearchBlur"
+          @keydown.esc="clearSearch"
+          @keydown.enter="doSearch"
+        />
+        <button
+          v-if="searchQuery"
+          class="topbar__search-clear"
+          @click="clearSearch"
+        >
+          <XMarkIcon class="topbar__icon topbar__icon--xs" />
+        </button>
+
+        <!-- Search results -->
+        <Transition name="dropdown">
+          <div v-if="searchFocused && searchQuery.length > 1" class="dropdown dropdown--search">
+            <div class="dropdown__header">
+              <span class="dropdown__title">Results for "{{ searchQuery }}"</span>
+            </div>
+            <div class="dropdown__body">
+              <template v-if="searchResults.length">
+                <a
+                  v-for="result in searchResults"
+                  :key="result.id"
+                  href="#"
+                  class="search-result-item"
+                >
+                  <div class="search-result-item__icon" :style="{ background: result.iconBg }">
+                    <component :is="result.icon" class="search-result-item__svg" />
+                  </div>
+                  <div class="search-result-item__body">
+                    <p class="search-result-item__label">{{ result.label }}</p>
+                    <span class="search-result-item__sub">{{ result.sub }}</span>
+                  </div>
+                </a>
+              </template>
+              <div v-else class="search-empty">
+                <MagnifyingGlassIcon class="search-empty__icon" />
+                <p>No results found</p>
+              </div>
+            </div>
+          </div>
+        </Transition>
+      </div>
+
     </div>
-
-    <!-- Settings Panel -->
-    <Teleport to="body">
-      <div v-if="settingsPanelOpen" class="settings-overlay" @click="closeSettingsPanel"></div>
-      <div class="settings-panel" :class="{ open: settingsPanelOpen }">
-        <div class="settings-header">
-          <h3>Theme Settings</h3>
-          <button class="close-settings" @click="closeSettingsPanel">×</button>
-        </div>
-        <div class="settings-body">
-          <div class="setting-group">
-            <label>Color Scheme</label>
-            <div class="button-group">
-              <button type="button" class="setting-btn" :class="{ active: settings.colorScheme === 'light' }" @click="updateColorScheme('light')">Light</button>
-              <button type="button" class="setting-btn" :class="{ active: settings.colorScheme === 'dark' }" @click="updateColorScheme('dark')">Dark</button>
-            </div>
-          </div>
-          <div class="setting-group">
-            <label>Topbar Color</label>
-            <div class="button-group">
-              <button type="button" class="setting-btn" :class="{ active: settings.topbarColor === 'light' }" @click="updateTopbarColor('light')">Light</button>
-              <button type="button" class="setting-btn" :class="{ active: settings.topbarColor === 'dark' }" @click="updateTopbarColor('dark')">Dark</button>
-            </div>
-          </div>
-          <div class="setting-group">
-            <label>Menu Color</label>
-            <div class="button-group">
-              <button type="button" class="setting-btn" :class="{ active: settings.menuColor === 'light' }" @click="updateMenuColor('light')">Light</button>
-              <button type="button" class="setting-btn" :class="{ active: settings.menuColor === 'dark' }" @click="updateMenuColor('dark')">Dark</button>
-            </div>
-          </div>
-          <div class="setting-group">
-            <label>Sidebar Size</label>
-            <div class="button-group vertical">
-              <button type="button" class="setting-btn" :class="{ active: settings.sidebarSize === 'default' }" @click="updateSidebarSize('default')">Default</button>
-              <button type="button" class="setting-btn" :class="{ active: settings.sidebarSize === 'condensed' }" @click="updateSidebarSize('condensed')">Condensed</button>
-              <button type="button" class="setting-btn" :class="{ active: settings.sidebarSize === 'hidden' }" @click="updateSidebarSize('hidden')">Hidden</button>
-              <button type="button" class="setting-btn" :class="{ active: settings.sidebarSize === 'sm-hover' }" @click="updateSidebarSize('sm-hover')">Small Hover</button>
-              <button type="button" class="setting-btn" :class="{ active: settings.sidebarSize === 'sm-hover-active' }" @click="updateSidebarSize('sm-hover-active')">Small Hover Active</button>
-            </div>
-          </div>
-        </div>
-        <div class="settings-footer">
-          <button class="reset-btn" @click="resetSettings">Reset</button>
-        </div>
-      </div>
-    </Teleport>
-
-    <!-- Login Modal -->
-    <Teleport to="body">
-      <div v-if="showLoginModal" class="modal-overlay" @click="showLoginModal = false">
-        <div class="modal-content" @click.stop>
-          <h3>Login</h3>
-          <input type="email" v-model="loginEmail" placeholder="Email" class="modal-input" />
-          <input type="password" v-model="loginPassword" placeholder="Password" class="modal-input" />
-          <button class="modal-btn" @click="handleLogin">Login</button>
-          <button class="modal-close" @click="showLoginModal = false">Cancel</button>
-        </div>
-      </div>
-      <div v-if="showSignupModal" class="modal-overlay" @click="showSignupModal = false">
-        <div class="modal-content" @click.stop>
-          <h3>Sign Up</h3>
-          <input type="text" v-model="signupName" placeholder="Name" class="modal-input" />
-          <input type="email" v-model="signupEmail" placeholder="Email" class="modal-input" />
-          <input type="password" v-model="signupPassword" placeholder="Password" class="modal-input" />
-          <button class="modal-btn" @click="handleSignup">Sign Up</button>
-          <button class="modal-close" @click="showSignupModal = false">Cancel</button>
-        </div>
-      </div>
-    </Teleport>
   </header>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
+import {
+  MoonIcon,
+  SunIcon,
+  BellIcon,
+  Cog6ToothIcon,
+  GlobeAltIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+  CheckIcon,
+  ArrowRightOnRectangleIcon,
+  UserCircleIcon,
+  LockClosedIcon,
+  EnvelopeIcon,
+  ShoppingBagIcon,
+  CurrencyDollarIcon,
+  UserGroupIcon,
+} from "@heroicons/vue/24/outline";
 
-// ---------- Auth ----------
-const useAuth = () => {
-  const isLoggedIn = ref(false)
-  const user = ref({ name: '', email: '', avatar: 'https://randomuser.me/api/portraits/men/32.jpg' })
-
-  const loadAuth = () => {
-    const stored = localStorage.getItem('auth_user')
-    if (stored) {
-      try {
-        const data = JSON.parse(stored)
-        isLoggedIn.value = true
-        user.value = data
-      } catch (e) {}
-    }
-  }
-
-  const login = (email) => {
-    const demoUser = {
-      name: email.split('@')[0],
-      email: email,
-      avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}.jpg`
-    }
-    user.value = demoUser
-    isLoggedIn.value = true
-    localStorage.setItem('auth_user', JSON.stringify(demoUser))
-  }
-
-  const signup = (name, email) => {
-    const newUser = {
-      name: name,
-      email: email,
-      avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}.jpg`
-    }
-    user.value = newUser
-    isLoggedIn.value = true
-    localStorage.setItem('auth_user', JSON.stringify(newUser))
-  }
-
-  const logout = () => {
-    isLoggedIn.value = false
-    user.value = { name: '', email: '', avatar: '' }
-    localStorage.removeItem('auth_user')
-  }
-
-  return { isLoggedIn, user, loadAuth, login, signup, logout }
-}
-
-// ---------- Notifications ----------
-const useNotifications = () => {
-  const notifications = ref([
-    { id: 1, name: 'Jacob Gines', message: 'Answered to your comment', time: '2 min ago', avatar: 'https://randomuser.me/api/portraits/men/1.jpg', read: false },
-    { id: 2, name: 'System', message: 'You have 20 new messages', time: '15 min ago', avatar: 'https://randomuser.me/api/portraits/women/2.jpg', read: false },
-    { id: 3, name: 'Shawn Bunch', message: 'Commented on Admin', time: '1 hour ago', avatar: 'https://randomuser.me/api/portraits/men/3.jpg', read: true }
-  ])
-
-  const unreadCount = computed(() => notifications.value.filter(n => !n.read).length)
-
-  const markAsRead = (id) => {
-    const notif = notifications.value.find(n => n.id === id)
-    if (notif) notif.read = true
-  }
-
-  const clearAllNotifications = () => {
-    notifications.value = []
-  }
-
-  return { notifications, unreadCount, markAsRead, clearAllNotifications }
-}
-
-// ---------- Settings (using data-attributes) ----------
-const useSettings = (emit) => {
-  const settings = ref({
-    colorScheme: 'light',
-    topbarColor: 'light',
-    menuColor: 'light',
-    sidebarSize: 'default'
-  })
-
-  const loadSettings = () => {
-    const saved = localStorage.getItem('larkon_settings')
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved)
-        settings.value = parsed
-      } catch (e) {}
-    }
-    applyAllSettings()
-  }
-
-  const saveSettings = () => {
-    localStorage.setItem('larkon_settings', JSON.stringify(settings.value))
-  }
-
-  const applyColorScheme = () => {
-    document.documentElement.setAttribute('data-theme', settings.value.colorScheme)
-  }
-
-  const applyTopbarColor = () => {
-    document.body.setAttribute('data-topbar', settings.value.topbarColor)
-  }
-
-  const applyMenuColor = () => {
-    document.body.setAttribute('data-menu', settings.value.menuColor)
-  }
-
-  const applySidebarSize = () => {
-    const body = document.body
-    if (settings.value.sidebarSize === 'default') {
-      body.removeAttribute('data-sidebar-size')
-    } else {
-      body.setAttribute('data-sidebar-size', settings.value.sidebarSize)
-    }
-    emit('sidebar-mode-changed', settings.value.sidebarSize)
-  }
-
-  const applyAllSettings = () => {
-    applyColorScheme()
-    applyTopbarColor()
-    applyMenuColor()
-    applySidebarSize()
-  }
-
-  const updateColorScheme = (value) => {
-    settings.value.colorScheme = value
-    applyColorScheme()
-    saveSettings()
-  }
-
-  const updateTopbarColor = (value) => {
-    settings.value.topbarColor = value
-    applyTopbarColor()
-    saveSettings()
-  }
-
-  const updateMenuColor = (value) => {
-    settings.value.menuColor = value
-    applyMenuColor()
-    saveSettings()
-  }
-
-  const updateSidebarSize = (value) => {
-    settings.value.sidebarSize = value
-    applySidebarSize()
-    saveSettings()
-  }
-
-  const resetSettings = () => {
-    settings.value = {
-      colorScheme: 'light',
-      topbarColor: 'light',
-      menuColor: 'light',
-      sidebarSize: 'default'
-    }
-    applyAllSettings()
-    saveSettings()
-  }
-
-  return {
-    settings,
-    loadSettings,
-    updateColorScheme,
-    updateTopbarColor,
-    updateMenuColor,
-    updateSidebarSize,
-    resetSettings
-  }
-}
-
-// ---------- Click Outside ----------
-const useClickOutside = (elementRef, callback) => {
-  const handler = (event) => {
-    if (elementRef.value && !elementRef.value.contains(event.target)) {
-      callback()
-    }
-  }
-  onMounted(() => document.addEventListener('click', handler))
-  onUnmounted(() => document.removeEventListener('click', handler))
-}
-
-// ---------- Component Setup ----------
+// ── Props & Emits ───────────────────────────────────────────
 const props = defineProps({
-  isDark: { type: Boolean, default: false }
-})
-const emit = defineEmits(['toggle-dark-mode', 'sidebar-mode-changed'])
+  pageTitle: {
+    type: String,
+    default: "WELCOME!",
+  },
+});
 
-const { isLoggedIn, user, loadAuth, login, signup, logout } = useAuth()
-const { notifications, unreadCount, markAsRead, clearAllNotifications } = useNotifications()
-const { settings, loadSettings, updateColorScheme, updateTopbarColor, updateMenuColor, updateSidebarSize, resetSettings } = useSettings(emit)
+const emit = defineEmits(["open-settings", "logout", "search"]);
 
-// UI State
-const notificationsDropdownOpen = ref(false)
-const notificationsContainerRef = ref(null)
-const settingsPanelOpen = ref(false)
-const profileDropdownOpen = ref(false)
-const profileContainerRef = ref(null)
-const searchQuery = ref('')
-const searchResults = ref([])
-const searchContainerRef = ref(null)
-const showTime = ref(false)
-const currentTime = ref('')
-let clockInterval
+// ── Theme ───────────────────────────────────────────────────
+const isDark = ref(false);
 
-const searchData = ref([
-  { id: 1, name: 'Dashboard' },
-  { id: 2, name: 'Users Management' },
-  { id: 3, name: 'Analytics Reports' },
-  { id: 4, name: 'Settings' },
-  { id: 5, name: 'Profile Settings' },
-  { id: 6, name: 'Notifications' },
-  { id: 7, name: 'Messages' },
-  { id: 8, name: 'Pricing Plans' },
-])
-
-// Modals
-const showLoginModal = ref(false)
-const showSignupModal = ref(false)
-const loginEmail = ref('')
-const loginPassword = ref('')
-const signupName = ref('')
-const signupEmail = ref('')
-const signupPassword = ref('')
-
-// Computed
-const greeting = computed(() => {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'Good morning'
-  if (hour < 18) return 'Good afternoon'
-  return 'Good evening'
-})
-
-// Methods
-const toggleDarkMode = () => emit('toggle-dark-mode')
-const toggleSidebarMode = () => {
-  const newMode = settings.value.sidebarSize === 'default' ? 'condensed' : 'default'
-  updateSidebarSize(newMode)
-}
-const openSettingsPanel = () => {
-  settingsPanelOpen.value = true
-  profileDropdownOpen.value = false
-  notificationsDropdownOpen.value = false
-}
-const closeSettingsPanel = () => { settingsPanelOpen.value = false }
-const toggleProfileDropdown = () => {
-  profileDropdownOpen.value = !profileDropdownOpen.value
-  notificationsDropdownOpen.value = false
-  settingsPanelOpen.value = false
-}
-const toggleNotificationsDropdown = () => {
-  notificationsDropdownOpen.value = !notificationsDropdownOpen.value
-  profileDropdownOpen.value = false
-  settingsPanelOpen.value = false
-}
-const handleMenuClick = (action) => { alert(`${action} clicked`); profileDropdownOpen.value = false }
-const viewAllNotifications = () => { alert('Viewing all notifications'); notificationsDropdownOpen.value = false }
-
-// Auth handlers
-const handleLogin = () => {
-  if (loginEmail.value && loginPassword.value) {
-    login(loginEmail.value)
-    showLoginModal.value = false
-    loginEmail.value = ''
-    loginPassword.value = ''
-  } else alert('Please enter email and password')
-}
-const handleSignup = () => {
-  if (signupName.value && signupEmail.value && signupPassword.value) {
-    signup(signupName.value, signupEmail.value)
-    showSignupModal.value = false
-    signupName.value = ''
-    signupEmail.value = ''
-    signupPassword.value = ''
-  } else alert('Please fill all fields')
+function toggleTheme() {
+  isDark.value = !isDark.value;
+  document.documentElement.setAttribute(
+    "data-theme",
+    isDark.value ? "dark" : "light"
+  );
+  localStorage.setItem("larkon-theme", isDark.value ? "dark" : "light");
 }
 
-// Search handlers
-const handleSearch = () => {
-  if (searchQuery.value.trim() === '') { searchResults.value = []; return }
-  const query = searchQuery.value.toLowerCase()
-  searchResults.value = searchData.value.filter(item => item.name.toLowerCase().includes(query))
-}
-const executeSearch = () => {
-  if (searchQuery.value.trim()) alert(`Searching for: ${searchQuery.value}`)
-  searchResults.value = []
-}
-const selectSearchResult = (result) => {
-  alert(`Navigating to: ${result.name}`)
-  searchQuery.value = result.name
-  searchResults.value = []
-}
-
-// Time handlers
-const updateClock = () => {
-  const now = new Date()
-  currentTime.value = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`
-}
-const toggleTime = () => {
-  showTime.value = !showTime.value
-  if (showTime.value) updateClock()
-}
-
-// Click outside
-useClickOutside(notificationsContainerRef, () => { notificationsDropdownOpen.value = false })
-useClickOutside(profileContainerRef, () => { profileDropdownOpen.value = false })
-useClickOutside(searchContainerRef, () => { searchResults.value = [] })
-
-const handleDocumentClick = (event) => {
-  if (!event.target.closest('.time-icon')) showTime.value = false
-}
-
-// Lifecycle
 onMounted(() => {
-  loadAuth()
-  loadSettings()
-  document.addEventListener('click', handleDocumentClick)
-  clockInterval = setInterval(() => { if (showTime.value) updateClock() }, 1000)
-})
-onUnmounted(() => {
-  document.removeEventListener('click', handleDocumentClick)
-  if (clockInterval) clearInterval(clockInterval)
-})
+  const saved = localStorage.getItem("larkon-theme");
+  if (saved === "dark") {
+    isDark.value = true;
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+});
+
+// ── Notifications ───────────────────────────────────────────
+const notifOpen = ref(false);
+const notifRef  = ref(null);
+
+const notifications = ref([
+  {
+    id: 1,
+    text: "New order #RB9652 received from Judith Fritsche.",
+    time: "2 min ago",
+    read: false,
+    icon: ShoppingBagIcon,
+    iconBg: "#fff3e8",
+  },
+  {
+    id: 2,
+    text: "Payment of $750.95 processed successfully.",
+    time: "15 min ago",
+    read: false,
+    icon: CurrencyDollarIcon,
+    iconBg: "#e8f5e9",
+  },
+  {
+    id: 3,
+    text: "3 new leads added this week.",
+    time: "1 hr ago",
+    read: false,
+    icon: UserGroupIcon,
+    iconBg: "#e3f2fd",
+  },
+  {
+    id: 4,
+    text: "Server maintenance scheduled for tonight at 2AM.",
+    time: "3 hrs ago",
+    read: true,
+    icon: Cog6ToothIcon,
+    iconBg: "#f3f4f9",
+  },
+  {
+    id: 5,
+    text: "Your monthly report is ready to download.",
+    time: "Yesterday",
+    read: true,
+    icon: EnvelopeIcon,
+    iconBg: "#fce4ec",
+  },
+]);
+
+const unreadCount = computed(() =>
+  notifications.value.filter((n) => !n.read).length
+);
+
+function readNotif(notif) {
+  notif.read = true;
+}
+
+function markAllRead() {
+  notifications.value.forEach((n) => (n.read = true));
+}
+
+// ── Language ────────────────────────────────────────────────
+const langOpen   = ref(false);
+const langRef    = ref(null);
+const activeLang = ref("en");
+
+const languages = [
+  { code: "en", name: "English",  flag: "🇺🇸" },
+  { code: "fr", name: "French",   flag: "🇫🇷" },
+  { code: "de", name: "German",   flag: "🇩🇪" },
+  { code: "es", name: "Spanish",  flag: "🇪🇸" },
+  { code: "ar", name: "Arabic",   flag: "🇸🇦" },
+  { code: "zh", name: "Chinese",  flag: "🇨🇳" },
+];
+
+function setLang(code) {
+  activeLang.value = code;
+  langOpen.value   = false;
+}
+
+// ── User ────────────────────────────────────────────────────
+const userOpen    = ref(false);
+const userRef     = ref(null);
+const avatarError = ref(false);
+
+const user = ref({
+  name:   "Anna M. Hines",
+  role:   "Administrator",
+  email:  "anna.hines@mail.com",
+  avatar: "https://i.pravatar.cc/80?img=47",
+});
+
+const userInitials = computed(() =>
+  user.value.name
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase()
+);
+
+function onAvatarError() {
+  avatarError.value = true;
+}
+
+const userMenuItems = [
+  { label: "My Profile",   icon: UserCircleIcon,  badge: null },
+  { label: "My Account",   icon: LockClosedIcon,  badge: null },
+  { label: "Messages",     icon: EnvelopeIcon,    badge: "5"  },
+];
+
+function handleUserMenu(item) {
+  userOpen.value = false;
+  // Extend with router.push per item if needed
+}
+
+function handleLogout() {
+  userOpen.value = false;
+  emit("logout");
+}
+
+// ── Search ──────────────────────────────────────────────────
+const searchQuery   = ref("");
+const searchFocused = ref(false);
+const searchInput   = ref(null);
+
+// Mock search data — replace with real API call
+const allSearchData = [
+  { id: 1, label: "Dashboard",        sub: "Page",     icon: Cog6ToothIcon,    iconBg: "#f3f4f9" },
+  { id: 2, label: "Orders",           sub: "Page",     icon: ShoppingBagIcon,  iconBg: "#fff3e8" },
+  { id: 3, label: "Anna M. Hines",    sub: "Customer", icon: UserCircleIcon,   iconBg: "#e3f2fd" },
+  { id: 4, label: "Judith Fritsche",  sub: "Customer", icon: UserCircleIcon,   iconBg: "#e3f2fd" },
+  { id: 5, label: "Revenue Report",   sub: "Report",   icon: CurrencyDollarIcon, iconBg: "#e8f5e9" },
+  { id: 6, label: "New Leads",        sub: "CRM",      icon: UserGroupIcon,    iconBg: "#fce4ec" },
+];
+
+const searchResults = computed(() => {
+  if (!searchQuery.value || searchQuery.value.length < 2) return [];
+  const q = searchQuery.value.toLowerCase();
+  return allSearchData.filter(
+    (item) =>
+      item.label.toLowerCase().includes(q) ||
+      item.sub.toLowerCase().includes(q)
+  );
+});
+
+function onSearchBlur() {
+  // Delay so click on results registers first
+  setTimeout(() => {
+    searchFocused.value = false;
+  }, 200);
+}
+
+function clearSearch() {
+  searchQuery.value   = "";
+  searchFocused.value = false;
+  searchInput.value?.blur();
+}
+
+function doSearch() {
+  emit("search", searchQuery.value);
+}
+
+// ── Click-outside to close dropdowns ────────────────────────
+function handleClickOutside(e) {
+  if (notifRef.value && !notifRef.value.contains(e.target)) notifOpen.value = false;
+  if (langRef.value  && !langRef.value.contains(e.target))  langOpen.value  = false;
+  if (userRef.value  && !userRef.value.contains(e.target))  userOpen.value  = false;
+}
+
+onMounted(() => document.addEventListener("mousedown", handleClickOutside));
+onBeforeUnmount(() => document.removeEventListener("mousedown", handleClickOutside));
 </script>
 
 <style scoped>
-/* ========== HEADER STYLES ========== */
-.header {
-  background: #ffffff;
-  border-bottom: 1px solid #eef2f6;
-  padding: 14px 32px;
+/* ── Topbar shell ───────────────────────────────────────── */
+.topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 60px;
+  padding: 0 20px 0 24px;
+  background: var(--topbar-bg, #fff);
+  border-bottom: 1px solid var(--topbar-border, #eef2f7);
+  box-shadow: var(--topbar-shadow, 0 2px 12px rgba(0,0,0,0.06));
   position: sticky;
   top: 0;
   z-index: 100;
-  width: 100%;
+  gap: 12px;
 }
 
-[data-topbar="dark"] .header {
-  background: #1e293b !important;
-  border-bottom-color: #334155;
+/* ── Left ───────────────────────────────────────────────── */
+.topbar__left { flex-shrink: 0; }
+.topbar__title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  color: var(--text-primary, #313a46);
+  text-transform: uppercase;
 }
 
-.header-left {
+/* ── Right ──────────────────────────────────────────────── */
+.topbar__right {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 4px;
+  margin-left: auto;
 }
 
-.welcome-text {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #1f2937;
-  background: #fef9f0;
-  padding: 5px 14px;
-  border-radius: 40px;
-}
-
-[data-theme="dark"] .welcome-text {
-  background: #374151;
-  color: #f3f4f6;
-}
-
-.time-icon {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 40px;
-  background: #f3f4f6;
-  transition: all 0.2s;
-}
-
-.time-icon:hover {
-  background: #e5e7eb;
-}
-
-[data-theme="dark"] .time-icon {
-  background: #374151;
-}
-
-.time-display {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #4b5563;
-}
-
-[data-theme="dark"] .time-display {
-  color: #f3f4f6;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+/* ── Icon Button ────────────────────────────────────────── */
+.topbar__icon-btn {
   position: relative;
-  overflow: visible !important;
-}
-
-.icon-btn {
-  background: transparent;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   border: none;
-  cursor: pointer;
-  color: #4b5563;
-  border-radius: 40px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  transition: all 0.2s;
+  color: var(--text-secondary, #6c757d);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.topbar__icon-btn:hover,
+.topbar__icon-btn.active {
+  background: var(--app-bg, #f3f4f9);
+  color: var(--accent, #fd7e14);
+}
+.topbar__icon { width: 19px; height: 19px; stroke-width: 1.8; }
+.topbar__icon--xs { width: 14px; height: 14px; }
+
+/* Notification badge */
+.topbar__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 99px;
+  background: var(--accent, #fd7e14);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--topbar-bg, #fff);
+  line-height: 1;
 }
 
-.icon-btn:hover {
-  background-color: #f3f4f6;
-  color: #f97316;
+/* ── User button ────────────────────────────────────────── */
+.topbar__user-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--topbar-border, #eef2f7);
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.topbar__user-btn:hover,
+.topbar__user-btn.active {
+  border-color: var(--accent, #fd7e14);
+}
+.topbar__avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.topbar__avatar-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-muted, #fff3e8);
+  color: var(--accent, #fd7e14);
+  font-size: 12px;
+  font-weight: 800;
 }
 
-[data-theme="dark"] .icon-btn:hover {
-  background-color: #374151;
-}
-
-.icon-size {
-  width: 20px;
-  height: 20px;
-}
-
-/* Search */
-.search-wrapper {
+/* ── Search ─────────────────────────────────────────────── */
+.topbar__search {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 7px;
+  background: var(--app-bg, #f3f4f9);
+  border: 1px solid var(--topbar-border, #eef2f7);
+  border-radius: 8px;
+  padding: 0 10px;
+  height: 36px;
+  width: 200px;
+  transition: width 0.25s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  margin-left: 6px;
 }
-
-.search-icon {
-  position: absolute;
-  left: 12px;
-  width: 18px;
-  height: 18px;
-  color: #9ca3af;
+.topbar__search.focused {
+  width: 280px;
+  border-color: var(--accent, #fd7e14);
+  box-shadow: 0 0 0 3px rgba(253, 126, 20, 0.1);
 }
-
-.search-input {
-  padding: 8px 12px 8px 38px;
-  border: 1px solid #e5e9f0;
-  border-radius: 40px;
-  background-color: #f9fafb;
-  font-size: 0.9rem;
-  width: 220px;
+.topbar__search-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--text-muted, #98a6ad);
+  flex-shrink: 0;
+  stroke-width: 2;
+}
+.topbar__search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--text-primary, #313a46);
   outline: none;
-  transition: all 0.2s;
+  font-family: inherit;
 }
-
-.search-input:focus {
-  border-color: #f97316;
-  width: 260px;
+.topbar__search-input::placeholder { color: var(--text-muted, #98a6ad); }
+.topbar__search-clear {
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
 }
+.topbar__search-clear:hover { color: var(--text-primary); }
 
-.search-results-dropdown {
+/* ── Dropdown base ──────────────────────────────────────── */
+.topbar__dropdown-wrap { position: relative; }
+
+.dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   right: 0;
-  margin-top: 8px;
-  background: white;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #eef2f7);
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  min-width: 280px;
-  max-height: 300px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.dropdown__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+}
+.dropdown__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary, #313a46);
+}
+.dropdown__mark-all {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent, #fd7e14);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+.dropdown__mark-all:hover { text-decoration: underline; }
+
+.dropdown__body {
+  max-height: 340px;
   overflow-y: auto;
-  z-index: 1001;
-  border: 1px solid #e5e9f0;
+}
+
+.dropdown__footer {
+  border-top: 1px solid var(--card-border, #eef2f7);
+  padding: 10px 16px;
+  text-align: center;
+}
+.dropdown__footer-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent, #fd7e14);
+  display: block;
+}
+.dropdown__footer-link:hover { text-decoration: underline; }
+
+/* ── Notifications dropdown ─────────────────────────────── */
+.dropdown--notif { width: 340px; }
+
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  cursor: pointer;
+  transition: background 0.12s ease;
+  position: relative;
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-item:hover      { background: var(--app-bg, #f3f4f9); }
+.notif-item.unread     { background: rgba(253, 126, 20, 0.03); }
+
+.notif-item__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.notif-item__svg { width: 17px; height: 17px; color: var(--accent, #fd7e14); stroke-width: 1.8; }
+
+.notif-item__body { flex: 1; min-width: 0; }
+.notif-item__text {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-primary, #313a46);
+  margin-bottom: 3px;
+}
+.notif-item__time { font-size: 11px; color: var(--text-muted, #98a6ad); }
+
+.notif-item__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent, #fd7e14);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* ── Language dropdown ──────────────────────────────────── */
+.dropdown--lang { width: 190px; }
+
+.lang-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 16px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--text-primary, #313a46);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s ease;
+}
+.lang-item:hover  { background: var(--app-bg, #f3f4f9); }
+.lang-item.active { color: var(--accent, #fd7e14); font-weight: 700; }
+
+.lang-item__flag { font-size: 18px; line-height: 1; }
+.lang-item__name { flex: 1; text-align: left; }
+.lang-item__check { width: 14px; height: 14px; color: var(--accent, #fd7e14); stroke-width: 2.5; }
+
+/* ── User dropdown ──────────────────────────────────────── */
+.dropdown--user { width: 230px; }
+
+.dropdown__user-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  background: var(--app-bg, #f3f4f9);
+}
+.dropdown__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff9b44, #fd7e14);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dropdown__user-info { min-width: 0; }
+.dropdown__user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dropdown__user-role { font-size: 11.5px; color: var(--text-muted); }
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--text-secondary, #6c757d);
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.user-menu-item:last-child { border-bottom: none; }
+.user-menu-item:hover {
+  background: var(--app-bg, #f3f4f9);
+  color: var(--accent, #fd7e14);
+}
+.user-menu-item__icon { width: 16px; height: 16px; stroke-width: 1.8; flex-shrink: 0; }
+.user-menu-item__badge {
+  margin-left: auto;
+  background: var(--accent, #fd7e14);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--danger, #e74c3c);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s ease;
+}
+.logout-btn:hover { background: #fce4ec; }
+.logout-btn__icon { width: 16px; height: 16px; stroke-width: 2; }
+
+/* ── Search dropdown ────────────────────────────────────── */
+.dropdown--search {
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  width: auto;
+  min-width: 320px;
 }
 
 .search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 10px 16px;
-  cursor: pointer;
-  color: #4b5563;
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  transition: background 0.12s ease;
 }
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover { background: var(--app-bg, #f3f4f9); }
 
-.search-result-item:hover {
-  background: #f3f4f6;
-}
-
-/* Notifications */
-.notif-wrapper {
-  position: relative;
-  overflow: visible !important;
-}
-
-.notif-badge {
-  position: absolute;
-  top: -2px;
-  right: -4px;
-  background-color: #f97316;
-  color: white;
-  font-size: 0.65rem;
-  font-weight: bold;
-  border-radius: 30px;
-  padding: 2px 6px;
-  min-width: 18px;
-  text-align: center;
-  border: 2px solid white;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  background: #1e2a3a;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  min-width: 320px;
-  z-index: 1050;
-  overflow: hidden;
-  border: 1px solid #334155;
-}
-
-.notifications-dropdown {
-  width: 360px;
-}
-
-.dropdown-header {
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #334155;
-}
-
-.dropdown-header h4 {
-  margin: 0;
-  font-size: 16px;
-  color: #fff;
-}
-
-.clear-all-btn {
-  background: none;
-  border: none;
-  color: #f97316;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.notifications-list {
-  max-height: 360px;
-  overflow-y: auto;
-}
-
-.notification-item {
-  display: flex;
-  gap: 12px;
-  padding: 14px 20px;
-  border-bottom: 1px solid #334155;
-  cursor: pointer;
-}
-
-.notification-item:hover {
-  background: #243142;
-}
-
-.notification-item.unread {
-  background: #1a2a3a;
-}
-
-.notif-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-}
-
-.notif-content p {
-  margin: 0 0 4px;
-  font-size: 13px;
-  color: #e2e8f0;
-}
-
-.notif-time {
-  font-size: 11px;
-  color: #64748b;
-}
-
-.empty-notifications {
-  padding: 40px;
-  text-align: center;
-  color: #94a3b8;
-}
-
-.dropdown-footer {
-  padding: 12px 20px;
-  border-top: 1px solid #334155;
-}
-
-.view-all-btn {
-  width: 100%;
-  padding: 10px;
-  background: #f97316;
-  border: none;
+.search-result-item__icon {
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.view-all-btn:hover {
-  background: #ea580c;
-}
-
-/* Profile Dropdown */
-.profile-dropdown-container {
-  position: relative;
-}
-
-.profile-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 40px;
-  transition: all 0.2s;
-}
-
-.profile-btn:hover {
-  background-color: #f3f4f6;
-}
-
-[data-theme="dark"] .profile-btn:hover {
-  background-color: #374151;
-}
-
-.profile-image {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.profile-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #4b5563;
-}
-
-[data-theme="dark"] .profile-name {
-  color: #e2e8f0;
-}
-
-.profile-dropdown-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  background: #1e2a3a;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  min-width: 260px;
-  z-index: 1050;
-  overflow: hidden;
-  border: 1px solid #334155;
-}
-
-.profile-welcome {
-  padding: 20px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  background: #243142;
-}
-
-.profile-image-large {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-.profile-welcome h4 {
-  margin: 0;
-  font-size: 14px;
-  color: #fff;
-}
-
-.profile-welcome p {
-  margin: 4px 0 0;
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-.dropdown-divider {
-  height: 1px;
-  background: #334155;
-  margin: 8px 0;
-}
-
-.dropdown-item {
-  display: block;
-  padding: 10px 20px;
-  color: #e2e8f0;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.dropdown-item:hover {
-  background: #334155;
-  color: #f97316;
-}
-
-.text-danger {
-  color: #ef4444;
-}
-
-.text-danger:hover {
-  background: #450a0a;
-  color: #ef4444;
-}
-
-/* Auth Buttons */
-.auth-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.auth-btn {
-  padding: 8px 16px;
-  border-radius: 40px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-}
-
-.login-btn {
-  background: transparent;
-  color: #f97316;
-  border: 1px solid #f97316;
-}
-
-.login-btn:hover {
-  background: #f97316;
-  color: white;
-}
-
-.signup-btn {
-  background: #f97316;
-  color: white;
-}
-
-.signup-btn:hover {
-  background: #ea580c;
-}
-
-/* Settings Panel */
-.settings-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 2000;
-}
-
-.settings-panel {
-  position: fixed;
-  top: 0;
-  right: -420px;
-  width: 400px;
-  height: 100%;
-  background: #1e2a3a;
-  z-index: 2001;
-  transition: right 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.3);
-  border-radius: 16px 0 0 16px;
-}
-
-.settings-panel.open {
-  right: 0;
-}
-
-.settings-header {
-  padding: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #334155;
-}
-
-.settings-header h3 {
-  margin: 0;
-  font-size: 20px;
-  color: #fff;
-}
-
-.close-settings {
-  background: none;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  color: #94a3b8;
-  transition: color 0.2s;
-}
-
-.close-settings:hover {
-  color: #f97316;
-}
-
-.settings-body {
-  flex: 1;
-  padding: 24px;
-  overflow-y: auto;
-}
-
-.setting-group {
-  margin-bottom: 32px;
-}
-
-.setting-group label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-}
-
-.button-group.vertical {
-  flex-direction: column;
-  gap: 10px;
-  align-items: stretch;
-}
-
-.setting-btn {
-  background: #2d3a4a;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 40px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #e2e8f0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 100px;
-  text-align: center;
-}
-
-.setting-btn:hover {
-  background: #3b4a5c;
-  transform: translateY(-1px);
-  color: #f97316;
-}
-
-.setting-btn.active {
-  background: #f97316;
-  color: white;
-  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
-}
-
-.setting-btn.active:hover {
-  background: #ea580c;
-}
-
-.button-group.vertical .setting-btn {
-  width: 100%;
-}
-
-.settings-footer {
-  padding: 20px 24px;
-  border-top: 1px solid #334155;
-}
-
-.reset-btn {
-  width: 100%;
-  padding: 12px;
-  background: #dc2626;
-  border: none;
-  border-radius: 40px;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.reset-btn:hover {
-  background: #b91c1c;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-}
-
-/* Modals */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3000;
+  flex-shrink: 0;
 }
+.search-result-item__svg { width: 16px; height: 16px; color: var(--accent, #fd7e14); stroke-width: 1.8; }
 
-.modal-content {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  width: 320px;
+.search-result-item__body { flex: 1; min-width: 0; }
+.search-result-item__label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.search-result-item__sub   { font-size: 11.5px; color: var(--text-muted); }
+
+.search-empty {
+  padding: 28px 16px;
   text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
 }
+.search-empty__icon { width: 28px; height: 28px; margin: 0 auto 8px; opacity: 0.4; }
 
-[data-theme="dark"] .modal-content {
-  background: #1e293b;
-  color: white;
-}
-
-.modal-content h3 {
-  margin: 0 0 20px;
-}
-
-.modal-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-.modal-btn {
-  width: 100%;
-  padding: 12px;
-  background: #f97316;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
-
-.modal-close {
-  width: 100%;
-  padding: 12px;
-  background: transparent;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* Responsive */
-@media (max-width: 700px) {
-  .header {
-    padding: 12px 20px;
-  }
-  .search-input {
-    width: 160px;
-  }
-  .profile-name {
-    display: none;
-  }
-  .settings-panel {
-    width: 100%;
-    right: -100%;
-    border-radius: 0;
-  }
-}
+/* ── Dropdown transition ────────────────────────────────── */
+.dropdown-enter-active { transition: opacity 0.18s ease, transform 0.18s ease; }
+.dropdown-leave-active { transition: opacity 0.14s ease, transform 0.14s ease; }
+.dropdown-enter-from  { opacity: 0; transform: translateY(-6px); }
+.dropdown-leave-to    { opacity: 0; transform: translateY(-4px); }
 </style>
