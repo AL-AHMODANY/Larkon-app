@@ -45,7 +45,7 @@ const closeMobileSidebar = () => {
 };
 
 /* ── Toggle handler from Header ─────────────────── */
-const handleSidebarToggle = (size) => {
+const handleSidebarToggle = () => {
   const isMobile = window.innerWidth <= 1024;
 
   if (isMobile) {
@@ -54,9 +54,14 @@ const handleSidebarToggle = (size) => {
     return;
   }
 
-  // Desktop: cycle or apply the requested size
-  sidebarSize.value = size ?? "default";
-  // Keep body attributes in sync for any Bootstrap-style CSS that reads them
+  // Desktop: cycle default → condensed → default
+  if (sidebarSize.value === "default") {
+    sidebarSize.value = "condensed";
+  } else if (sidebarSize.value === "condensed") {
+    sidebarSize.value = "default";
+  } else {
+    sidebarSize.value = "default";
+  }
   applyBodyAttrs();
 };
 
@@ -126,20 +131,18 @@ body {
 
 /* ── CSS variables (matches Larkon defaults) ─────── */
 :root {
-  --sidebar-width:            260px;   /* default sidebar width             */
-  --sidebar-collapsed-width:   70px;   /* condensed / small-hover icon width*/
-  --topbar-height:             70px;   /* header bar height                 */
-  --content-bg:              #f4f6fb;  /* page background                   */
-  --sidebar-bg:              #1e2f4d;  /* dark menu default                 */
+  --sidebar-width:            260px;
+  --sidebar-collapsed-width:   70px;
+  --topbar-height:             70px;
+  --content-bg:              #f4f6fb;
+  --sidebar-bg:              #313a46;
   --sidebar-transition:      0.2s ease;
 }
 
-/* Dark theme overrides */
 [data-theme="dark"] {
   --content-bg: #1a2035;
 }
 
-/* Light menu */
 [data-menu="light"] {
   --sidebar-bg: #ffffff;
 }
@@ -148,9 +151,16 @@ body {
 .app-layout {
   display: flex;
   min-height: 100vh;
-  background: var(--content-bg);
-  overflow-x: hidden;
-  /* Sidebar is a fixed-position element in Larkon; main shifts via margin */
+  background: var(--content-bg, #f4f6fb);
+}
+
+/* ── Page content area ───────────────────────────── */
+.app-content {
+  flex: 1;
+  padding: 24px;
+  background: var(--content-bg, #f4f6fb);
+  overflow: visible;
+  min-width: 0;
 }
 
 /* ── Sidebar (the real element lives in Sidebar.vue)  */
@@ -162,9 +172,11 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  margin-left: var(--sidebar-width);          /* push right of fixed sidebar */
+  margin-left: var(--sidebar-width);
+  padding-top: 0; /* offset for fixed header */
   transition: margin-left var(--sidebar-transition);
-  overflow: hidden;
+  overflow: visible;
+  min-width: 0;
 }
 
 /* ── Sidebar size variants ───────────────────────── */
@@ -175,26 +187,21 @@ body {
   margin-left: var(--sidebar-collapsed-width);
 }
 
-/* Hidden (sidebar is completely off-screen) */
+/* Hidden */
 [data-sidebar-size="hidden"] .app-main,
 .app-layout.sidebar-hidden .app-main {
   margin-left: 0;
 }
 
-/* Small Hover Active (same footprint as condensed until hovered) */
-[data-sidebar-size="smallhover-active"] .app-main,
-.app-layout.sidebar-smallhover-active .app-main {
-  margin-left: var(--sidebar-collapsed-width);
-}
-
-/* Small Hover (pure icon, expands on hover, no margin shift) */
-[data-sidebar-size="smallhover"] .app-main,
-.app-layout.sidebar-smallhover .app-main {
+/* Small Hover — icon-only until hovered */
+[data-sidebar-size="sm-hover"] .app-main,
+[data-sidebar-size="sm-hover-active"] .app-main,
+.app-layout.sidebar-sm-hover .app-main,
+.app-layout.sidebar-sm-hover-active .app-main {
   margin-left: var(--sidebar-collapsed-width);
 }
 
 /* ── Header / Topbar ─────────────────────────────── */
-/* Larkon topbar is sticky, full-width of the .app-main column */
 .app-header {
   position: sticky;
   top: 0;
@@ -202,12 +209,11 @@ body {
   height: var(--topbar-height);
 }
 
-/* ── Page content area ───────────────────────────── */
-.app-content {
-  flex: 1;
-  padding: 24px;
-  /* Larkon scrolls the full page, not a nested container */
-  overflow: visible;
+/* Ensure header is always sticky and above content */
+.app-main > header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 /* ── Mobile Overlay ──────────────────────────────── */
@@ -243,5 +249,4 @@ body {
   .app-content {
     padding: 16px;
   }
-}
-</style>
+}</style>

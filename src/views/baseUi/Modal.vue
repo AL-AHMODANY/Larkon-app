@@ -303,11 +303,13 @@
         </div>
       </div>
     </transition>
+    <PageFooter />
 
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 // ─── State ───────────────────────────────────────────────────────
@@ -995,4 +997,32 @@ const codeSnippets = {
   .modal-shell  { padding: 16px 8px; }
   .code-pre { font-size: 0.7rem; }
 }
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .modal-page {
+  background: var(--bg-body) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .demo-section {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .toc-link { color: var(--text-secondary) !important; }
+:global([data-theme="dark"]) .toc-link:hover,
+:global([data-theme="dark"]) .toc-link.active {
+  background: var(--accent-muted) !important;
+  color: var(--accent) !important;
+  border-left-color: var(--accent) !important;
+}
+:global([data-theme="dark"]) .modal-content {
+  background: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .modal-title { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .modal-x:hover { background: var(--app-bg) !important; color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .modal-body   { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .alert-modal-title { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .alert-modal-msg   { color: var(--text-secondary) !important; }
+:global([data-theme="dark"]) .btn-light { background: var(--app-bg) !important; border-color: var(--border-color) !important; color: var(--text-primary) !important; }
 </style>

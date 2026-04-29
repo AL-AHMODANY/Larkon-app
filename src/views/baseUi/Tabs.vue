@@ -1,202 +1,315 @@
 <template>
-  <div class="container-fluid py-4 page-bg">
-    <div class="row justify-content-center">
-      <div class="col-lg-10 col-xl-8">
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h4 class="page-title">Tabs</h4>
+      <p class="page-subtitle">Bootstrap 5 nav tabs, pills, and vertical tab examples.</p>
+    </div>
 
-        <div class="card mb-4 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="card-title fw-bold mb-1">Nav Tabs</h5>
-            <p class="text-muted small mb-4">Use the <code class="text-danger">.nav-tabs</code> class to generate a tabbed interface.</p>
-
-            <ul class="nav nav-tabs mb-3" role="tablist">
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab1 === 'home' }" @click="tab1 = 'home'">Home</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab1 === 'profile' }" @click="tab1 = 'profile'">Profile</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab1 === 'messages' }" @click="tab1 = 'messages'">Messages</a>
-              </li>
-            </ul>
-            <div class="tab-content text-muted small">
-              <div class="tab-pane fade show active">{{ dummyText }}</div>
-            </div>
-
-            <div class="code-block mt-4 position-relative">
-              <span class="badge bg-success position-absolute top-0 end-0 m-2">HTML</span>
-              <pre class="m-0 p-3 text-success"><code>&lt;ul class="nav nav-tabs"&gt;...&lt;/ul&gt;</code></pre>
-            </div>
-          </div>
+    <!-- Nav Tabs -->
+    <div class="demo-card">
+      <h6 class="demo-title">Nav Tabs</h6>
+      <p class="demo-desc">Use the <code>.nav-tabs</code> class to generate a tabbed interface.</p>
+      <div class="demo-box">
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item"><a class="nav-link" :class="{active: t1==='home'}" @click="t1='home'" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t1==='profile'}" @click="t1='profile'" href="#">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t1==='messages'}" @click="t1='messages'" href="#">Messages</a></li>
+          <li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1">Disabled</a></li>
+        </ul>
+        <div class="tab-content-text">{{ dummy }}</div>
+      </div>
+      <div class="code-block mt-3">
+        <div class="code-bar"><span class="code-badge">HTML</span>
+          <button class="copy-btn" @click="copy('t1', codes.tabs)"><i class="bi bi-clipboard me-1"></i>{{ copied==='t1'?'Copied!':'Copy' }}</button>
         </div>
-
-        <div class="card mb-4 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="card-title fw-bold mb-1">Tabs Justified</h5>
-            <p class="text-muted small mb-4">Using class <code class="text-danger">.nav-justified</code>, you can force your <code class="text-danger">nav-tabs</code> to fill available width.</p>
-
-            <ul class="nav nav-tabs nav-justified mb-3" role="tablist">
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab2 === 'home' }" @click="tab2 = 'home'">Home</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab2 === 'profile' }" @click="tab2 = 'profile'">Profile</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab2 === 'messages' }" @click="tab2 = 'messages'">Messages</a>
-              </li>
-            </ul>
-            <div class="tab-content text-muted small">
-              <div class="tab-pane fade show active">{{ dummyText }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="card-title fw-bold mb-1">Nav Pills</h5>
-            <p class="text-muted small mb-4">Use the <code class="text-danger">.nav-pills</code> class to generate a pilled interface.</p>
-
-            <ul class="nav nav-pills mb-3" role="tablist">
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab3 === 'home' }" @click="tab3 = 'home'">Home</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab3 === 'profile' }" @click="tab3 = 'profile'">Profile</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab3 === 'messages' }" @click="tab3 = 'messages'">Messages</a>
-              </li>
-            </ul>
-            <div class="tab-content text-muted small">
-              <div class="tab-pane fade show active">{{ dummyText }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="card-title fw-bold mb-1">Pills Justified</h5>
-            <p class="text-muted small mb-4">Using class <code class="text-danger">.nav-justified</code>, you can force your <code class="text-danger">nav-pills</code> to fill available width.</p>
-
-            <ul class="nav nav-pills nav-justified mb-3" role="tablist">
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab4 === 'home' }" @click="tab4 = 'home'">Home</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab4 === 'profile' }" @click="tab4 = 'profile'">Profile</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link cursor-pointer" :class="{ active: tab4 === 'messages' }" @click="tab4 = 'messages'">Messages</a>
-              </li>
-            </ul>
-            <div class="tab-content text-muted small">
-              <div class="tab-pane fade show active">{{ dummyText }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="card-title fw-bold mb-1">Tabs Vertical Left</h5>
-            <p class="text-muted small mb-4">You can also have navigation tags displaying in vertical directions.</p>
-
-            <div class="row">
-              <div class="col-md-3 col-sm-12 mb-3 mb-md-0">
-                <ul class="nav nav-pills flex-column" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <a class="nav-link cursor-pointer" :class="{ active: tab5 === 'home' }" @click="tab5 = 'home'">Home</a>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <a class="nav-link cursor-pointer" :class="{ active: tab5 === 'profile' }" @click="tab5 = 'profile'">Profile</a>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <a class="nav-link cursor-pointer" :class="{ active: tab5 === 'messages' }" @click="tab5 = 'messages'">Messages</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md-9 col-sm-12">
-                <div class="tab-content text-muted small">
-                  <div class="tab-pane fade show active">{{ dummyText }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h5 class="card-title fw-bold mb-1">Tabs Vertical Right</h5>
-            <p class="text-muted small mb-4">You can also have navigation tags displaying in vertical directions on the right.</p>
-
-            <div class="row">
-              <div class="col-md-9 col-sm-12 order-2 order-md-1">
-                <div class="tab-content text-muted small">
-                  <div class="tab-pane fade show active">{{ dummyText }}</div>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-12 mb-3 mb-md-0 order-1 order-md-2">
-                <ul class="nav nav-pills flex-column" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <a class="nav-link cursor-pointer" :class="{ active: tab6 === 'home' }" @click="tab6 = 'home'">Home</a>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <a class="nav-link cursor-pointer" :class="{ active: tab6 === 'profile' }" @click="tab6 = 'profile'">Profile</a>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <a class="nav-link cursor-pointer" :class="{ active: tab6 === 'settings' }" @click="tab6 = 'settings'">Settings</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <pre class="code-body"><code>{{ codes.tabs }}</code></pre>
       </div>
     </div>
+
+    <!-- Tabs Justified -->
+    <div class="demo-card">
+      <h6 class="demo-title">Tabs Justified</h6>
+      <p class="demo-desc">Using <code>.nav-justified</code> forces tabs to fill the available width.</p>
+      <div class="demo-box">
+        <ul class="nav nav-tabs nav-justified mb-3">
+          <li class="nav-item"><a class="nav-link" :class="{active: t2==='home'}" @click="t2='home'" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t2==='profile'}" @click="t2='profile'" href="#">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t2==='messages'}" @click="t2='messages'" href="#">Messages</a></li>
+        </ul>
+        <div class="tab-content-text">{{ dummy }}</div>
+      </div>
+      <div class="code-block mt-3">
+        <div class="code-bar"><span class="code-badge">HTML</span>
+          <button class="copy-btn" @click="copy('t2', codes.tabsJustified)"><i class="bi bi-clipboard me-1"></i>{{ copied==='t2'?'Copied!':'Copy' }}</button>
+        </div>
+        <pre class="code-body"><code>{{ codes.tabsJustified }}</code></pre>
+      </div>
+    </div>
+
+    <!-- Nav Pills -->
+    <div class="demo-card">
+      <h6 class="demo-title">Nav Pills</h6>
+      <p class="demo-desc">Use the <code>.nav-pills</code> class to generate a pill-style navigation.</p>
+      <div class="demo-box">
+        <ul class="nav nav-pills mb-3">
+          <li class="nav-item"><a class="nav-link" :class="{active: t3==='home'}" @click="t3='home'" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t3==='profile'}" @click="t3='profile'" href="#">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t3==='messages'}" @click="t3='messages'" href="#">Messages</a></li>
+          <li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1">Disabled</a></li>
+        </ul>
+        <div class="tab-content-text">{{ dummy }}</div>
+      </div>
+      <div class="code-block mt-3">
+        <div class="code-bar"><span class="code-badge">HTML</span>
+          <button class="copy-btn" @click="copy('t3', codes.pills)"><i class="bi bi-clipboard me-1"></i>{{ copied==='t3'?'Copied!':'Copy' }}</button>
+        </div>
+        <pre class="code-body"><code>{{ codes.pills }}</code></pre>
+      </div>
+    </div>
+
+    <!-- Pills Justified -->
+    <div class="demo-card">
+      <h6 class="demo-title">Pills Justified</h6>
+      <p class="demo-desc">Using <code>.nav-justified</code> with <code>.nav-pills</code> fills the available width.</p>
+      <div class="demo-box">
+        <ul class="nav nav-pills nav-justified mb-3">
+          <li class="nav-item"><a class="nav-link" :class="{active: t4==='home'}" @click="t4='home'" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t4==='profile'}" @click="t4='profile'" href="#">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" :class="{active: t4==='messages'}" @click="t4='messages'" href="#">Messages</a></li>
+        </ul>
+        <div class="tab-content-text">{{ dummy }}</div>
+      </div>
+      <div class="code-block mt-3">
+        <div class="code-bar"><span class="code-badge">HTML</span>
+          <button class="copy-btn" @click="copy('t4', codes.pillsJustified)"><i class="bi bi-clipboard me-1"></i>{{ copied==='t4'?'Copied!':'Copy' }}</button>
+        </div>
+        <pre class="code-body"><code>{{ codes.pillsJustified }}</code></pre>
+      </div>
+    </div>
+
+    <!-- Vertical Left -->
+    <div class="demo-card">
+      <h6 class="demo-title">Tabs Vertical Left</h6>
+      <p class="demo-desc">Navigation tags can display in vertical directions using <code>.flex-column</code>.</p>
+      <div class="demo-box">
+        <div class="d-flex gap-3">
+          <ul class="nav nav-pills flex-column flex-shrink-0" style="min-width:120px">
+            <li class="nav-item"><a class="nav-link" :class="{active: t5==='home'}" @click="t5='home'" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" :class="{active: t5==='profile'}" @click="t5='profile'" href="#">Profile</a></li>
+            <li class="nav-item"><a class="nav-link" :class="{active: t5==='messages'}" @click="t5='messages'" href="#">Messages</a></li>
+          </ul>
+          <div class="tab-content-text flex-grow-1">{{ dummy }}</div>
+        </div>
+      </div>
+      <div class="code-block mt-3">
+        <div class="code-bar"><span class="code-badge">HTML</span>
+          <button class="copy-btn" @click="copy('t5', codes.vertical)"><i class="bi bi-clipboard me-1"></i>{{ copied==='t5'?'Copied!':'Copy' }}</button>
+        </div>
+        <pre class="code-body"><code>{{ codes.vertical }}</code></pre>
+      </div>
+    </div>
+
+    <!-- Vertical Right -->
+    <div class="demo-card">
+      <h6 class="demo-title">Tabs Vertical Right</h6>
+      <p class="demo-desc">Navigation tags can also display vertically on the right side.</p>
+      <div class="demo-box">
+        <div class="d-flex gap-3">
+          <div class="tab-content-text flex-grow-1">{{ dummy }}</div>
+          <ul class="nav nav-pills flex-column flex-shrink-0" style="min-width:120px">
+            <li class="nav-item"><a class="nav-link" :class="{active: t6==='home'}" @click="t6='home'" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" :class="{active: t6==='profile'}" @click="t6='profile'" href="#">Profile</a></li>
+            <li class="nav-item"><a class="nav-link" :class="{active: t6==='settings'}" @click="t6='settings'" href="#">Settings</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block mt-3">
+        <div class="code-bar"><span class="code-badge">HTML</span>
+          <button class="copy-btn" @click="copy('t6', codes.verticalRight)"><i class="bi bi-clipboard me-1"></i>{{ copied==='t6'?'Copied!':'Copy' }}</button>
+        </div>
+        <pre class="code-body"><code>{{ codes.verticalRight }}</code></pre>
+      </div>
+    </div>
+
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import PageFooter from '../../components/layout/Footer.vue'
 
-// State management for each tab group
-const tab1 = ref('home');
-const tab2 = ref('home');
-const tab3 = ref('home');
-const tab4 = ref('home');
-const tab5 = ref('home');
-const tab6 = ref('home');
+const t1 = ref('home'), t2 = ref('home'), t3 = ref('home')
+const t4 = ref('home'), t5 = ref('home'), t6 = ref('home')
+const copied = ref('')
+const dummy = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 
-const dummyText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+function copy(id, text) {
+  navigator.clipboard.writeText(text).catch(() => {})
+  copied.value = id
+  setTimeout(() => { copied.value = '' }, 2000)
+}
+
+const codes = {
+  tabs: `<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#home">Home</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">Profile</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link disabled" disabled>Disabled</button>
+  </li>
+</ul>
+<div class="tab-content mt-3">
+  <div class="tab-pane fade show active" id="home">Home content...</div>
+  <div class="tab-pane fade" id="profile">Profile content...</div>
+</div>`,
+
+  tabsJustified: `<ul class="nav nav-tabs nav-justified" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#home">Home</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">Profile</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#messages">Messages</button>
+  </li>
+</ul>`,
+
+  pills: `<ul class="nav nav-pills" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#home">Home</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#profile">Profile</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link disabled" disabled>Disabled</button>
+  </li>
+</ul>`,
+
+  pillsJustified: `<ul class="nav nav-pills nav-justified" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#home">Home</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#profile">Profile</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#messages">Messages</button>
+  </li>
+</ul>`,
+
+  vertical: `<div class="d-flex gap-3">
+  <ul class="nav nav-pills flex-column flex-shrink-0">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-home">Home</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-profile">Profile</button>
+    </li>
+  </ul>
+  <div class="tab-content flex-grow-1">
+    <div class="tab-pane fade show active" id="v-home">Home content...</div>
+    <div class="tab-pane fade" id="v-profile">Profile content...</div>
+  </div>
+</div>`,
+
+  verticalRight: `<div class="d-flex gap-3">
+  <div class="tab-content flex-grow-1">
+    <div class="tab-pane fade show active" id="vr-home">Home content...</div>
+    <div class="tab-pane fade" id="vr-profile">Profile content...</div>
+  </div>
+  <ul class="nav nav-pills flex-column flex-shrink-0">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#vr-home">Home</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="pill" data-bs-target="#vr-profile">Profile</button>
+    </li>
+  </ul>
+</div>`,
+}
 </script>
 
 <style scoped>
-/* Minor stylistic alignments with the design */
-.page-bg {
-  background-color: #f3f3f9;
-  min-height: 100vh;
+.page-wrapper { padding: 24px; }
+.page-header { margin-bottom: 24px; }
+.page-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px; }
+.page-subtitle { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
+
+.demo-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--card-shadow);
 }
-.cursor-pointer {
-  cursor: pointer;
+.demo-title { font-size: 0.88rem; font-weight: 700; color: var(--text-primary); margin: 0 0 6px; }
+.demo-desc { font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 14px; line-height: 1.6; }
+.demo-desc code { background: rgba(253,126,20,0.1); color: var(--accent); padding: 1px 5px; border-radius: 3px; font-size: 0.78rem; }
+
+.demo-box {
+  background: var(--app-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 20px;
 }
-.nav-pills .nav-link.active {
-  background-color: #f06548; /* Matches the orange theme from the image */
+.tab-content-text {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
-.nav-tabs .nav-link.active {
-  color: #f06548;
-  border-bottom: 2px solid #f06548;
+
+/* Override Bootstrap active color to Larkon orange */
+:deep(.nav-pills .nav-link.active) {
+  background-color: var(--accent) !important;
+  color: #fff !important;
 }
-.nav-tabs .nav-link {
-  color: #495057;
+:deep(.nav-tabs .nav-link.active) {
+  color: var(--accent) !important;
+  border-bottom: 2px solid var(--accent) !important;
+  background: transparent !important;
+}
+:deep(.nav-tabs .nav-link) {
+  color: var(--text-secondary);
   border: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
 }
-.code-block {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ebec;
-  border-radius: 0.25rem;
+:deep(.nav-tabs .nav-link:hover) { color: var(--accent); }
+:deep(.nav-tabs) { border-bottom-color: var(--card-border); }
+:deep(.nav-pills .nav-link) { color: var(--text-secondary); }
+:deep(.nav-pills .nav-link:hover) { color: var(--accent); background: var(--app-bg); }
+
+.code-block { border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; }
+.code-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px;
+  background: var(--app-bg);
+  border-bottom: 1px solid var(--card-border);
 }
-.code-block pre {
-  font-size: 0.875rem;
+.code-badge {
+  background: var(--accent); color: #fff;
+  font-size: 0.67rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px;
 }
+.copy-btn {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 5px; font-size: 0.73rem; padding: 3px 10px;
+  color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+.code-body {
+  background: var(--app-bg); margin: 0; padding: 12px 16px;
+  font-size: 0.73rem; color: var(--text-secondary);
+  line-height: 1.7; overflow-x: auto; max-height: 200px;
+  font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 576px) { .page-wrapper { padding: 16px; } }
 </style>

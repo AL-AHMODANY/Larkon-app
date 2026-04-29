@@ -133,10 +133,12 @@
         </div>
       </TransitionGroup>
     </div>
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref, reactive } from 'vue'
 
 // --- Toast State ---
@@ -463,5 +465,11 @@ const copyCode = async (section) => {
     right: 20px;
     transform: none;
   }
+}
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .code-preview pre {
+  background: var(--app-bg) !important;
+  color: #c9d1d9 !important;
 }
 </style>

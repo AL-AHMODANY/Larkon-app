@@ -99,22 +99,22 @@
         <div class="card__body sessions-body">
           <div class="world-map">
             <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" class="map-svg">
-              <ellipse cx="120" cy="120" rx="80" ry="55" fill="#e8edf5"/>
-              <ellipse cx="180" cy="100" rx="120" ry="70" fill="#e8edf5"/>
-              <ellipse cx="310" cy="100" rx="100" ry="60" fill="#e8edf5"/>
-              <ellipse cx="310" cy="185" rx="65"  ry="50" fill="#e8edf5"/>
-              <ellipse cx="480" cy="120" rx="70"  ry="50" fill="#e8edf5"/>
-              <ellipse cx="490" cy="195" rx="30"  ry="40" fill="#e8edf5"/>
-              <ellipse cx="160" cy="200" rx="28"  ry="45" fill="#e8edf5"/>
+              <ellipse cx="120" cy="120" rx="80" ry="55" :fill="isDark ? 'rgba(255,255,255,0.08)' : '#e8edf5'"/>
+              <ellipse cx="180" cy="100" rx="120" ry="70" :fill="isDark ? 'rgba(255,255,255,0.08)' : '#e8edf5'"/>
+              <ellipse cx="310" cy="100" rx="100" ry="60" :fill="isDark ? 'rgba(255,255,255,0.08)' : '#e8edf5'"/>
+              <ellipse cx="310" cy="185" rx="65"  ry="50" :fill="isDark ? 'rgba(255,255,255,0.08)' : '#e8edf5'"/>
+              <ellipse cx="480" cy="120" rx="70"  ry="50" :fill="isDark ? 'rgba(255,255,255,0.08)' : '#e8edf5'"/>
+              <ellipse cx="490" cy="195" rx="30"  ry="40" :fill="isDark ? 'rgba(255,255,255,0.08)' : '#e8edf5'"/>
+              <ellipse cx="160" cy="200" rx="28"  ry="45" :fill="isDark ? 'rgba(255,255,255,0.08)' : '#e8edf5'"/>
               <circle cx="148" cy="105" r="6" fill="#fd7e14" opacity="0.85"/>
               <circle cx="180" cy="100" r="6" fill="#fd7e14" opacity="0.85"/>
               <circle cx="210" cy="120" r="5" fill="#fd7e14" opacity="0.7"/>
               <circle cx="420" cy="125" r="6" fill="#fd7e14" opacity="0.85"/>
-              <text x="128" y="92"  font-size="9" fill="#6c757d">Canada</text>
-              <text x="158" y="108" font-size="9" fill="#6c757d">United States</text>
-              <text x="182" y="134" font-size="9" fill="#6c757d">Brazil</text>
-              <text x="390" y="112" font-size="9" fill="#6c757d">Russia</text>
-              <text x="415" y="130" font-size="9" fill="#6c757d">China</text>
+              <text x="128" y="92"  font-size="9" :fill="isDark ? '#7a8fa8' : '#6c757d'">Canada</text>
+              <text x="158" y="108" font-size="9" :fill="isDark ? '#7a8fa8' : '#6c757d'">United States</text>
+              <text x="182" y="134" font-size="9" :fill="isDark ? '#7a8fa8' : '#6c757d'">Brazil</text>
+              <text x="390" y="112" font-size="9" :fill="isDark ? '#7a8fa8' : '#6c757d'">Russia</text>
+              <text x="415" y="130" font-size="9" :fill="isDark ? '#7a8fa8' : '#6c757d'">China</text>
             </svg>
           </div>
           <div class="sessions-stats">
@@ -266,7 +266,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+
+import { ref, computed, onMounted, watch } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import {
   ExclamationTriangleIcon,
@@ -285,6 +286,17 @@ import {
 } from "@heroicons/vue/24/outline";
 
 const apexchart = VueApexCharts;
+
+// ── Theme reactivity ────────────────────────────────────
+const isDark = ref(false);
+const updateTheme = () => {
+  isDark.value = document.documentElement.getAttribute("data-theme") === "dark";
+};
+onMounted(() => {
+  updateTheme();
+  const observer = new MutationObserver(updateTheme);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+});
 
 // ── Stat cards ──────────────────────────────────────────
 const stats = ref([
@@ -364,16 +376,16 @@ const perfChartOptions = computed(() => ({
     categories: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
     axisBorder: { show: false },
     axisTicks:  { show: false },
-    labels: { style: { colors: "#8996af", fontSize: "12px" } },
+    labels: { style: { colors: isDark.value ? "#7a8fa8" : "#8996af", fontSize: "12px" } },
   },
   yaxis: {
     min: 0,
     max: 80,
     tickAmount: 8,
-    labels: { style: { colors: "#8996af", fontSize: "12px" } },
+    labels: { style: { colors: isDark.value ? "#7a8fa8" : "#8996af", fontSize: "12px" } },
   },
   grid: {
-    borderColor: "rgba(137,150,175,0.12)",
+    borderColor: isDark.value ? "rgba(255,255,255,0.08)" : "rgba(137,150,175,0.12)",
     strokeDashArray: 4,
     xaxis: { lines: { show: false } },
   },
@@ -381,13 +393,13 @@ const perfChartOptions = computed(() => ({
     position: "bottom",
     horizontalAlign: "center",
     markers: { radius: 50, width: 10, height: 10 },
-    labels: { colors: "#8996af" },
+    labels: { colors: isDark.value ? "#7a8fa8" : "#8996af" },
   },
-  tooltip: { theme: "light" },
+  tooltip: { theme: isDark.value ? "dark" : "light" },
 }));
 
 // ── Radial chart ────────────────────────────────────────
-const radialOptions = ref({
+const radialOptions = computed(() => ({
   chart: { background: "transparent", toolbar: { show: false } },
   plotOptions: {
     radialBar: {
@@ -399,12 +411,12 @@ const radialOptions = ref({
         value: {
           fontSize: "26px",
           fontWeight: 700,
-          color: "#313a46",
+          color: isDark.value ? "#e2e8f4" : "#313a46",
           offsetY: 8,
           formatter: (v) => v + "%",
         },
       },
-      track: { background: "#eef2f7", strokeWidth: "100%" },
+      track: { background: isDark.value ? "rgba(255,255,255,0.08)" : "#eef2f7", strokeWidth: "100%" },
     },
   },
   fill: {
@@ -419,7 +431,7 @@ const radialOptions = ref({
   colors: ["#ff9b44"],
   stroke: { lineCap: "round" },
   labels: ["Returning Customer"],
-});
+}));
 
 // ── Top pages ───────────────────────────────────────────
 const topPages = ref([

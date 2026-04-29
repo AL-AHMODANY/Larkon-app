@@ -196,13 +196,13 @@
 <span class="tag">&lt;/div&gt;</span></pre>
         </div>
       </div>
-
-      <div class="page-footer">2024 &copy; Larkon. Crafted by <a href="#">Techzaa</a></div>
     </div>
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref } from 'vue'
 
 const activeSection = ref('default')
@@ -245,8 +245,8 @@ function copyCode(event) {
   text-decoration: none;
   transition: color 0.15s;
 }
-.right-nav a:hover { color: var(--brand-primary); }
-.right-nav a.active { color: var(--brand-primary); font-weight: 600; }
+.right-nav a:hover { color: var(--accent); }
+.right-nav a.active { color: var(--accent); font-weight: 600; }
 
 .main-content {
   padding: 28px 32px 60px 32px;
@@ -264,54 +264,61 @@ function copyCode(event) {
 .doc-section p.desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
 
 .demo-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 2px;
 }
 
 .code-box {
-  background: #1e2139;
-  border-radius: 0 0 8px 8px;
-  border: 1px solid #2d3254;
-  border-top: none;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
 }
 .code-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px 14px;
-  border-bottom: 1px solid #2d3254;
+  background: var(--app-bg);
+  border-bottom: 1px solid var(--card-border);
 }
-.code-lang { color: #a5b4fc; font-size: 11px; font-weight: 600; }
+.code-lang {
+  background: var(--accent); color: #fff;
+  font-size: 0.67rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px; letter-spacing: 0.4px;
+}
 .copy-btn {
-  background: transparent;
-  border: 1px solid #3a3f5c;
-  color: #a5b4fc;
-  font-size: 11px;
-  padding: 2px 10px;
-  border-radius: 4px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 5px;
+  font-size: 0.73rem;
+  padding: 3px 10px;
+  color: var(--text-muted);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.15s;
 }
-.copy-btn:hover { background: #2d3254; }
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
 pre {
   margin: 0;
-  padding: 14px;
+  padding: 12px 16px;
   overflow-x: auto;
-  font-size: 12px;
-  line-height: 1.65;
-  color: #c5cae9;
+  font-size: 0.73rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  background: var(--app-bg);
+  max-height: 200px;
+  font-family: 'Courier New', monospace;
 }
-pre :deep(.tag)  { color: #f472b6; }
-pre :deep(.attr) { color: #fbbf24; }
-pre :deep(.val)  { color: #86efac; }
+pre :deep(.tag)  { color: #e06c75; }
+pre :deep(.attr) { color: #d19a66; }
+pre :deep(.val)  { color: #98c379; }
 
 .progress {
   background: var(--bg-hover);
 }
 
 .page-footer { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 40px; }
-.page-footer a { color: var(--brand-primary); text-decoration: none; }
+.page-footer a { color: var(--accent); text-decoration: none; }
 </style>

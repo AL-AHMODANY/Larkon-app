@@ -333,10 +333,13 @@
       </aside>
 
     </div><!-- /content-layout -->
+    <PageFooter />
   </div>
 </template>
 
 <script>
+// footer
+import PageFooter from '../../components/layout/Footer.vue'
 export default {
   name: 'DropdownPage',
   data() {
@@ -569,4 +572,17 @@ export default {
   .content-layout { flex-direction: column; }
   .main-content { max-width: 100%; }
 }
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .code-block {
+  background: var(--app-bg) !important;
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-header {
+  background: var(--card-bg) !important;
+  border-bottom-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .code-block pre { color: #c9d1d9 !important; }
+:global([data-theme="dark"]) .section-title  { color: var(--text-primary) !important; }
 </style>

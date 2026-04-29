@@ -1,5 +1,5 @@
 <template>
-  <div class="py-4 px-3 px-md-4 bg-light" style="min-height: 100vh;">
+  <div class="page-wrapper-adv" style="min-height: 100vh;">
     <div class="container-fluid">
 
       <!-- Page Title -->
@@ -87,10 +87,12 @@
       </div>
 
     </div>
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref, onMounted, nextTick } from 'vue'
 import SimpleBar from 'simplebar'
 import 'simplebar/dist/simplebar.min.css'
@@ -250,6 +252,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.page-wrapper-adv { padding: 1.5rem 1rem; min-height: 100vh; background: var(--bg-body); color: var(--text-primary); }
 .toc-link {
   color: #495057;
   border-left: 2px solid transparent;
@@ -275,5 +278,11 @@ onMounted(async () => {
 :deep(.primary-scrollbar .simplebar-scrollbar::before) {
   background: #4a6cf7 !important;
   opacity: 1 !important;
+}
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .border.rounded-2.bg-white {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="py-4 px-3 px-md-4 bg-light" style="min-height: 100vh;">
+  <div class="page-wrapper-adv" style="min-height: 100vh;">
     <div class="container-fluid">
 
       <!-- Page Title -->
@@ -135,10 +135,12 @@
       </div>
 
     </div>
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref, reactive, onMounted } from 'vue'
 
 const activeId = ref('section-basic')
@@ -317,6 +319,7 @@ function scrollToSection(id) {
 </script>
 
 <style scoped>
+.page-wrapper-adv { padding: 1.5rem 1rem; min-height: 100vh; background: var(--bg-body); color: var(--text-primary); }
 /* Stars */
 .star-icon.filled {
   color: #f5a623;
@@ -364,5 +367,13 @@ function scrollToSection(id) {
 }
 .tab-inactive:hover {
   background: #e9ecef !important;
+}
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .tab-inactive {
+  color: var(--text-secondary) !important;
+}
+:global([data-theme="dark"]) .tab-inactive:hover {
+  background: var(--app-bg) !important;
 }
 </style>

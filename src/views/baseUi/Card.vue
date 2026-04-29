@@ -24,7 +24,7 @@
         </div>
 
         <!-- Code preview -->
-        <div class="code-preview p-3 bg-white shadow-sm rounded">
+        <div class="code-block">
           <div class="d-flex justify-content-between align-items-start mb-2">
             <strong>HTML</strong>
             <button
@@ -35,7 +35,7 @@
               <span v-else class="text-success">Copied!</span>
             </button>
           </div>
-          <pre class="mb-0"><code>{{ codeSnippets.basic }}</code></pre>
+          <pre class="code-body"><code>{{ codeSnippets.basic }}</code></pre>
         </div>
       </section>
 
@@ -117,7 +117,7 @@
         </div>
 
         <!-- Code preview -->
-        <div class="code-preview p-3 bg-white shadow-sm rounded">
+        <div class="code-block">
           <div class="d-flex justify-content-between align-items-start mb-2">
             <strong>HTML</strong>
             <button
@@ -128,7 +128,7 @@
               <span v-else class="text-success">Copied!</span>
             </button>
           </div>
-          <pre class="mb-0"><code>{{ codeSnippets.advanced }}</code></pre>
+          <pre class="code-body"><code>{{ codeSnippets.advanced }}</code></pre>
         </div>
       </section>
 
@@ -154,7 +154,7 @@
         </div>
 
         <!-- Code preview -->
-        <div class="code-preview p-3 bg-white shadow-sm rounded">
+        <div class="code-block">
           <div class="d-flex justify-content-between align-items-start mb-2">
             <strong>HTML</strong>
             <button
@@ -165,7 +165,7 @@
               <span v-else class="text-success">Copied!</span>
             </button>
           </div>
-          <pre class="mb-0"><code>{{ codeSnippets.colored }}</code></pre>
+          <pre class="code-body"><code>{{ codeSnippets.colored }}</code></pre>
         </div>
       </section>
 
@@ -198,7 +198,7 @@
         </div>
 
         <!-- Code preview -->
-        <div class="code-preview p-3 bg-white shadow-sm rounded">
+        <div class="code-block">
           <div class="d-flex justify-content-between align-items-start mb-2">
             <strong>HTML</strong>
             <button
@@ -209,7 +209,7 @@
               <span v-else class="text-success">Copied!</span>
             </button>
           </div>
-          <pre class="mb-0"><code>{{ codeSnippets.horizontal }}</code></pre>
+          <pre class="code-body"><code>{{ codeSnippets.horizontal }}</code></pre>
         </div>
       </section>
 
@@ -249,7 +249,7 @@
         </div>
 
         <!-- Code preview -->
-        <div class="code-preview mt-3 p-3 bg-white shadow-sm rounded">
+        <div class="code-block mt-3">
           <div class="d-flex justify-content-between align-items-start mb-2">
             <strong>HTML</strong>
             <button
@@ -260,7 +260,7 @@
               <span v-else class="text-success">Copied!</span>
             </button>
           </div>
-          <pre class="mb-0"><code>{{ codeSnippets.group }}</code></pre>
+          <pre class="code-body"><code>{{ codeSnippets.group }}</code></pre>
         </div>
       </section>
 
@@ -282,7 +282,7 @@
         </div>
 
         <!-- Code preview -->
-        <div class="code-preview p-3 bg-white shadow-sm rounded">
+        <div class="code-block">
           <div class="d-flex justify-content-between align-items-start mb-2">
             <strong>HTML</strong>
             <button
@@ -293,14 +293,17 @@
               <span v-else class="text-success">Copied!</span>
             </button>
           </div>
-          <pre class="mb-0"><code>{{ codeSnippets.imageOnly }}</code></pre>
+          <pre class="code-body"><code>{{ codeSnippets.imageOnly }}</code></pre>
         </div>
       </section>
     </div>
+    <PageFooter />
   </div>
 </template>
 
 <script>
+// footer
+import PageFooter from '../../components/layout/Footer.vue'
 /**
  * Cards.vue
  * Vue 3 Composition API
@@ -567,4 +570,15 @@ export default {
     height: 160px;
   }
 }
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .cards-page {
+  background: var(--bg-body) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .code-preview {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-preview pre { background: var(--app-bg) !important; color: #c9d1d9 !important; }
 </style>

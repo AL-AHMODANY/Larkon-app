@@ -158,10 +158,12 @@
       </div>
 
     </div><!-- /row -->
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref } from 'vue'
 
 const pageLinks = [
@@ -369,4 +371,22 @@ nav[style*="bs-breadcrumb-divider"] .breadcrumb-item + .breadcrumb-item::before 
 @media (max-width: 480px) {
   .breadcrumb   { font-size: 0.82rem; }
 }
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .card {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .btn-copy {
+  background: var(--app-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+:global([data-theme="dark"]) .btn-copy:hover { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .section-title,
+:global([data-theme="dark"]) .page-title { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .breadcrumb-item,
+:global([data-theme="dark"]) .breadcrumb-item a { color: var(--text-secondary) !important; }
+:global([data-theme="dark"]) .breadcrumb-item.active { color: var(--text-primary) !important; }
 </style>

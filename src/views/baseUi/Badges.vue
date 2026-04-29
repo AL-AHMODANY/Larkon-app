@@ -101,9 +101,15 @@
                 {{ copied === 'outline' ? 'Copied!' : 'Copy' }}
               </button>
             </div>
-            <pre class="code-pre"><code><span class="cc">&lt;!-- Outline Badges --&gt;</span>
-<span v-for="b in badgeColors.slice(0,8)" :key="b.cls"><span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge badge-outline-{{ b.cls }} me-1"</span><span class="ct">&gt;</span>{{ b.label }}<span class="ct">&lt;/span&gt;</span>
-</span></code></pre>
+            <pre class="code-pre"><code><span class="cc">&lt;!-- Bootstrap 5 text-bg-* subtle variants --&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge text-bg-primary me-1"</span><span class="ct">&gt;</span>Primary<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge text-bg-secondary me-1"</span><span class="ct">&gt;</span>Secondary<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge text-bg-success me-1"</span><span class="ct">&gt;</span>Success<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge text-bg-danger me-1"</span><span class="ct">&gt;</span>Danger<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge text-bg-warning me-1"</span><span class="ct">&gt;</span>Warning<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge text-bg-info me-1"</span><span class="ct">&gt;</span>Info<span class="ct">&lt;/span&gt;</span>
+<span class="cc">&lt;!-- Pill variant --&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge rounded-pill text-bg-primary me-1"</span><span class="ct">&gt;</span>Primary<span class="ct">&lt;/span&gt;</span></code></pre>
           </div>
         </section>
 
@@ -130,9 +136,13 @@
                 {{ copied === 'soft' ? 'Copied!' : 'Copy' }}
               </button>
             </div>
-            <pre class="code-pre"><code><span class="cc">&lt;!-- Soft Badges --&gt;</span>
-<span v-for="b in badgeColors.slice(0,8)" :key="b.cls"><span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge badge-soft-{{ b.cls }} me-1"</span><span class="ct">&gt;</span>{{ b.label }}<span class="ct">&lt;/span&gt;</span>
-</span></code></pre>
+            <pre class="code-pre"><code><span class="cc">&lt;!-- Bootstrap 5 bg-opacity for soft look --&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge bg-primary bg-opacity-10 text-primary me-1"</span><span class="ct">&gt;</span>Primary<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge bg-success bg-opacity-10 text-success me-1"</span><span class="ct">&gt;</span>Success<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge bg-danger bg-opacity-10 text-danger me-1"</span><span class="ct">&gt;</span>Danger<span class="ct">&lt;/span&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge bg-warning bg-opacity-10 text-warning me-1"</span><span class="ct">&gt;</span>Warning<span class="ct">&lt;/span&gt;</span>
+<span class="cc">&lt;!-- Pill variant --&gt;</span>
+<span class="ct">&lt;span</span> <span class="ca">class</span>=<span class="cv">"badge rounded-pill bg-primary bg-opacity-10 text-primary me-1"</span><span class="ct">&gt;</span>Primary<span class="ct">&lt;/span&gt;</span></code></pre>
           </div>
         </section>
 
@@ -213,10 +223,12 @@
       </aside>
 
     </div><!-- /page-layout -->
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 // ─── TOC ─────────────────────────────────────────────────────────
@@ -261,11 +273,11 @@ const badgeColors = [
 // ─── Copy ─────────────────────────────────────────────────────────
 const copied = ref(null)
 const codeTexts = {
-  heading:  `<h1>h1.Example heading <span class="badge bg-primary">New</span></h1>\n<h2>h2.Example heading <span class="badge bg-secondary">New</span></h2>\n<h3>h3.Example heading <span class="badge bg-success">New</span></h3>\n<h4>h4.Example heading <span class="badge bg-info">New</span></h4>\n<h5>h5.Example heading <span class="badge bg-warning">New</span></h5>\n<h6>h6.Example heading <span class="badge bg-danger">New</span></h6>`,
-  default:  `<span class="badge bg-primary rounded-pill me-1">Primary</span>\n<span class="badge bg-secondary rounded-pill me-1">Secondary</span>\n<span class="badge bg-success rounded-pill me-1">Success</span>\n<span class="badge bg-info rounded-pill me-1">Info</span>\n<span class="badge bg-warning rounded-pill me-1">Warning</span>\n<span class="badge bg-danger rounded-pill me-1">Danger</span>`,
-  outline:  `<!-- Outline Badges -->\n<span class="badge badge-outline-primary me-1">Primary</span>\n<span class="badge badge-outline-secondary me-1">Secondary</span>`,
-  soft:     `<!-- Soft Badges -->\n<span class="badge badge-soft-primary me-1">Primary</span>\n<span class="badge badge-soft-secondary me-1">Secondary</span>`,
-  buttons:  `<button type="button" class="btn btn-primary me-1">\n  Notifications <span class="badge bg-danger ms-1">4</span>\n</button>`,
+  heading:  `<h1>h1.Example heading <span class="badge bg-primary">New</span></h1>\n<h2>h2.Example heading <span class="badge bg-secondary">New</span></h2>\n<h3>h3.Example heading <span class="badge bg-success">New</span></h3>\n<h4>h4.Example heading <span class="badge bg-info">New</span></h4>\n<h5>h5.Example heading <span class="badge bg-warning text-dark">New</span></h5>\n<h6>h6.Example heading <span class="badge bg-danger">New</span></h6>`,
+  default:  `<!-- Default badges -->\n<span class="badge bg-primary me-1">Primary</span>\n<span class="badge bg-secondary me-1">Secondary</span>\n<span class="badge bg-success me-1">Success</span>\n<span class="badge bg-info me-1">Info</span>\n<span class="badge bg-warning text-dark me-1">Warning</span>\n<span class="badge bg-danger me-1">Danger</span>\n\n<!-- Pill badges -->\n<span class="badge rounded-pill bg-primary me-1">Primary</span>\n<span class="badge rounded-pill bg-secondary me-1">Secondary</span>\n<span class="badge rounded-pill bg-success me-1">Success</span>`,
+  outline:  `<!-- Outline badges require custom CSS or a utility library -->\n<!-- Bootstrap 5 does not include outline badge variants natively -->\n<span class="badge bg-primary me-1">Primary</span>\n<span class="badge bg-secondary me-1">Secondary</span>`,
+  soft:     `<!-- Soft/subtle badges using Bootstrap 5 text-bg-* utilities -->\n<span class="badge text-bg-primary me-1">Primary</span>\n<span class="badge text-bg-secondary me-1">Secondary</span>\n<span class="badge text-bg-success me-1">Success</span>\n<span class="badge text-bg-danger me-1">Danger</span>\n<span class="badge text-bg-warning me-1">Warning</span>\n<span class="badge text-bg-info me-1">Info</span>`,
+  buttons:  `<button type="button" class="btn btn-primary me-1">\n  Notifications <span class="badge bg-danger ms-1">4</span>\n</button>\n<button type="button" class="btn btn-outline-primary me-1">\n  Notifications <span class="badge bg-primary ms-1">new</span>\n</button>\n<button type="button" class="btn btn-secondary me-1">\n  Notifications <span class="badge bg-light text-dark ms-1">11</span>\n</button>\n\n<!-- Positioned badge -->\n<button type="button" class="btn btn-primary position-relative">\n  Inbox\n  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">\n    99+\n    <span class="visually-hidden">unread messages</span>\n  </span>\n</button>`,
 }
 const copy = (key) => {
   navigator.clipboard.writeText(codeTexts[key] || '').then(() => {
@@ -598,4 +610,27 @@ onUnmounted(() => {
 .badge-page .ca  { color: #ff7b72; }  /* attribute */
 .badge-page .cv  { color: #a5d6a7; }  /* value */
 .badge-page .cc  { color: #8b949e; font-style: italic; } /* comment */
+
+/* ── Dark mode overrides for Badges page ── */
+[data-theme="dark"] .badge-page {
+  background: var(--bg-body) !important;
+  color: var(--text-primary) !important;
+}
+[data-theme="dark"] .badge-page .demo-section {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+[data-theme="dark"] .badge-page .toc-link { color: var(--text-secondary) !important; }
+[data-theme="dark"] .badge-page .toc-link:hover,
+[data-theme="dark"] .badge-page .toc-link.active {
+  background: var(--accent-muted) !important;
+  color: var(--accent) !important;
+  border-left-color: var(--accent) !important;
+}
+[data-theme="dark"] .badge-page .hd { color: var(--text-primary) !important; }
+[data-theme="dark"] .badge-page .ic { background: var(--app-bg) !important; }
+[data-theme="dark"] .badge-page .bbtn-ghost { border-color: var(--border-color) !important; color: var(--text-secondary) !important; }
+[data-theme="dark"] .badge-page .bbtn-ghost:hover { background: var(--app-bg) !important; }
+[data-theme="dark"] .badge-page .bbtn-outline-primary:hover { background: var(--accent-muted) !important; }
 </style>

@@ -322,12 +322,16 @@
     </aside>
 
     </div><!-- /content-layout -->
+    <PageFooter />
   </div>
 </template>
 
 <script>
+// footer
+import Footer from '../../components/layout/Footer.vue'
 export default {
   name: 'CarouselPage',
+  components: { PageFooter: Footer },
   data() {
     return {
       activeSection: 'slides-only',
@@ -576,4 +580,17 @@ export default {
 .text-primary {
   color: #0d6efd !important;
 }
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .code-block {
+  background: var(--app-bg) !important;
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-header {
+  background: var(--card-bg) !important;
+  border-bottom-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .code-block pre { color: #c9d1d9 !important; }
+:global([data-theme="dark"]) .bg-primary-subtle { background-color: rgba(13,110,253,0.15) !important; }
 </style>

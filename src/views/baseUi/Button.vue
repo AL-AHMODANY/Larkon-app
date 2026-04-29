@@ -428,10 +428,12 @@
         </aside>
       </div>
     </div>
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import BaseButton from "../../components/BaseButton.vue";
 

@@ -211,10 +211,12 @@
       </div>
 
     </div><!-- /row -->
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 // ── Page right-nav links
@@ -511,4 +513,21 @@ code {
   .col-lg-9, .col-lg-3 { flex: 0 0 100%; max-width: 100%; }
   .d-none.d-lg-block { display: none !important; }
 }
+
+/* -- Dark mode -- */
+:global([data-theme="dark"]) .page-content { background: var(--bg-body) !important; }
+:global([data-theme="dark"]) .page-title   { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .card         { background: var(--card-bg) !important; border-color: var(--card-border) !important; }
+:global([data-theme="dark"]) .card-body    { background: var(--card-bg) !important; color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .card-title   { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .text-muted   { color: var(--text-muted) !important; }
+:global([data-theme="dark"]) code          { background: var(--accent-muted) !important; color: var(--accent) !important; }
+:global([data-theme="dark"]) .code-block   { border-color: var(--border-color) !important; }
+:global([data-theme="dark"]) .code-header  { background: var(--app-bg) !important; border-bottom-color: var(--border-color) !important; color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .btn-copy     { background: var(--card-bg) !important; border-color: var(--border-color) !important; color: var(--text-secondary) !important; }
+:global([data-theme="dark"]) .btn-copy:hover { background: var(--accent-muted) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+:global([data-theme="dark"]) .code-pre     { background: var(--app-bg) !important; color: #c9d1d9 !important; }
+:global([data-theme="dark"]) .page-nav-link { color: var(--text-secondary) !important; }
+:global([data-theme="dark"]) .page-nav-link:hover,
+:global([data-theme="dark"]) .page-nav-link.active { color: var(--accent) !important; background: var(--accent-muted) !important; }
 </style>

@@ -154,10 +154,13 @@
       </aside>
 
     </div><!-- /content-layout -->
+    <PageFooter />
   </div>
 </template>
 
 <script>
+// footer
+import PageFooter from '../../components/layout/Footer.vue'
 export default {
   name: 'CollapsePage',
   data() {
@@ -382,4 +385,8 @@ export default {
     max-width: 100%;
   }
 }
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .collapse-code,
+:global([data-theme="dark"]) .carousel-code { color: #c9d1d9 !important; }
 </style>

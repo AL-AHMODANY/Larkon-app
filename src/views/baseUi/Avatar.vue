@@ -125,10 +125,12 @@
       </div>
 
     </div><!-- /row -->
+    <PageFooter />
   </div>
 </template>
 
 <script setup>
+import PageFooter from '../../components/layout/Footer.vue'
 import { ref } from 'vue'
 
 const pageLinks = [
@@ -385,4 +387,22 @@ code {
   .avatar-showcase { gap: 12px; }
   .shape-landscape { width: 120px; height: 80px; }
 }
+
+/* ── Dark mode overrides ── */
+:global([data-theme="dark"]) .card {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+:global([data-theme="dark"]) .btn-copy {
+  background: var(--app-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+:global([data-theme="dark"]) .btn-copy:hover { color: var(--text-primary) !important; }
+:global([data-theme="dark"]) .img-thumbnail {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .section-title { color: var(--text-primary) !important; }
 </style>

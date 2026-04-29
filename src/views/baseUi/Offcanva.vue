@@ -1,13 +1,7 @@
 <template>
-  <div class="offcanvas-page" :class="{ dark: isDark }">
+  <div class="offcanvas-page">
 
-    <!-- Theme Toggle -->
-    <div class="theme-toggle-bar">
-      <span class="theme-label">{{ isDark ? '🌙 Dark Mode' : '☀️ Light Mode' }}</span>
-      <button class="theme-btn" @click="isDark = !isDark">
-        {{ isDark ? 'Switch to Light' : 'Switch to Dark' }}
-      </button>
-    </div>
+  <!-- Theme Toggle removed — uses global theme from settings -->
 
     <div class="container py-5">
 
@@ -182,16 +176,18 @@
       </div>
       <div class="offcanvas-body">Slides in from the <strong>bottom</strong>.</div>
     </div>
+    <PageFooter />
 
   </div>
 </template>
 
 <script>
+// footer
+import PageFooter from '../../components/layout/Footer.vue'
 export default {
   name: 'OffcanvasPage',
   data() {
     return {
-      isDark: false,
       copied: null
     }
   },
@@ -210,192 +206,62 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+/* ── Offcanvas page uses global theme vars ── */
+.offcanvas-page { padding: 0; min-height: 100vh; background: var(--bg-body); color: var(--text-primary); }
 
-/* ── Light mode defaults ── */
-.offcanvas-page {
-  --bg:               #f4f6f9;
-  --surface:          #ffffff;
-  --border:           #e2e8f0;
-  --text:             #1a202c;
-  --text-muted:       #64748b;
-  --list-text:        #374151;
-  --code-bg:          #1e2030;
-  --code-header-bg:   #252840;
-  --code-border:      #3b3f52;
-  --code-text:        #c0caf5;
-  --inline-code-bg:   #eef2ff;
-  --inline-code-text: #e11d48;
-  --copy-bg:          #3b3f52;
-  --copy-text:        #a9b1d6;
-  --copy-hover:       #515572;
-  --toggle-bg:        #6366f1;
-  --toggle-text:      #ffffff;
-
-  font-family: 'DM Sans', sans-serif;
-  background-color: var(--bg);
-  min-height: 100vh;
-  color: var(--text);
-  transition: background-color 0.3s, color 0.3s;
-}
-
-/* ── Dark mode overrides ── */
-.offcanvas-page.dark {
-  --bg:               #0f1117;
-  --surface:          #1a1d27;
-  --border:           #2d3148;
-  --text:             #e2e8f0;
-  --text-muted:       #8892b0;
-  --list-text:        #a0aec0;
-  --code-bg:          #13141f;
-  --code-header-bg:   #1e2030;
-  --code-border:      #2d3148;
-  --code-text:        #c0caf5;
-  --inline-code-bg:   #1e2030;
-  --inline-code-text: #ff79c6;
-  --copy-bg:          #2d3148;
-  --copy-text:        #a9b1d6;
-  --copy-hover:       #3b3f52;
-  --toggle-bg:        #7c3aed;
-}
-
-/* ── Theme bar ── */
-.theme-toggle-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 0.65rem 1.5rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  transition: background 0.3s, border-color 0.3s;
-}
-.theme-label {
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-.theme-btn {
-  background: var(--toggle-bg);
-  color: var(--toggle-text);
-  border: none;
-  border-radius: 6px;
-  padding: 0.32rem 0.85rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: opacity 0.2s;
-}
-.theme-btn:hover { opacity: 0.82; }
-
-/* ── Sections ── */
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  color: var(--text);
-  transition: color 0.3s;
-}
-.section-desc {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  margin-bottom: 0.85rem;
-  line-height: 1.6;
-  transition: color 0.3s;
-}
-.position-list {
-  list-style: disc;
-  padding-left: 1.25rem;
-  font-size: 0.87rem;
-  color: var(--list-text);
-  transition: color 0.3s;
-}
+.section-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary); }
+.section-desc  { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.6; }
+.position-list { list-style: disc; padding-left: 1.25rem; font-size: 0.87rem; color: var(--text-secondary); }
 .position-list li { margin-bottom: 0.3rem; }
 
-/* ── Demo box ── */
 .demo-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-bottom: none;
   border-radius: 10px 10px 0 0;
   padding: 1.5rem;
-  transition: background 0.3s, border-color 0.3s;
 }
 
-/* ── Code wrapper ── */
 .code-wrapper {
-  border: 1px solid var(--code-border);
+  border: 1px solid var(--card-border);
   border-radius: 0 0 10px 10px;
   overflow: hidden;
   margin-bottom: 0.25rem;
-  transition: border-color 0.3s;
 }
 .code-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.42rem 1rem;
-  background: var(--code-header-bg);
-  border-bottom: 1px solid var(--code-border);
-  transition: background 0.3s;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px;
+  background: var(--app-bg);
+  border-bottom: 1px solid var(--card-border);
 }
 .code-lang {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--code-text);
-  opacity: 0.55;
-  font-family: 'JetBrains Mono', monospace;
+  background: var(--accent); color: #fff;
+  font-size: 0.67rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px; letter-spacing: 0.4px;
 }
 .copy-btn {
-  background: var(--copy-bg);
-  color: var(--copy-text);
-  border: 1px solid var(--code-border);
-  border-radius: 5px;
-  padding: 0.18rem 0.65rem;
-  font-size: 0.72rem;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: background 0.2s, color 0.2s;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 5px; padding: 3px 10px; font-size: 0.73rem;
+  color: var(--text-muted); cursor: pointer; transition: all 0.15s; font-family: inherit;
 }
-.copy-btn:hover {
-  background: var(--copy-hover);
-  color: #fff;
-}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ── Code block ── */
 .code-block {
-  margin: 0;
-  padding: 1rem 1.25rem;
-  background: var(--code-bg);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
-  color: var(--code-text);
-  white-space: pre-wrap;
-  word-break: break-word;
-  line-height: 1.75;
-  overflow-x: auto;
-  transition: background 0.3s, color 0.3s;
+  margin: 0; padding: 12px 16px;
+  background: var(--app-bg);
+  font-family: 'Courier New', monospace;
+  font-size: 0.76rem; color: var(--text-secondary);
+  white-space: pre-wrap; word-break: break-word;
+  line-height: 1.75; overflow-x: auto;
 }
 
-/* ── Inline code ── */
 code {
-  background: var(--inline-code-bg);
-  color: var(--inline-code-text);
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-  font-size: 0.82rem;
-  font-family: 'JetBrains Mono', monospace;
-  transition: background 0.3s, color 0.3s;
+  background: var(--accent-muted); color: var(--accent);
+  padding: 1px 5px; border-radius: 4px; font-size: 0.82rem;
 }
 
-/* ── Responsive ── */
 @media (max-width: 576px) {
   .container { padding-left: 1rem; padding-right: 1rem; }
   .demo-box { padding: 1rem; }
-  .theme-toggle-bar { padding: 0.5rem 1rem; }
 }
 </style> 
