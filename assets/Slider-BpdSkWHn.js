@@ -1,0 +1,29 @@
+import{B as e,H as t,J as n,M as r,P as i,V as a,Y as o,b as s,f as c,h as l,l as u,t as d,v as f,x as p}from"./_plugin-vue_export-helper-CLHCuJKU.js";import{n as m,t as h}from"./Footer-Ck9cRuzL.js";var g={class:`page-wrapper`},_={class:`demo-card`},v={class:`demo-box`},y={class:`d-flex flex-column gap-4`},b={class:`d-flex justify-content-between mb-1`},x={class:`form-label mb-0`},S={class:`slider-val`},C=[`onUpdate:modelValue`,`min`,`max`,`step`],w={class:`code-block mt-3`},T={class:`code-bar`},E={class:`code-body`},D={class:`demo-card`},O={class:`demo-box`},k={class:`d-flex flex-column gap-4`},A={class:`d-flex justify-content-between mb-1`},j={class:`form-label mb-0`},M=[`onUpdate:modelValue`],N={class:`code-block mt-3`},P={class:`code-bar`},F={class:`code-body`},I={class:`demo-card`},L={class:`demo-box`},R={class:`d-flex justify-content-between mb-2`},z={class:`slider-val`},B={class:`position-relative`},V=[`max`],H=[`min`],U={class:`code-block mt-3`},W={class:`code-bar`},G={class:`code-body`},K=d({__name:`Slider`,setup(d){let K=t(100),q=t(600),J=t(``);function Y(e,t){navigator.clipboard.writeText(t).catch(()=>{}),J.value=e,setTimeout(()=>{J.value=``},2e3)}let X=a([{label:`Volume`,value:60,min:0,max:100,step:1,suffix:`%`},{label:`Brightness`,value:75,min:0,max:100,step:5,suffix:`%`},{label:`Temperature`,value:22,min:16,max:30,step:.5,suffix:`°C`},{label:`Quantity`,value:3,min:1,max:10,step:1}]),Z=a([{label:`Success`,value:65,color:`#2ecc71`},{label:`Warning`,value:40,color:`#f1c40f`},{label:`Danger`,value:80,color:`#e74c3c`},{label:`Info`,value:55,color:`#5b73e8`}]),Q={basic:`<!-- Default range -->
+<input type="range" class="form-range" min="0" max="100" />
+
+<!-- With step -->
+<input type="range" class="form-range" min="0" max="100" step="10" />
+
+<!-- Vue reactive -->
+<input type="range" class="form-range" v-model="value" min="0" max="100" />
+<span>{{ value }}</span>`,colored:`<!-- Custom accent color via inline style -->
+<input type="range" class="form-range" style="accent-color: #2ecc71" />
+<input type="range" class="form-range" style="accent-color: #e74c3c" />
+<input type="range" class="form-range" style="accent-color: #5b73e8" />
+
+<!-- Or via CSS -->
+<style>
+.range-success { accent-color: #2ecc71; }
+.range-danger  { accent-color: #e74c3c; }
+</style>`,range:`<!-- Price range with two inputs -->
+<input type="range" class="form-range" v-model.number="priceMin"
+  :min="0" :max="priceMax - 10" step="10" />
+<input type="range" class="form-range" v-model.number="priceMax"
+  :min="priceMin + 10" :max="1000" step="10" />
+<span>\${{ priceMin }} — \${{ priceMax }}</span>
+
+<script setup>
+import CdnSection from '../../components/CdnSection.vue'
+const priceMin = ref(100)
+const priceMax = ref(600)
+<\/script>`};return(t,a)=>(r(),f(`div`,g,[p(m),a[19]||=l(`div`,{class:`page-header`},[l(`h4`,{class:`page-title`},`Slider`),l(`p`,{class:`page-subtitle`},`Range slider components with custom styling and reactive values.`)],-1),l(`div`,_,[a[7]||=l(`h6`,{class:`demo-title`},`Basic Sliders`,-1),a[8]||=l(`p`,{class:`demo-desc`},[s(`Use `),l(`code`,null,`input[type="range"]`),s(` with the `),l(`code`,null,`.form-range`),s(` class.`)],-1),l(`div`,v,[l(`div`,y,[(r(!0),f(c,null,i(X,t=>(r(),f(`div`,{key:t.label},[l(`div`,b,[l(`label`,x,o(t.label),1),l(`span`,S,o(t.value)+o(t.suffix||``),1)]),e(l(`input`,{type:`range`,class:`form-range`,"onUpdate:modelValue":e=>t.value=e,min:t.min,max:t.max,step:t.step},null,8,C),[[u,t.value]])]))),128))])]),l(`div`,w,[l(`div`,T,[a[6]||=l(`span`,{class:`code-badge`},`HTML`,-1),l(`button`,{class:`copy-btn`,onClick:a[0]||=e=>Y(`basic`,Q.basic)},[a[5]||=l(`i`,{class:`bi bi-clipboard me-1`},null,-1),s(o(J.value===`basic`?`Copied!`:`Copy`),1)])]),l(`pre`,E,[l(`code`,null,o(Q.basic),1)])])]),l(`div`,D,[a[11]||=l(`h6`,{class:`demo-title`},`Colored Sliders`,-1),a[12]||=l(`p`,{class:`demo-desc`},[s(`Use CSS `),l(`code`,null,`accent-color`),s(` to change the slider thumb and track color.`)],-1),l(`div`,O,[l(`div`,k,[(r(!0),f(c,null,i(Z,t=>(r(),f(`div`,{key:t.label},[l(`div`,A,[l(`label`,j,o(t.label),1),l(`span`,{class:`slider-val`,style:n(`color:${t.color}`)},o(t.value),5)]),e(l(`input`,{type:`range`,class:`form-range`,"onUpdate:modelValue":e=>t.value=e,min:`0`,max:`100`,style:n(`accent-color: ${t.color}`)},null,12,M),[[u,t.value]])]))),128))])]),l(`div`,N,[l(`div`,P,[a[10]||=l(`span`,{class:`code-badge`},`HTML`,-1),l(`button`,{class:`copy-btn`,onClick:a[1]||=e=>Y(`colored`,Q.colored)},[a[9]||=l(`i`,{class:`bi bi-clipboard me-1`},null,-1),s(o(J.value===`colored`?`Copied!`:`Copy`),1)])]),l(`pre`,F,[l(`code`,null,o(Q.colored),1)])])]),l(`div`,I,[a[17]||=l(`h6`,{class:`demo-title`},`Price Range`,-1),a[18]||=l(`p`,{class:`demo-desc`},`Two range inputs overlaid to create a min/max price range selector.`,-1),l(`div`,L,[l(`div`,R,[a[13]||=l(`label`,{class:`form-label mb-0`},`Price Range`,-1),l(`span`,z,`$`+o(K.value)+` — $`+o(q.value),1)]),l(`div`,B,[e(l(`input`,{type:`range`,class:`form-range`,"onUpdate:modelValue":a[2]||=e=>K.value=e,min:0,max:q.value-10,step:`10`},null,8,V),[[u,K.value,void 0,{number:!0}]]),e(l(`input`,{type:`range`,class:`form-range`,"onUpdate:modelValue":a[3]||=e=>q.value=e,min:K.value+10,max:1e3,step:`10`},null,8,H),[[u,q.value,void 0,{number:!0}]])]),a[14]||=l(`div`,{class:`d-flex justify-content-between mt-1`},[l(`span`,{class:`text-muted`,style:{"font-size":`0.78rem`}},`$0`),l(`span`,{class:`text-muted`,style:{"font-size":`0.78rem`}},`$1000`)],-1)]),l(`div`,U,[l(`div`,W,[a[16]||=l(`span`,{class:`code-badge`},`HTML + JS`,-1),l(`button`,{class:`copy-btn`,onClick:a[4]||=e=>Y(`range`,Q.range)},[a[15]||=l(`i`,{class:`bi bi-clipboard me-1`},null,-1),s(o(J.value===`range`?`Copied!`:`Copy`),1)])]),l(`pre`,G,[l(`code`,null,o(Q.range),1)])])]),p(h)]))}},[[`__scopeId`,`data-v-645a1d06`]]);export{K as default};

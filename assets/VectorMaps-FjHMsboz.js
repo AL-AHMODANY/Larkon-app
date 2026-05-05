@@ -1,0 +1,41 @@
+import{H as e,J as t,K as n,M as r,P as i,Y as a,_ as o,b as s,f as c,h as l,t as u,v as d,x as f,y as p}from"./_plugin-vue_export-helper-CLHCuJKU.js";import{n as m,t as h}from"./Footer-Ck9cRuzL.js";var g={class:`page-wrapper`},_={class:`demo-card`},v={class:`world-map-wrap`},y={viewBox:`0 0 1000 500`,xmlns:`http://www.w3.org/2000/svg`,class:`world-svg`},b=[`onMouseenter`],x=[`cx`,`cy`,`rx`,`ry`,`fill`,`opacity`],S=[`x`,`y`],C={key:0,class:`map-tooltip`},w={style:{color:`var(--accent)`}},T={style:{color:`var(--accent)`}},E={class:`code-block mt-3`},D={class:`code-bar`},O={class:`code-body`},k={class:`demo-card`},A={class:`table-responsive`},j={class:`table mb-0`},M={class:`d-flex align-items-center gap-2`},N={class:`d-flex align-items-center gap-2`},P={class:`mini-bar`},F={style:{"font-size":`0.78rem`,color:`var(--text-muted)`}},ee={class:`demo-card`},I={class:`us-map-wrap`},L={viewBox:`0 0 600 380`,xmlns:`http://www.w3.org/2000/svg`,class:`w-100`},R=[`onMouseenter`],z=[`x`,`y`,`width`,`height`,`fill`,`opacity`],B=[`x`,`y`],V={key:0,class:`map-tooltip`},H={style:{color:`var(--accent)`}},U={class:`code-block mt-3`},W={class:`code-bar`},G={class:`code-body`},K=u({__name:`VectorMaps`,setup(u){let K=e(null),q=e(null),J=e(``);function Y(e){navigator.clipboard.writeText(X[e]).catch(()=>{}),J.value=e,setTimeout(()=>{J.value=``},2e3)}let X={world:`<!-- World Map using SVG or a library like jsvectormap -->
+<div id="world-map" style="height: 400px;"></div>
+
+<script>
+// Using jsvectormap
+var map = new jsVectorMap({
+  selector: '#world-map',
+  map: 'world',
+  zoomButtons: true,
+  regionStyle: {
+    initial: { fill: '#e8f0fe' },
+    hover:   { fill: '#5b73e8' }
+  },
+  onRegionTooltipShow: function(event, tooltip, code) {
+    tooltip.text(
+      '<b>' + tooltip.text() + '</b><br>' +
+      'Sessions: ' + (data[code] || 0)
+    );
+  }
+});
+<\/script>`,us:`<!-- US Map using SVG or jsvectormap -->
+<div id="us-map" style="height: 380px;"></div>
+
+<script>
+var usMap = new jsVectorMap({
+  selector: '#us-map',
+  map: 'us_aea_en',
+  zoomButtons: true,
+  regionStyle: {
+    initial: { fill: '#e8f0fe' },
+    hover:   { fill: '#fd7e14' }
+  },
+  series: {
+    regions: [{
+      values: revenueByState,
+      scale: ['#e8f0fe', '#5b73e8'],
+      normalizeFunction: 'polynomial'
+    }]
+  }
+});
+<\/script>`},Z=[{id:`na`,label:`North America`,cx:180,cy:160,rx:130,ry:90,color:`#5b73e8`,sessions:42500,users:31200,bounce:38,share:32},{id:`eu`,label:`Europe`,cx:480,cy:140,rx:110,ry:75,color:`#fd7e14`,sessions:38200,users:28900,bounce:42,share:28},{id:`as`,label:`Asia`,cx:700,cy:160,rx:140,ry:95,color:`#2ecc71`,sessions:51e3,users:39400,bounce:35,share:38},{id:`sa`,label:`South America`,cx:250,cy:310,rx:80,ry:90,color:`#f1c40f`,sessions:12400,users:9800,bounce:51,share:9},{id:`af`,label:`Africa`,cx:490,cy:290,rx:90,ry:95,color:`#e74c3c`,sessions:8600,users:6700,bounce:55,share:6},{id:`oc`,label:`Oceania`,cx:780,cy:330,rx:65,ry:55,color:`#9b59b6`,sessions:5200,users:4100,bounce:44,share:4}],Q=[`#5b73e8`,`#fd7e14`,`#2ecc71`,`#e74c3c`,`#f1c40f`,`#9b59b6`,`#1abc9c`,`#e67e22`,`#3498db`,`#e91e63`],$=[{id:`CA`,abbr:`CA`,name:`California`,x:30,y:160,w:60,h:80,revenue:892},{id:`TX`,abbr:`TX`,name:`Texas`,x:160,y:220,w:70,h:70,revenue:654},{id:`NY`,abbr:`NY`,name:`New York`,x:380,y:100,w:55,h:55,revenue:721},{id:`FL`,abbr:`FL`,name:`Florida`,x:310,y:260,w:55,h:60,revenue:498},{id:`IL`,abbr:`IL`,name:`Illinois`,x:270,y:150,w:45,h:55,revenue:387},{id:`PA`,abbr:`PA`,name:`Pennsylvania`,x:340,y:120,w:50,h:45,revenue:342},{id:`OH`,abbr:`OH`,name:`Ohio`,x:300,y:140,w:45,h:45,revenue:298},{id:`GA`,abbr:`GA`,name:`Georgia`,x:310,y:210,w:45,h:50,revenue:276},{id:`NC`,abbr:`NC`,name:`North Carolina`,x:340,y:190,w:55,h:40,revenue:254},{id:`MI`,abbr:`MI`,name:`Michigan`,x:270,y:110,w:50,h:50,revenue:231},{id:`WA`,abbr:`WA`,name:`Washington`,x:60,y:80,w:55,h:50,revenue:412},{id:`AZ`,abbr:`AZ`,name:`Arizona`,x:90,y:200,w:55,h:60,revenue:198},{id:`CO`,abbr:`CO`,name:`Colorado`,x:155,y:170,w:50,h:50,revenue:187},{id:`TN`,abbr:`TN`,name:`Tennessee`,x:280,y:195,w:55,h:35,revenue:176},{id:`IN`,abbr:`IN`,name:`Indiana`,x:270,y:155,w:40,h:45,revenue:165}].map((e,t)=>({...e,color:Q[t%Q.length]}));return(e,u)=>(r(),d(`div`,g,[f(m),u[18]||=l(`div`,{class:`page-header`},[l(`h4`,{class:`page-title`},`Vector Maps`),l(`p`,{class:`page-subtitle`},`Interactive SVG vector maps with hover states and data overlays.`)],-1),l(`div`,_,[u[9]||=p(`<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3" data-v-8f49427d><h6 class="demo-card__title mb-0" data-v-8f49427d>World Map — Sessions by Country</h6><div class="d-flex gap-2 align-items-center" data-v-8f49427d><span class="legend-item" data-v-8f49427d><span class="legend-dot" style="background:#e8f0fe;" data-v-8f49427d></span>Low</span><span class="legend-item" data-v-8f49427d><span class="legend-dot" style="background:#5b73e8;" data-v-8f49427d></span>High</span></div></div>`,1),l(`div`,v,[(r(),d(`svg`,y,[u[4]||=l(`rect`,{width:`1000`,height:`500`,fill:`var(--app-bg)`,rx:`10`},null,-1),(r(),d(c,null,i(Z,e=>l(`g`,{key:e.id,onMouseenter:t=>K.value=e,onMouseleave:u[0]||=e=>K.value=null,style:{cursor:`pointer`}},[l(`ellipse`,{cx:e.cx,cy:e.cy,rx:e.rx,ry:e.ry,fill:e.color,opacity:K.value?.id===e.id?1:.85,stroke:`var(--card-bg)`,"stroke-width":`2`,style:{transition:`opacity 0.15s`}},null,8,x),l(`text`,{x:e.cx,y:e.cy+4,"text-anchor":`middle`,"font-size":`11`,fill:`var(--text-primary)`,"font-weight":`600`},a(e.label),9,S)],40,b)),64))])),K.value?(r(),d(`div`,C,[l(`strong`,null,a(K.value.label),1),l(`div`,null,[u[5]||=s(`Sessions: `,-1),l(`span`,w,a(K.value.sessions.toLocaleString()),1)]),l(`div`,null,[u[6]||=s(`Users: `,-1),l(`span`,T,a(K.value.users.toLocaleString()),1)])])):o(``,!0)]),l(`div`,E,[l(`div`,D,[u[8]||=l(`span`,{class:`code-badge`},`HTML`,-1),l(`button`,{class:`copy-btn`,onClick:u[1]||=e=>Y(`world`)},[u[7]||=l(`i`,{class:`bi bi-clipboard me-1`},null,-1),s(a(J.value===`world`?`Copied!`:`Copy`),1)])]),l(`pre`,O,[l(`code`,null,a(X.world),1)])])]),l(`div`,k,[u[11]||=l(`h6`,{class:`demo-card__title`},`Sessions by Region`,-1),l(`div`,A,[l(`table`,j,[u[10]||=l(`thead`,null,[l(`tr`,null,[l(`th`,null,`Region`),l(`th`,null,`Sessions`),l(`th`,null,`Users`),l(`th`,null,`Bounce Rate`),l(`th`,null,`Share`)])],-1),l(`tbody`,null,[(r(),d(c,null,i(Z,e=>l(`tr`,{key:e.id},[l(`td`,null,[l(`div`,M,[l(`span`,{class:`region-dot`,style:t(`background:${e.color}`)},null,4),s(` `+a(e.label),1)])]),l(`td`,null,a(e.sessions.toLocaleString()),1),l(`td`,null,a(e.users.toLocaleString()),1),l(`td`,null,a(e.bounce)+`%`,1),l(`td`,null,[l(`div`,N,[l(`div`,P,[l(`div`,{class:`mini-bar__fill`,style:t(`width:${e.share}%; background:${e.color}`)},null,4)]),l(`span`,F,a(e.share)+`%`,1)])])])),64))])])])]),l(`div`,ee,[u[17]||=l(`h6`,{class:`demo-card__title`},`US Map — Revenue by State`,-1),l(`div`,I,[(r(),d(`svg`,L,[u[12]||=l(`rect`,{width:`600`,height:`380`,fill:`var(--app-bg)`,rx:`8`},null,-1),(r(!0),d(c,null,i(n($),e=>(r(),d(`g`,{key:e.id,onMouseenter:t=>q.value=e,onMouseleave:u[2]||=e=>q.value=null,style:{cursor:`pointer`}},[l(`rect`,{x:e.x,y:e.y,width:e.w,height:e.h,fill:e.color,opacity:q.value?.id===e.id?1:.8,rx:`3`,stroke:`var(--card-bg)`,"stroke-width":`1.5`,style:{transition:`opacity 0.15s`}},null,8,z),l(`text`,{x:e.x+e.w/2,y:e.y+e.h/2+4,"text-anchor":`middle`,"font-size":`9`,fill:`var(--text-primary)`,"font-weight":`600`},a(e.abbr),9,B)],40,R))),128)),u[13]||=l(`text`,{x:`300`,y:`360`,"text-anchor":`middle`,"font-size":`11`,fill:`var(--text-muted)`},`Hover over a state to see details`,-1)])),q.value?(r(),d(`div`,V,[l(`strong`,null,a(q.value.name),1),l(`div`,null,[u[14]||=s(`Revenue: `,-1),l(`span`,H,`$`+a(q.value.revenue)+`K`,1)])])):o(``,!0)]),l(`div`,U,[l(`div`,W,[u[16]||=l(`span`,{class:`code-badge`},`HTML`,-1),l(`button`,{class:`copy-btn`,onClick:u[3]||=e=>Y(`us`)},[u[15]||=l(`i`,{class:`bi bi-clipboard me-1`},null,-1),s(a(J.value===`us`?`Copied!`:`Copy`),1)])]),l(`pre`,G,[l(`code`,null,a(X.us),1)])])]),f(h)]))}},[[`__scopeId`,`data-v-8f49427d`]]);export{K as default};
