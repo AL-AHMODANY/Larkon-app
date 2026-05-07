@@ -1,5 +1,5 @@
 ﻿/* =========================================================
-   LARKON ADMIN — GLOBAL THEME SYSTEM
+   AL-AHMODANY ADMIN — GLOBAL THEME SYSTEM
    Single source of truth for all colors, dark/light mode,
    and Bootstrap 5 overrides.
 ========================================================= */
@@ -349,11 +349,8 @@ img, svg { display: block; max-width: 100%; }
 [data-theme="dark"] .navbar.navbar-light  { background-color: var(--card-bg) !important; }
 
 /* =========================================================
-   LAYOUT TRANSITIONS (targeted, not blanket)
+   LAYOUT TRANSITIONS (targeted only — no body/layout flash)
 ========================================================= */
-body,
-.app-layout,
-.app-content,
 .card,
 .demo-box,
 .demo-card,
@@ -378,7 +375,7 @@ body,
 }
 
 /* Layout shells — structural only */
-.sidebar  { transition: width 0.22s ease, transform 0.22s ease !important; }
+.sidebar  { transition: width 0.22s ease, transform 0.22s ease, background 0.2s ease, border-color 0.2s ease !important; }
 .topbar   { transition: background 0.2s ease, border-color 0.2s ease !important; }
 .app-main { transition: margin-left 0.22s ease !important; }
 
@@ -389,6 +386,52 @@ body,
   .page-wrapper { padding: 12px !important; }
   .demo-card    { padding: 14px !important; }
   .demo-box     { padding: 14px !important; }
+}
+
+/* ── Header / dropdown mobile fixes ─────────────────────────
+   Make the topbar full width on mobile and ensure dropdowns
+   align/drop to the right.
+============================================================= */
+@media (max-width: 767px) {
+  .topbar {
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .topbar__right {
+    margin-left: auto !important;
+    justify-content: flex-end !important;
+  }
+
+  /* dropdowns in Header.vue */
+  .dropdown {
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  /* dropdown container anchor */
+  .topbar__dropdown-wrap {
+    position: relative !important;
+  }
+}
+
+/* ── Topbar responsive hide classes ─────────────────────────
+   These classes are applied in Header.vue template to hide
+   elements at specific breakpoints.
+============================================================= */
+@media (max-width: 768px) {
+  .topbar__title--hide-sm  { display: none !important; }
+  .topbar__clock--hide-sm  { display: none !important; }
+  .topbar__icon-btn--hide-md { display: none !important; }
+  .topbar { height: 64px !important; }
+}
+@media (max-width: 480px) {
+  .topbar__icon-btn--hide-xs { display: none !important; }
+  .topbar { height: 60px !important; padding-left: 10px !important; padding-right: 10px !important; }
+  .app-main { padding-top: 60px !important; }
 }
 
 /* =========================================================
@@ -696,7 +739,7 @@ body,
 [data-theme="dark"] .inactivity-modal__btn--ghost { color: var(--text-secondary) !important; border-color: var(--border-color) !important; }
 
 /* =========================================================
-   LARKON SHARED VIEW COMPONENTS
+   AL-AHMODANY SHARED VIEW COMPONENTS
    Single definition used by ALL view pages.
    Replaces: code-block/code-bar/copy-btn/right-nav/demo-box
    scattered across every baseUi / advanceUi / charts view.
@@ -958,25 +1001,19 @@ body,
 [data-theme="dark"] .lk-page-subtitle { color: var(--text-secondary) !important; }
 
 /* =========================================================
-   TOPBAR OFFSET — fixed positioning synced with sidebar
+   TOPBAR OFFSET — desktop only, mobile uses left:0 from Header.vue
 ========================================================= */
-/* Default: header starts after 260px sidebar */
-.topbar { left: var(--sidebar-width) !important; }
-
-/* Condensed / sm-hover: header starts after 70px */
-[data-sidebar-size="condensed"] .topbar,
-.app-layout.sidebar-condensed  .topbar,
-[data-sidebar-size="sm-hover"] .topbar,
-[data-sidebar-size="sm-hover-active"] .topbar,
-.app-layout.sidebar-sm-hover .topbar,
-.app-layout.sidebar-sm-hover-active .topbar { left: var(--sidebar-collapsed-width) !important; }
-
-/* Hidden: header full width */
-[data-sidebar-size="hidden"] .topbar,
-.app-layout.sidebar-hidden .topbar { left: 0 !important; }
-
-/* Mobile: header always full width */
-@media (max-width: 1024px) { .topbar { left: 0 !important; right: 0 !important; } }
+@media (min-width: 1025px) {
+  .topbar                                        { left: var(--sidebar-width); }
+  [data-sidebar-size="condensed"] .topbar,
+  .app-layout.sidebar-condensed  .topbar,
+  [data-sidebar-size="sm-hover"]         .topbar,
+  [data-sidebar-size="sm-hover-active"]  .topbar,
+  .app-layout.sidebar-sm-hover           .topbar,
+  .app-layout.sidebar-sm-hover-active    .topbar { left: var(--sidebar-collapsed-width); }
+  [data-sidebar-size="hidden"] .topbar,
+  .app-layout.sidebar-hidden   .topbar           { left: 0; }
+}
 
 /* ── app-main must offset for fixed header ── */
 .app-main { padding-top: var(--topbar-height) !important; }
@@ -1170,7 +1207,7 @@ body,
 .offcanvas-page .copy-btn:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
 
 /* =========================================================
-   CARD.VUE — code-preview → Larkon code-block style
+   CARD.VUE — code-preview → AL-AHMODANY code-block style
 ========================================================= */
 .code-block .code-bar,
 .code-block .code-header {
@@ -1246,7 +1283,7 @@ body,
 .alerts-page .right-nav a.active { color: var(--accent) !important; }
 
 /* =========================================================
-   CARD PAGE — code-preview → Larkon style
+   CARD PAGE — code-preview → AL-AHMODANY style
 ========================================================= */
 .cards-page { background: var(--bg-body) !important; color: var(--text-primary) !important; }
 .cards-page .code-block { border: 1px solid var(--card-border) !important; border-radius: 8px; overflow: hidden; }
@@ -1255,7 +1292,7 @@ body,
 .cards-page .code-block .code-body { background: var(--app-bg) !important; color: var(--text-secondary) !important; margin: 0; padding: 12px 16px; font-size: 0.73rem; overflow-x: auto; max-height: 220px; font-family: 'Courier New', monospace; }
 
 /* =========================================================
-   TOASTIFY PAGE — code-preview → Larkon style
+   TOASTIFY PAGE — code-preview → AL-AHMODANY style
 ========================================================= */
 .toastify-page { background: var(--bg-body) !important; padding: 24px !important; }
 .toastify-page .card { background: var(--card-bg) !important; border-color: var(--card-border) !important; }
@@ -1683,4 +1720,100 @@ i[class*="bi-"] {
 @media (max-width: 768px) {
   body { overflow-x: hidden; }
   .app-layout { overflow-x: hidden; }
+}
+
+/* ── Dropdown viewport clamping — never overflow left on mobile ── */
+@media (max-width: 767px) {
+  .topbar__dropdown-wrap .dropdown {
+    right: 0 !important;
+    left: auto !important;
+    max-width: calc(100vw - 16px) !important;
+  }
+  .dropdown--msg,
+  .dropdown--notif,
+  .dropdown--activity {
+    width: calc(100vw - 16px) !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+  .dropdown--user {
+    width: 220px !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+  .dropdown--lang {
+    right: 0 !important;
+    left: auto !important;
+  }
+}
+
+/* ── Topbar dropdowns: always anchor to right, never overflow left ── */
+.topbar__dropdown-wrap .dropdown {
+  right: 0;
+  left: auto;
+}
+/* On very small screens, cap width to viewport */
+@media (max-width: 480px) {
+  .topbar__dropdown-wrap .dropdown {
+    right: 0 !important;
+    left: auto !important;
+    max-width: calc(100vw - 12px) !important;
+  }
+  .dropdown--msg,
+  .dropdown--notif,
+  .dropdown--activity {
+    width: calc(100vw - 12px) !important;
+  }
+}
+
+/* ── Header icon sizes — consistent 20x20 ── */
+.topbar__icon-btn {
+  width: 36px !important;
+  height: 36px !important;
+}
+.topbar__icon {
+  width: 20px !important;
+  height: 20px !important;
+}
+.topbar__user-btn {
+  width: 36px !important;
+  height: 36px !important;
+}
+@media (max-width: 767px) {
+  .topbar__icon-btn { width: 34px !important; height: 34px !important; }
+  .topbar__icon     { width: 18px !important; height: 18px !important; }
+  .topbar__user-btn { width: 34px !important; height: 34px !important; }
+}
+
+/* ── Notification/message dropdowns: clamp to viewport on all screens ── */
+/* This prevents the 340px dropdown from overflowing left of the screen */
+.topbar__dropdown-wrap {
+  position: relative;
+}
+.topbar__dropdown-wrap .dropdown {
+  right: 0;
+  left: auto;
+  /* Ensure dropdown never goes past left edge of viewport */
+  max-width: min(340px, calc(100vw - 16px));
+}
+.topbar__dropdown-wrap .dropdown--msg,
+.topbar__dropdown-wrap .dropdown--notif {
+  width: min(340px, calc(100vw - 16px));
+  right: 0;
+  left: auto;
+}
+.topbar__dropdown-wrap .dropdown--activity {
+  width: min(360px, calc(100vw - 16px));
+  right: 0;
+  left: auto;
+}
+.topbar__dropdown-wrap .dropdown--user {
+  width: min(230px, calc(100vw - 16px));
+  right: 0;
+  left: auto;
+}
+.topbar__dropdown-wrap .dropdown--lang {
+  width: min(190px, calc(100vw - 16px));
+  right: 0;
+  left: auto;
 }

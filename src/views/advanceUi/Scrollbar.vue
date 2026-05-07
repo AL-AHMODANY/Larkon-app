@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper-adv" style="min-height: 100vh;">
+    <CdnSection />
     <div class="container-fluid">
 
       <!-- Page Title -->
@@ -34,26 +35,20 @@
               </div>
 
               <!-- Code Block -->
-              <div class="rounded-3 overflow-hidden border">
-                <div
-                  class="d-flex align-items-center justify-content-between px-3 py-2"
-                  style="background: #2d2d2d;"
-                >
-                  <span
-                    class="text-uppercase fw-bold"
-                    style="font-size: 0.68rem; color: #aaa; letter-spacing: 0.1em;"
-                  >HTML</span>
+              <div class="code-block rounded-3 overflow-hidden border">
+                <div class="code-header d-flex align-items-center justify-content-between px-3 py-2">
+                  <span class="code-lang">HTML</span>
                   <button
-                    class="btn btn-sm py-1 px-2"
-                    :class="copiedIndex === index ? 'btn-success' : 'btn-outline-secondary'"
-                    style="font-size: 0.72rem;"
+                    class="btn btn-sm code-copy-btn"
+                    :class="copiedIndex === index ? 'copied' : ''"
                     @click="copyCode(index)"
                   >
+                    <i :class="copiedIndex === index ? 'bx bx-check' : 'bx bx-copy'"></i>
                     {{ copiedIndex === index ? 'Copied!' : 'Copy' }}
                   </button>
                 </div>
-                <div style="background: #1e1e1e; overflow-x: auto; max-height: 220px;">
-                  <pre class="mb-0 p-3" style="font-size: 0.76rem; color: #d4d4d4; font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace; line-height: 1.75; white-space: pre;">{{ section.code }}</pre>
+                <div class="code-body">
+                  <pre class="code-pre mb-0">{{ section.code }}</pre>
                 </div>
               </div>
 
@@ -83,7 +78,7 @@
       </div>
 
       <div class="text-center mt-5 pb-3">
-        <small class="text-muted">2026 © Larkon. Crafted with ❤️ by Techzaa</small>
+        <small class="text-muted">2026 © AL-AHMODANY. Crafted with ❤️ by Techzaa</small>
       </div>
 
     </div>
@@ -92,6 +87,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref, onMounted, nextTick } from 'vue'
 import SimpleBar from 'simplebar'
@@ -139,80 +135,120 @@ const sections = [
     simplebarOptions: {},
     colorClass: null,
     code: `<div class="px-3" data-simplebar style="max-height: 250px;">
+  SimpleBar does only one thing: replace the browser's default scrollbar
+  with a custom CSS-styled one without losing performances.
+  Unlike some popular plugins, SimpleBar doesn't mimic scroll with
+  Javascript, causing janks and strange scrolling behaviours...
+  You keep the awesomeness of native scrolling...with a custom scrollbar!
+  <p>SimpleBar <strong>does NOT implement a custom scroll
+      behaviour</strong>. It keeps the <strong>native</strong>
+    <code>overflow: auto</code> scroll and <strong>only</strong> replace
+    the scrollbar visual appearance.
+  </p>
   <h5>Design it as you want</h5>
   <p>SimpleBar uses pure CSS to style the scrollbar. You can easily
-  customize it as you want! Or even have multiple style on the same
-  page...or just keep the default style ("Mac OS" scrollbar style).
+    customize it as you want! Or even have multiple style on the same
+    page...or just keep the default style ("Mac OS" scrollbar style).
   </p>
   <h5>Lightweight and performant</h5>
   <p>Only 6kb minified. SimpleBar doesn't use Javascript to handle
-  scrolling. You keep the performances/behaviours of the native
-  scroll.</p>
+    scrolling. You keep the performances/behaviours of the native scroll.</p>
+  <h5>Supported everywhere</h5>
+  <p>SimpleBar has been tested on the following browsers: Chrome, Firefox,
+    Safari, Edge, IE11.</p>
 </div>`
   },
   {
     id: 'section-rtl',
     title: 'RTL Position',
-    description: `Just use data attribute <code style="${codeStyle}">data-simplebar</code> <code style="${codeStyle}">data-simplebar-direction="rtl"</code> and add <code style="${codeStyle}">max-height: **px</code> oh fix height`,
+    description: `Just use data attribute <code style="${codeStyle}">data-simplebar</code> <code style="${codeStyle}">data-simplebar-direction='rtl'</code> and add <code style="${codeStyle}">max-height: **px</code> oh fix height`,
     previewHtml: innerHtml,
     simplebarOptions: { direction: 'rtl' },
     colorClass: null,
-    code: `<div class="px-3" data-simplebar data-simplebar-direction="rtl" style="max-height: 250px;">
+    code: `<div class="px-3" data-simplebar data-simplebar-direction='rtl' style="max-height: 250px;">
   SimpleBar does only one thing: replace the browser's default scrollbar
   with a custom CSS-styled one without losing performances.
-
   Unlike some popular plugins, SimpleBar doesn't mimic scroll with
   Javascript, causing janks and strange scrolling behaviours...
   You keep the awesomeness of native scrolling...with a custom scrollbar!
-
   <p>SimpleBar <strong>does NOT implement a custom scroll
-  behaviour</strong>. It keeps the <strong>native</strong>
-  <code>overflow: auto</code> scroll and <strong>only</strong> replace
-  the scrollbar visual appearance.</p>
+      behaviour</strong>. It keeps the <strong>native</strong>
+    <code>overflow: auto</code> scroll and <strong>only</strong> replace
+    the scrollbar visual appearance.
+  </p>
+  <h5>Design it as you want</h5>
+  <p>SimpleBar uses pure CSS to style the scrollbar. You can easily
+    customize it as you want! Or even have multiple style on the same
+    page...or just keep the default style ("Mac OS" scrollbar style).
+  </p>
+  <h5>Lightweight and performant</h5>
+  <p>Only 6kb minified. SimpleBar doesn't use Javascript to handle
+    scrolling. You keep the performances/behaviours of the native scroll.</p>
+  <h5>Supported everywhere</h5>
+  <p>SimpleBar has been tested on the following browsers: Chrome, Firefox,
+    Safari, Edge, IE11.</p>
 </div>`
   },
   {
     id: 'section-size',
     title: 'Scroll Size',
-    description: `Just use data attribute <code style="${codeStyle}">data-simplebar</code> <code style="${codeStyle}">data-simplebar-lg</code> and add <code style="${codeStyle}">max-height: **px</code> oh fix height`,
+    description: `Just use data attribute <code style="${codeStyle}">data-simplebar</code>, <code style="${codeStyle}">data-simplebar-lg</code> and add <code style="${codeStyle}">max-height: **px</code> oh fix height`,
     previewHtml: innerHtml,
     simplebarOptions: { scrollbarMinSize: 10, scrollbarMaxSize: 10 },
     colorClass: null,
     code: `<div class="px-3" data-simplebar data-simplebar-lg style="max-height: 250px;">
   SimpleBar does only one thing: replace the browser's default scrollbar
   with a custom CSS-styled one without losing performances.
-
   Unlike some popular plugins, SimpleBar doesn't mimic scroll with
   Javascript, causing janks and strange scrolling behaviours...
-
   You keep the awesomeness of native scrolling...with a custom scrollbar!
-
   <p>SimpleBar <strong>does NOT implement a custom scroll
-  behaviour</strong>. It keeps the <strong>native</strong>
-  <code>overflow: auto</code> scroll and <strong>only</strong> replace
-  the scrollbar visual appearance.</p>
+      behaviour</strong>. It keeps the <strong>native</strong>
+    <code>overflow: auto</code> scroll and <strong>only</strong> replace
+    the scrollbar visual appearance.
+  </p>
+  <h5>Design it as you want</h5>
+  <p>SimpleBar uses pure CSS to style the scrollbar. You can easily
+    customize it as you want! Or even have multiple style on the same
+    page...or just keep the default style ("Mac OS" scrollbar style).
+  </p>
+  <h5>Lightweight and performant</h5>
+  <p>Only 6kb minified. SimpleBar doesn't use Javascript to handle
+    scrolling. You keep the performances/behaviours of the native scroll.</p>
+  <h5>Supported everywhere</h5>
+  <p>SimpleBar has been tested on the following browsers: Chrome, Firefox,
+    Safari, Edge, IE11.</p>
 </div>`
   },
   {
     id: 'section-color',
     title: 'Scroll Color',
-    description: `Just use data attribute <code style="${codeStyle}">data-simplebar</code> <code style="${codeStyle}">data-simplebar-primary</code> and add <code style="${codeStyle}">max-height: **px</code> oh fix height`,
+    description: `Just use data attribute <code style="${codeStyle}">data-simplebar</code> <code style="${codeStyle}">data-simplebar-*</code> and add <code style="${codeStyle}">max-height: **px</code> oh fix height`,
     previewHtml: innerHtml,
     simplebarOptions: {},
     colorClass: 'primary-scrollbar',
     code: `<div class="px-3" data-simplebar data-simplebar-primary style="max-height: 250px;">
   SimpleBar does only one thing: replace the browser's default scrollbar
   with a custom CSS-styled one without losing performances.
-
   Unlike some popular plugins, SimpleBar doesn't mimic scroll with
   Javascript, causing janks and strange scrolling behaviours...
-
   You keep the awesomeness of native scrolling...with a custom scrollbar!
-
   <p>SimpleBar <strong>does NOT implement a custom scroll
-  behaviour</strong>. It keeps the <strong>native</strong>
-  <code>overflow: auto</code> scroll and <strong>only</strong> replace
-  the scrollbar visual appearance.</p>
+      behaviour</strong>. It keeps the <strong>native</strong>
+    <code>overflow: auto</code> scroll and <strong>only</strong> replace
+    the scrollbar visual appearance.
+  </p>
+  <h5>Design it as you want</h5>
+  <p>SimpleBar uses pure CSS to style the scrollbar. You can easily
+    customize it as you want! Or even have multiple style on the same
+    page...or just keep the default style ("Mac OS" scrollbar style).
+  </p>
+  <h5>Lightweight and performant</h5>
+  <p>Only 6kb minified. SimpleBar doesn't use Javascript to handle
+    scrolling. You keep the performances/behaviours of the native scroll.</p>
+  <h5>Supported everywhere</h5>
+  <p>SimpleBar has been tested on the following browsers: Chrome, Firefox,
+    Safari, Edge, IE11.</p>
 </div>`
   }
 ]
@@ -269,6 +305,63 @@ onMounted(async () => {
   border-left: 2px solid #4a6cf7;
 }
 
+/* Code Block Styling */
+.code-block {
+  border: 1px solid var(--card-border, #eef2f7);
+  transition: border-color 0.2s;
+}
+.code-header {
+  background: var(--app-bg, #f3f4f9);
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  transition: background 0.2s, border-color 0.2s;
+}
+.code-lang {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-secondary, #6c757d);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.code-copy-btn {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.65rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #eef2f7);
+  color: var(--text-secondary, #6c757d);
+  border-radius: 5px;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.code-copy-btn:hover {
+  border-color: var(--accent, #fd7e14);
+  color: var(--accent, #fd7e14);
+}
+.code-copy-btn.copied {
+  border-color: var(--success, #2ecc71);
+  color: var(--success, #2ecc71);
+  background: var(--success-muted, #d4edda);
+}
+.code-copy-btn i {
+  font-size: 13px;
+}
+.code-body {
+  background: var(--app-bg, #f3f4f9);
+  overflow-x: auto;
+  max-height: 280px;
+  transition: background 0.2s;
+}
+.code-pre {
+  padding: 1rem 1.25rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary, #6c757d);
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  line-height: 1.75;
+  white-space: pre;
+  margin: 0;
+}
+
 :deep(.simplebar-scrollbar::before) {
   background: #adb5bd;
   opacity: 1 !important;
@@ -284,5 +377,30 @@ onMounted(async () => {
 :global([data-theme="dark"]) .border.rounded-2.bg-white {
   background: var(--card-bg) !important;
   border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-block {
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-header {
+  background: var(--app-bg) !important;
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-body {
+  background: var(--app-bg) !important;
+}
+:global([data-theme="dark"]) .code-pre {
+  color: #c9d1d9 !important;
+}
+:global([data-theme="dark"]) .code-lang {
+  color: var(--text-secondary) !important;
+}
+:global([data-theme="dark"]) .code-copy-btn {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+:global([data-theme="dark"]) .code-copy-btn:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
 }
 </style>

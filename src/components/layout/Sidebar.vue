@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <Teleport to="body">
     <div
       class="sidebar-overlay"
@@ -21,13 +21,13 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <!-- ── Logo ── -->
+    <!-- ΓöÇΓöÇ Logo ΓöÇΓöÇ -->
     <div class="sidebar__logo">
       <router-link to="/dashboard" class="logo-link" @click="closeSidebar">
         <span class="logo-badge">
           <ShoppingBagIcon class="logo-icon" />
         </span>
-        <span class="logo-wordmark">Larkon</span>
+        <span class="logo-wordmark">AL-AHMODANY</span>
       </router-link>
 
       <button
@@ -40,7 +40,7 @@
       </button>
     </div>
 
-    <!-- ── Nav body ── -->
+    <!-- ΓöÇΓöÇ Nav body ΓöÇΓöÇ -->
     <div class="sidebar__body">
       <ul class="sidebar__nav">
         <template v-for="section in menuSections" :key="section.label">
@@ -163,7 +163,7 @@ import {
 const emit = defineEmits(["mobile-close"]);
 const route = useRoute();
 
-// ── State ──────────────────────────────────────────────
+// ΓöÇΓöÇ State ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const isMobileOpen = ref(false);
 const sidebarSize  = ref("default");
 const menuColor    = ref("dark");   // "dark" | "light"
@@ -171,28 +171,28 @@ const isDarkTheme  = ref(false);
 let   bodyObserver = null;
 let   htmlObserver = null;
 
-// ── Sync menu color and theme from DOM attrs ───────────
+// ΓöÇΓöÇ Sync menu color and theme from DOM attrs ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const syncMenuColor = () => {
   menuColor.value   = document.body.getAttribute("data-menu") || "dark";
   isDarkTheme.value = document.documentElement.getAttribute("data-theme") === "dark";
 };
 
-// ── Computed ───────────────────────────────────────────
+// ΓöÇΓöÇ Computed ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const isCondensed     = computed(() => sidebarSize.value === "condensed");
 const isHiddenSize    = computed(() => sidebarSize.value === "hidden");
 const isSmHover       = computed(() => sidebarSize.value === "sm-hover");
 const isSmHoverActive = computed(() => sidebarSize.value === "sm-hover-active");
 const isCollapsed     = computed(() => isCondensed.value || isSmHover.value);
 
-// ── Full menu — exactly matching Larkon live demo ──────
+// ΓöÇΓöÇ Full menu ΓÇö exactly matching Larkon live demo ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const menuSections = ref([
-  // ── GENERAL ──────────────────────────────────────────
+  // ΓöÇΓöÇ GENERAL ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   {
     label: "General",
     items: [
       { name: "Dashboard", icon: HomeIcon, route: "/dashboard" },
   ]},
-  // ── COMPONENTS ───────────────────────────────────────
+  // ΓöÇΓöÇ COMPONENTS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   {
     label: "Components",
     items: [
@@ -299,13 +299,13 @@ const menuSections = ref([
   },
 ]);
 
-// ── Public API ─────────────────────────────────────────
+// ΓöÇΓöÇ Public API ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const openSidebar   = () => { isMobileOpen.value = true; };
 const closeSidebar  = () => { isMobileOpen.value = false; emit("mobile-close"); };
 const setMobileOpen = (v) => { isMobileOpen.value = v; };
 defineExpose({ openSidebar, closeSidebar, setMobileOpen });
 
-// ── Size sync (body attr → reactive state) ─────────────
+// ΓöÇΓöÇ Size sync (body attr ΓåÆ reactive state) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const syncSize = () => {
   sidebarSize.value = document.body.getAttribute("data-sidebar-size") || "default";
 };
@@ -331,18 +331,18 @@ const toggleSidebarSize = () => {
   applySize(isCondensed.value ? "default" : "condensed");
 };
 
-// ── sm-hover expand / collapse ─────────────────────────
+// ΓöÇΓöÇ sm-hover expand / collapse ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const onMouseEnter = () => { if (isSmHover.value)       applySize("sm-hover-active"); };
 const onMouseLeave = () => { if (isSmHoverActive.value) applySize("sm-hover"); };
 
-// ── Active state ───────────────────────────────────────
+// ΓöÇΓöÇ Active state ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const isItemActive = (item) => {
   if (item.route)    return route.path === item.route;
   if (item.dropdown) return item.dropdown.some((s) => s.route === route.path);
   return false;
 };
 
-// ── Dropdown accordion ─────────────────────────────────
+// ΓöÇΓöÇ Dropdown accordion ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const closeAll = () =>
   menuSections.value.forEach((sec) =>
     sec.items.forEach((it) => { if (it.dropdown) it.isOpen = false; })
@@ -362,10 +362,10 @@ const toggleDropdown = (item) => {
   item.isOpen = !was;
 };
 
-// ── Keyboard ───────────────────────────────────────────
+// ΓöÇΓöÇ Keyboard ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const onKeydown = (e) => { if (e.key === "Escape" && isMobileOpen.value) closeSidebar(); };
 
-// ── Lifecycle ──────────────────────────────────────────
+// ΓöÇΓöÇ Lifecycle ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 onMounted(() => {
   syncSize();
   syncMenuColor();
@@ -395,7 +395,7 @@ watch([() => route.path, isCollapsed], openActiveGroup);
 :global(.sidebar-overlay.show) { display: block; opacity: 1; }
 
 /* -------------------------------------------------------
-   CSS VARIABLES � set via .theme-dark / .theme-light
+   CSS VARIABLES ∩┐╜ set via .theme-dark / .theme-light
    bound reactively from Vue (menuColor ref)
 ------------------------------------------------------- */
 .sidebar {

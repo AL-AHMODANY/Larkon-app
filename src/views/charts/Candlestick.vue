@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
 
     <div class="cp-header">
       <h4 class="cp-title">Candlestick Charts</h4>
@@ -80,6 +81,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -194,10 +196,136 @@ const categoryOpts = computed(() => ({
 }))
 
 const snip = {
-  basic:    `<apexchart type="candlestick" height="350"\n  :options="chartOptions" :series="series" />`,
-  combo:    `<apexchart type="candlestick" height="350"\n  :options="comboOptions" :series="series" />`,
-  brush:    `<!-- Main chart -->\n<apexchart type="candlestick" height="290" id="cs-main"\n  :options="mainOptions" :series="series" />\n<!-- Brush chart -->\n<apexchart type="bar" height="130" id="cs-brush"\n  :options="brushOptions" :series="volumeSeries" />`,
-  category: `<apexchart type="candlestick" height="350"\n  :options="categoryOptions" :series="series" />`,
+  basic: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+// Generate OHLC data
+function genOHLC(count, startDate, startPrice) {
+  var data = []; var price = startPrice;
+  var date = new Date(startDate).getTime();
+  for (var i = 0; i < count; i++) {
+    var open  = price + (Math.random() - 0.5) * 8;
+    var close = open  + (Math.random() - 0.5) * 12;
+    var high  = Math.max(open, close) + Math.random() * 6;
+    var low   = Math.min(open, close) - Math.random() * 6;
+    data.push({ x: new Date(date), y: [+open.toFixed(2), +high.toFixed(2), +low.toFixed(2), +close.toFixed(2)] });
+    price = close; date += 86400000;
+  }
+  return data;
+}
+var options = {
+  chart: { type: 'candlestick', height: 350, toolbar: { show: false } },
+  series: [{ data: genOHLC(60, '2023-01-01', 150) }],
+  xaxis: { type: 'datetime' },
+  plotOptions: { candlestick: { colors: { upward: '#2ecc71', downward: '#e74c3c' }, wick: { useFillColor: true } } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  combo: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+function genOHLC(count, startDate, startPrice) {
+  var data = []; var price = startPrice;
+  var date = new Date(startDate).getTime();
+  for (var i = 0; i < count; i++) {
+    var open  = price + (Math.random() - 0.5) * 8;
+    var close = open  + (Math.random() - 0.5) * 12;
+    var high  = Math.max(open, close) + Math.random() * 6;
+    var low   = Math.min(open, close) - Math.random() * 6;
+    data.push({ x: new Date(date), y: [+open.toFixed(2), +high.toFixed(2), +low.toFixed(2), +close.toFixed(2)] });
+    price = close; date += 86400000;
+  }
+  return data;
+}
+var ohlcData = genOHLC(60, '2023-01-01', 150);
+// Calculate 7-day moving average
+var maData = ohlcData.map(function(d, i, arr) {
+  var slice = arr.slice(Math.max(0, i - 6), i + 1);
+  var avg = slice.reduce(function(s, c) { return s + c.y[3]; }, 0) / slice.length;
+  return { x: d.x, y: +avg.toFixed(2) };
+});
+var options = {
+  chart: { type: 'candlestick', height: 350, toolbar: { show: false } },
+  series: [
+    { name: 'candle', type: 'candlestick', data: ohlcData },
+    { name: 'MA(7)',  type: 'line',        data: maData }
+  ],
+  xaxis: { type: 'datetime' },
+  colors: ['transparent','#fd7e14'],
+  stroke: { width: [1, 2] },
+  plotOptions: { candlestick: { colors: { upward: '#2ecc71', downward: '#e74c3c' }, wick: { useFillColor: true } } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'top' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  brush: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart-main"></div>
+<div id="chart-brush"></div>
+<script>
+function genOHLC(count, startDate, startPrice) {
+  var data = []; var price = startPrice;
+  var date = new Date(startDate).getTime();
+  for (var i = 0; i < count; i++) {
+    var open  = price + (Math.random() - 0.5) * 8;
+    var close = open  + (Math.random() - 0.5) * 12;
+    var high  = Math.max(open, close) + Math.random() * 6;
+    var low   = Math.min(open, close) - Math.random() * 6;
+    data.push({ x: new Date(date), y: [+open.toFixed(2), +high.toFixed(2), +low.toFixed(2), +close.toFixed(2)] });
+    price = close; date += 86400000;
+  }
+  return data;
+}
+var ohlcData = genOHLC(60, '2023-01-01', 150);
+var volumeData = ohlcData.map(function(d) { return { x: d.x, y: Math.floor(Math.random() * 5000000) + 500000 }; });
+var mainOpts = {
+  chart: { id: 'cs-main', type: 'candlestick', height: 290, toolbar: { show: false } },
+  series: [{ data: ohlcData }],
+  xaxis: { type: 'datetime' },
+  plotOptions: { candlestick: { colors: { upward: '#2ecc71', downward: '#e74c3c' } } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 }, tooltip: { theme: 'light' }
+};
+var brushOpts = {
+  chart: { id: 'cs-brush', type: 'bar', height: 130, brush: { target: 'cs-main', enabled: true }, selection: { enabled: true, xaxis: { min: ohlcData[0].x.getTime(), max: ohlcData[29].x.getTime() } } },
+  series: [{ name: 'Volume', data: volumeData }],
+  xaxis: { type: 'datetime' }, colors: ['#5b73e8'],
+  fill: { opacity: 0.7 }, dataLabels: { enabled: false }, yaxis: { labels: { show: false } }
+};
+new ApexCharts(document.querySelector("#chart-main"), mainOpts).render();
+new ApexCharts(document.querySelector("#chart-brush"), brushOpts).render();
+<\/script>`,
+
+  category: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var data = months.map(function(m, i) {
+  var o = 100 + i * 5 + Math.random() * 20;
+  var c = o + (Math.random() - 0.5) * 15;
+  return { x: m, y: [+o.toFixed(2), +(Math.max(o,c)+Math.random()*8).toFixed(2), +(Math.min(o,c)-Math.random()*8).toFixed(2), +c.toFixed(2)] };
+});
+var options = {
+  chart: { type: 'candlestick', height: 350, toolbar: { show: false } },
+  series: [{ data: data }],
+  xaxis: { type: 'category' },
+  plotOptions: { candlestick: { colors: { upward: '#2ecc71', downward: '#e74c3c' }, wick: { useFillColor: true } } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
 }
 
 function copy(text) {

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="dashboard">
 
     <!-- ── Page title ──────────────────────────────────── -->
@@ -435,13 +435,13 @@ const radialOptions = computed(() => ({
 
 // ── Top pages ───────────────────────────────────────────
 const topPages = ref([
-  { path: "larkon/ecommerce.html", views: 465,  exit: 4.4,   exitLabel: "4.4%"  },
-  { path: "larkon/dashboard.html", views: 426,  exit: 20.4,  exitLabel: "20.4%" },
-  { path: "larkon/chat.html",      views: 254,  exit: 12.25, exitLabel: "12.25%"},
-  { path: "larkon/auth-login.html",views: 3369, exit: 5.2,   exitLabel: "5.2%"  },
-  { path: "larkon/email.html",     views: 985,  exit: 64.2,  exitLabel: "64.2%" },
-  { path: "larkon/social.html",    views: 653,  exit: 2.4,   exitLabel: "2.4%"  },
-  { path: "larkon/blog.html",      views: 478,  exit: 1.4,   exitLabel: "1.4%"  },
+  { path: "AL-AHMODANY/ecommerce.html", views: 465,  exit: 4.4,   exitLabel: "4.4%"  },
+  { path: "AL-AHMODANY/dashboard.html", views: 426,  exit: 20.4,  exitLabel: "20.4%" },
+  { path: "AL-AHMODANY/chat.html",      views: 254,  exit: 12.25, exitLabel: "12.25%"},
+  { path: "AL-AHMODANY/auth-login.html",views: 3369, exit: 5.2,   exitLabel: "5.2%"  },
+  { path: "AL-AHMODANY/email.html",     views: 985,  exit: 64.2,  exitLabel: "64.2%" },
+  { path: "AL-AHMODANY/social.html",    views: 653,  exit: 2.4,   exitLabel: "2.4%"  },
+  { path: "AL-AHMODANY/blog.html",      views: 478,  exit: 1.4,   exitLabel: "1.4%"  },
 ]);
 
 // ── Transactions ────────────────────────────────────────

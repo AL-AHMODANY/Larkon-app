@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Line Charts</h4>
       <p class="cp-subtitle">ApexCharts line chart examples with copy-ready snippets.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -63,49 +65,217 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic Line Chart', height: 300,
     series: [{ name: 'Desktops', data: [10,41,35,51,49,62,69,91,148,120,100,130] }],
     opts: { ...base.value, colors: ['#fd7e14'], xaxis: { ...base.value.xaxis, categories: months }, legend: { show: false } },
-    snip: `<apexchart type="line" height="300" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 300, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [{ name: 'Desktops', data: [10,41,35,51,49,62,69,91,148,120,100,130] }],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#fd7e14'],
+  stroke: { curve: 'smooth', width: 2.5 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'zoomable', title: 'Zoomable Timeseries', height: 300,
     series: [{ name: 'Sales', data: (() => { const d = []; let t = new Date('2023-01-01').getTime(); for(let i=0;i<60;i++){d.push([t,Math.floor(Math.random()*80)+20]);t+=86400000*6} return d })() }],
     opts: { ...base.value, colors: ['#5b73e8'], chart: { ...base.value.chart, zoom: { enabled: true } }, xaxis: { ...base.value.xaxis, type: 'datetime' }, stroke: { curve: 'straight', width: 2 }, legend: { show: false } },
-    snip: `<apexchart type="line" height="300" :options="zoomableOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+// Generate datetime series
+var data = [];
+var t = new Date('2023-01-01').getTime();
+for (var i = 0; i < 60; i++) {
+  data.push([t, Math.floor(Math.random() * 80) + 20]);
+  t += 86400000 * 6;
+}
+var options = {
+  chart: { type: 'line', height: 300, toolbar: { show: true }, zoom: { enabled: true } },
+  series: [{ name: 'Sales', data: data }],
+  xaxis: { type: 'datetime' },
+  colors: ['#5b73e8'],
+  stroke: { curve: 'straight', width: 2 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light', x: { format: 'dd MMM yyyy' } }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'annotations', title: 'Line with Annotations', height: 300,
     series: [{ name: 'Revenue', data: [30,40,35,50,49,60,70,91,125,110,95,120] }],
     opts: { ...base.value, colors: ['#2ecc71'], xaxis: { ...base.value.xaxis, categories: months }, annotations: { yaxis: [{ y: 80, borderColor: '#e74c3c', borderWidth: 2, label: { borderColor: '#e74c3c', style: { color: '#fff', background: '#e74c3c', fontSize: '11px' }, text: 'Target: 80' } }] }, legend: { show: false } },
-    snip: `<apexchart type="line" height="300" :options="annotationsOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 300, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [{ name: 'Revenue', data: [30,40,35,50,49,60,70,91,125,110,95,120] }],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  annotations: {
+    yaxis: [{
+      y: 80, borderColor: '#e74c3c', borderWidth: 2,
+      label: { borderColor: '#e74c3c', style: { color: '#fff', background: '#e74c3c', fontSize: '11px' }, text: 'Target: 80' }
+    }]
+  },
+  colors: ['#2ecc71'],
+  stroke: { curve: 'smooth', width: 2.5 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'synced', title: 'Synchronized Charts', height: 200,
     series: [{ name: 'Series A', data: [31,40,28,51,42,109,100,80,95,72,60,88] }],
     opts: { ...base.value, colors: ['#fd7e14'], xaxis: { ...base.value.xaxis, categories: months }, chart: { ...base.value.chart, id: 'line-sync-1', group: 'social' }, legend: { show: false } },
-    snip: `<apexchart type="line" height="200" :options="syncedOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart1"></div>
+<div id="chart2"></div>
+<script>
+var opts1 = {
+  chart: { id: 'chart1', group: 'social', type: 'line', height: 200, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [{ name: 'Series A', data: [31,40,28,51,42,109,100,80,95,72,60,88] }],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#fd7e14'], stroke: { curve: 'smooth', width: 2 }, dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 }, tooltip: { theme: 'light' }
+};
+var opts2 = {
+  chart: { id: 'chart2', group: 'social', type: 'line', height: 200, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [{ name: 'Series B', data: [11,32,45,32,34,52,41,60,45,50,70,55] }],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#5b73e8'], stroke: { curve: 'smooth', width: 2 }, dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 }, tooltip: { theme: 'light' }
+};
+new ApexCharts(document.querySelector("#chart1"), opts1).render();
+new ApexCharts(document.querySelector("#chart2"), opts2).render();
+<\/script>`,
   },
   {
     id: 'gradient', title: 'Gradient Line Chart', height: 300,
     series: [{ name: 'Series 1', data: [4,3,10,9,29,19,22,9,12,7,19,5] }, { name: 'Series 2', data: [2,3,8,7,22,15,18,7,10,5,15,3] }],
     opts: { ...base.value, colors: ['#fd7e14','#5b73e8'], fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.2, stops: [0,90,100] } }, xaxis: { ...base.value.xaxis, categories: months }, stroke: { curve: 'smooth', width: 2 } },
-    snip: `<apexchart type="line" height="300" :options="gradientOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 300, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'Series 1', data: [4,3,10,9,29,19,22,9,12,7,19,5] },
+    { name: 'Series 2', data: [2,3,8,7,22,15,18,7,10,5,15,3] }
+  ],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#fd7e14','#5b73e8'],
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.2, stops: [0,90,100] } },
+  stroke: { curve: 'smooth', width: 2 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'datalabels', title: 'Line with Data Labels', height: 300,
     series: [{ name: 'High', data: [28,29,33,36,32,32,33] }, { name: 'Low', data: [12,11,14,18,17,13,13] }],
     opts: { ...base.value, colors: ['#fd7e14','#5b73e8'], xaxis: { ...base.value.xaxis, categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul'] }, dataLabels: { enabled: true, style: { fontSize: '11px' } }, stroke: { curve: 'straight', width: 2 }, markers: { size: 5 } },
-    snip: `<apexchart type="line" height="300" :options="dataLabelsOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 300, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'High', data: [28,29,33,36,32,32,33] },
+    { name: 'Low',  data: [12,11,14,18,17,13,13] }
+  ],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul'] },
+  colors: ['#fd7e14','#5b73e8'],
+  stroke: { curve: 'straight', width: 2 },
+  dataLabels: { enabled: true, style: { fontSize: '11px' } },
+  markers: { size: 5 },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'stepline', title: 'Stepline Chart', height: 300,
     series: [{ name: 'Steps', data: [34,44,54,21,12,43,33,23,66,66,58] }],
     opts: { ...base.value, colors: ['#2ecc71'], xaxis: { ...base.value.xaxis, categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'] }, stroke: { curve: 'stepline', width: 2.5 }, legend: { show: false } },
-    snip: `<apexchart type="line" height="300" :options="steplineOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 300, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [{ name: 'Steps', data: [34,44,54,21,12,43,33,23,66,66,58] }],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'] },
+  colors: ['#2ecc71'],
+  stroke: { curve: 'stepline', width: 2.5 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'brush', title: 'Brush Chart', height: 200,
     series: [{ name: 'Series 1', data: (() => { const d = []; let t = new Date('2023-01-01').getTime(); for(let i=0;i<50;i++){d.push([t,Math.floor(Math.random()*80)+20]);t+=86400000*7} return d })() }],
     opts: { ...base.value, colors: ['#5b73e8'], chart: { ...base.value.chart, id: 'line-brush-main', brush: { enabled: false } }, xaxis: { ...base.value.xaxis, type: 'datetime' }, legend: { show: false } },
-    snip: `<apexchart type="line" height="200" :options="brushOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart-main"></div>
+<div id="chart-brush"></div>
+<script>
+// Generate datetime data
+var data = [];
+var t = new Date('2023-01-01').getTime();
+for (var i = 0; i < 50; i++) {
+  data.push([t, Math.floor(Math.random() * 80) + 20]);
+  t += 86400000 * 7;
+}
+var mainOpts = {
+  chart: { id: 'chart-main', type: 'line', height: 200, toolbar: { autoSelected: 'pan', show: false } },
+  series: [{ name: 'Series 1', data: data }],
+  xaxis: { type: 'datetime' },
+  colors: ['#5b73e8'], stroke: { curve: 'smooth', width: 2 }, dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 }, tooltip: { theme: 'light' }
+};
+var brushOpts = {
+  chart: { id: 'chart-brush', type: 'area', height: 130, brush: { target: 'chart-main', enabled: true }, selection: { enabled: true } },
+  series: [{ name: 'Series 1', data: data }],
+  xaxis: { type: 'datetime' },
+  colors: ['#5b73e8'], fill: { type: 'gradient', gradient: { opacityFrom: 0.91, opacityTo: 0.1 } },
+  stroke: { width: 1 }, dataLabels: { enabled: false }, yaxis: { tickAmount: 2 }
+};
+new ApexCharts(document.querySelector("#chart-main"), mainOpts).render();
+new ApexCharts(document.querySelector("#chart-brush"), brushOpts).render();
+<\/script>`,
   },
 ])
 

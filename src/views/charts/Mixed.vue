@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Mixed Charts</h4>
       <p class="cp-subtitle">Combine multiple chart types in a single ApexCharts instance.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -64,7 +66,29 @@ const charts = computed(() => [
       { name: 'Social Media', type: 'line',   data: [23,42,35,27,43,22,17,31,22,22,12,16] },
     ],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14'], stroke: { width: [0, 3], curve: 'smooth' }, plotOptions: { bar: { columnWidth: '50%', borderRadius: 4 } }, xaxis: { ...base.value.xaxis, categories: months }, yaxis: [{ labels: { style: { colors: lc.value, fontSize: '11px' } } }, { opposite: true, labels: { style: { colors: lc.value, fontSize: '11px' } } }] },
-    snip: `<apexchart type="line" height="320" :options="mixedOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 320, toolbar: { show: false } },
+  series: [
+    { name: 'Website Blog', type: 'column', data: [440,505,414,671,227,413,201,352,752,320,257,160] },
+    { name: 'Social Media', type: 'line',   data: [23,42,35,27,43,22,17,31,22,22,12,16] }
+  ],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  yaxis: [{ title: { text: 'Website Blog' } }, { opposite: true, title: { text: 'Social Media' } }],
+  colors: ['#5b73e8','#fd7e14'],
+  stroke: { width: [0, 3], curve: 'smooth' },
+  plotOptions: { bar: { columnWidth: '50%', borderRadius: 4 } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light', shared: true, intersect: false }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'line-area', title: 'Multiple Y-Axis', height: 320,
@@ -74,7 +98,34 @@ const charts = computed(() => [
       { name: 'Revenue',  type: 'line',   data: [20,29,37,36,44,45,50,58] },
     ],
     opts: { ...base.value, colors: ['#fd7e14','#2ecc71','#5b73e8'], stroke: { width: [0, 0, 3], curve: 'smooth' }, plotOptions: { bar: { columnWidth: '50%', borderRadius: 4 } }, xaxis: { ...base.value.xaxis, categories: ['2011','2012','2013','2014','2015','2016','2017','2018'] }, yaxis: [{ labels: { style: { colors: lc.value, fontSize: '11px' } } }, { labels: { style: { colors: lc.value, fontSize: '11px' } } }, { opposite: true, labels: { style: { colors: lc.value, fontSize: '11px' } } }] },
-    snip: `<apexchart type="line" height="320" :options="multiYAxisOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 320, toolbar: { show: false } },
+  series: [
+    { name: 'Income',   type: 'column', data: [1.4,2,2.5,1.5,2.5,2.8,3.8,4.6] },
+    { name: 'Cashflow', type: 'column', data: [1.1,3,3.1,4,4.1,4.9,6.5,8.5] },
+    { name: 'Revenue',  type: 'line',   data: [20,29,37,36,44,45,50,58] }
+  ],
+  xaxis: { categories: ['2011','2012','2013','2014','2015','2016','2017','2018'] },
+  yaxis: [
+    { title: { text: 'Income' } },
+    { title: { text: 'Cashflow' } },
+    { opposite: true, title: { text: 'Revenue' } }
+  ],
+  colors: ['#fd7e14','#2ecc71','#5b73e8'],
+  stroke: { width: [0, 0, 3], curve: 'smooth' },
+  plotOptions: { bar: { columnWidth: '50%', borderRadius: 4 } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light', shared: true, intersect: false }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'line-area-col', title: 'Line, Area & Column', height: 320,
@@ -84,7 +135,30 @@ const charts = computed(() => [
       { name: 'TEAM C', type: 'column', data: [57,56,61,58,63,60,66,60,65,61,70] },
     ],
     opts: { ...base.value, colors: ['#fd7e14','#5b73e8','#2ecc71'], stroke: { width: [0, 3, 0], curve: 'smooth' }, fill: { opacity: [0.35, 1, 1] }, plotOptions: { bar: { columnWidth: '50%', borderRadius: 4 } }, xaxis: { ...base.value.xaxis, categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'] } },
-    snip: `<apexchart type="line" height="320" :options="lineAreaColOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'line', height: 320, toolbar: { show: false } },
+  series: [
+    { name: 'TEAM A', type: 'area',   data: [44,55,31,47,31,43,26,41,31,47,33] },
+    { name: 'TEAM B', type: 'line',   data: [55,69,45,61,43,54,37,52,44,61,43] },
+    { name: 'TEAM C', type: 'column', data: [57,56,61,58,63,60,66,60,65,61,70] }
+  ],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'] },
+  colors: ['#fd7e14','#5b73e8','#2ecc71'],
+  stroke: { width: [0, 3, 0], curve: 'smooth' },
+  fill: { opacity: [0.35, 1, 1] },
+  plotOptions: { bar: { columnWidth: '50%', borderRadius: 4 } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light', shared: true, intersect: false }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

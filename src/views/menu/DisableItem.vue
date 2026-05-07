@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
+    <CdnSection />
     <div class="page-header">
       <h4 class="page-title">Disable Item</h4>
       <p class="page-subtitle">Example of a disabled menu item page.</p>
@@ -16,6 +17,7 @@
   </div>
 </template>
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 </script>
 <style scoped>

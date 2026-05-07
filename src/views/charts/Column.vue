@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Column Charts</h4>
       <p class="cp-subtitle">ApexCharts vertical column chart examples with copy-ready snippets.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -66,37 +68,159 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic Column Chart', height: 300,
     series: [{ name: 'Net Profit', data: arr(12, 20, 140) }, { name: 'Revenue', data: arr(12, 10, 100) }, { name: 'Free Cash Flow', data: arr(12, 5, 80) }],
     opts: { ...base.value, colors: ['#fd7e14','#f1c40f','#2ecc71'], xaxis: { ...base.value.xaxis, categories: months }, legend: { show: true, position: 'bottom', labels: { colors: lc.value } } },
-    snip: `<apexchart type="bar" height="300" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 300, toolbar: { show: false } },
+  series: [
+    { name: 'Net Profit',     data: [76,85,101,98,87,105,91,114,94,86,115,35] },
+    { name: 'Revenue',        data: [44,55,57,56,61,58,63,60,66,56,58,30] },
+    { name: 'Free Cash Flow', data: [35,41,36,26,45,48,52,53,41,40,45,20] }
+  ],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#fd7e14','#f1c40f','#2ecc71'],
+  plotOptions: { bar: { columnWidth: '55%', borderRadius: 4 } },
+  stroke: { show: true, width: 2, colors: ['transparent'] },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'datalabels', title: 'Column Chart with Datalabels', height: 320,
     series: [{ name: 'Inflation', data: [2.3,3.1,4.0,10.1,4.0,3.6,3.2,2.3,1.4,0.8,0.5,0.2] }],
     opts: { ...base.value, colors: ['#2ecc71'], xaxis: { ...base.value.xaxis, categories: months }, dataLabels: { enabled: true, formatter: v => v + '%', offsetY: -20, style: { fontSize: '11px', colors: [isDark.value ? '#cdd6e8' : '#304758'] } }, plotOptions: { bar: { columnWidth: '50%', borderRadius: 4, dataLabels: { position: 'top' } } }, legend: { show: false } },
-    snip: `<apexchart type="bar" height="320" :options="datalabelsOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 320, toolbar: { show: false } },
+  series: [{ name: 'Inflation', data: [2.3,3.1,4.0,10.1,4.0,3.6,3.2,2.3,1.4,0.8,0.5,0.2] }],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#2ecc71'],
+  plotOptions: { bar: { columnWidth: '50%', borderRadius: 4, dataLabels: { position: 'top' } } },
+  dataLabels: { enabled: true, formatter: function(v) { return v + '%'; }, offsetY: -20, style: { fontSize: '11px', colors: ['#304758'] } },
+  stroke: { show: true, width: 2, colors: ['transparent'] },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: false },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'stacked', title: 'Stacked Column Chart', height: 300,
     series: [{ name: 'Product A', data: arr(8, 10, 80) }, { name: 'Product B', data: arr(8, 10, 80) }, { name: 'Product C', data: arr(8, 10, 80) }],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71'], chart: { ...base.value.chart, stacked: true }, xaxis: { ...base.value.xaxis, categories: ['2013 Q1','2013 Q2','2013 Q3','2013 Q4','2014 Q1','2014 Q2','2014 Q3','2014 Q4'] }, dataLabels: { enabled: true, style: { colors: ['#fff'], fontSize: '10px' } }, plotOptions: { bar: { columnWidth: '55%', borderRadius: 0 } }, legend: { show: true, position: 'bottom', labels: { colors: lc.value } } },
-    snip: `<apexchart type="bar" height="300" :options="stackedOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 300, stacked: true, toolbar: { show: false } },
+  series: [
+    { name: 'Product A', data: [44,55,41,67,22,43,21,49] },
+    { name: 'Product B', data: [13,23,20,8,13,27,33,12] },
+    { name: 'Product C', data: [11,17,15,15,21,14,15,13] }
+  ],
+  xaxis: { categories: ['2013 Q1','2013 Q2','2013 Q3','2013 Q4','2014 Q1','2014 Q2','2014 Q3','2014 Q4'] },
+  colors: ['#5b73e8','#fd7e14','#2ecc71'],
+  plotOptions: { bar: { columnWidth: '55%', borderRadius: 0 } },
+  stroke: { show: true, width: 2, colors: ['transparent'] },
+  dataLabels: { enabled: true, style: { colors: ['#fff'], fontSize: '10px' } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'stacked100', title: '100% Stacked Column Chart', height: 300,
     series: [{ name: 'Product A', data: arr(8, 10, 80) }, { name: 'Product B', data: arr(8, 10, 80) }, { name: 'Product C', data: arr(8, 10, 80) }],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71'], chart: { ...base.value.chart, stacked: true, stackType: '100%' }, xaxis: { ...base.value.xaxis, categories: ['2013 Q1','2013 Q2','2013 Q3','2013 Q4','2014 Q1','2014 Q2','2014 Q3','2014 Q4'] }, dataLabels: { enabled: true, formatter: v => v.toFixed(0) + '%', style: { colors: ['#fff'], fontSize: '10px' } }, plotOptions: { bar: { columnWidth: '55%', borderRadius: 0 } }, legend: { show: true, position: 'bottom', labels: { colors: lc.value } } },
-    snip: `<apexchart type="bar" height="300" :options="stacked100Options" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 300, stacked: true, stackType: '100%', toolbar: { show: false } },
+  series: [
+    { name: 'Product A', data: [44,55,41,67,22,43,21,49] },
+    { name: 'Product B', data: [13,23,20,8,13,27,33,12] },
+    { name: 'Product C', data: [11,17,15,15,21,14,15,13] }
+  ],
+  xaxis: { categories: ['2013 Q1','2013 Q2','2013 Q3','2013 Q4','2014 Q1','2014 Q2','2014 Q3','2014 Q4'] },
+  colors: ['#5b73e8','#fd7e14','#2ecc71'],
+  plotOptions: { bar: { columnWidth: '55%', borderRadius: 0 } },
+  dataLabels: { enabled: true, formatter: function(v) { return v.toFixed(0) + '%'; }, style: { colors: ['#fff'], fontSize: '10px' } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'negative', title: 'Column Chart with Negative Values', height: 320,
     series: [{ name: 'Cash Flow', data: [1.45,5.42,5.9,-0.42,-12.6,-18.1,-18.2,-14.16,-11.1,-6.09,0.34,3.88,13.07,5,8.15,13.9,7,-0.9,-4.5,-8.4] }, { name: 'Revenue', data: [0.5,3.2,3.1,-1.0,-8.0,-12.0,-10.5,-8.0,-5.5,-2.5,2.0,5.0,8.5,2.5,5.0,9.5,4.0,-2.0,-6.0,-10.0] }],
     opts: { ...base.value, colors: ['#5b73e8','#e74c3c'], xaxis: { ...base.value.xaxis, categories: Array.from({length:20},(_,i)=>`W${i+1}`) }, legend: { show: true, position: 'bottom', labels: { colors: lc.value } } },
-    snip: `<apexchart type="bar" height="320" :options="negativeOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 320, toolbar: { show: false } },
+  series: [
+    { name: 'Cash Flow', data: [1.45,5.42,5.9,-0.42,-12.6,-18.1,-18.2,-14.16,-11.1,-6.09,0.34,3.88,13.07,5,8.15,13.9,7,-0.9,-4.5,-8.4] },
+    { name: 'Revenue',   data: [0.5,3.2,3.1,-1.0,-8.0,-12.0,-10.5,-8.0,-5.5,-2.5,2.0,5.0,8.5,2.5,5.0,9.5,4.0,-2.0,-6.0,-10.0] }
+  ],
+  xaxis: { categories: ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12','W13','W14','W15','W16','W17','W18','W19','W20'] },
+  colors: ['#5b73e8','#e74c3c'],
+  plotOptions: { bar: { columnWidth: '55%', borderRadius: 4 } },
+  stroke: { show: true, width: 2, colors: ['transparent'] },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'distributed', title: 'Distributed Column Chart', height: 300,
     series: [{ name: 'Cities', data: [21,22,10,28,16,21,13,30] }],
     opts: { ...base.value, colors: ['#5b73e8','#2ecc71','#e74c3c','#f1c40f','#9b59b6','#e91e63','#00838f','#546e7a'], xaxis: { ...base.value.xaxis, categories: ['Athens','London','Amsterdam','Auckland','Beirut','Buenos Aires','Cairo','Dublin'] }, plotOptions: { bar: { columnWidth: '55%', borderRadius: 4, distributed: true } }, legend: { show: true, position: 'bottom', labels: { colors: lc.value } } },
-    snip: `<apexchart type="bar" height="300" :options="distributedOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 300, toolbar: { show: false } },
+  series: [{ name: 'Cities', data: [21,22,10,28,16,21,13,30] }],
+  xaxis: { categories: ['Athens','London','Amsterdam','Auckland','Beirut','Buenos Aires','Cairo','Dublin'] },
+  colors: ['#5b73e8','#2ecc71','#e74c3c','#f1c40f','#9b59b6','#e91e63','#00838f','#546e7a'],
+  plotOptions: { bar: { columnWidth: '55%', borderRadius: 4, distributed: true } },
+  stroke: { show: true, width: 2, colors: ['transparent'] },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

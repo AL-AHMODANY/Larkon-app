@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
 
     <!-- Page Header -->
     <div class="cp-header">
@@ -131,6 +132,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -261,13 +263,166 @@ const nullOpts = computed(() => ({
 
 // Code snippets
 const snip = {
-  basic:    `<apexchart type="area" height="280" :options="chartOptions" :series="series" />`,
-  spline:   `<apexchart type="area" height="280" :options="splineOptions" :series="series" />`,
-  datetime: `<apexchart type="area" height="280" :options="datetimeOptions" :series="series" />`,
-  negative: `<apexchart type="area" height="280" :options="negativeOptions" :series="series" />`,
-  stacked:  `<apexchart type="area" height="300" :options="stackedOptions" :series="series" />`,
-  irregular:`<apexchart type="area" height="280" :options="irregularOptions" :series="series" />`,
-  nullVal:  `<apexchart type="area" height="280" :options="nullOptions" :series="series" />`,
+  basic: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'area', height: 280, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [{ name: 'STOCK ABC', data: [31,40,28,51,42,109,100,120,80,95,110,130] }],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#fd7e14'],
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.02, stops: [0,90,100] } },
+  stroke: { curve: 'smooth', width: 2 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  spline: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'area', height: 280, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'Series 1', data: [31,40,28,51,42,109,100,80,95,72,60,88] },
+    { name: 'Series 2', data: [11,32,45,32,34,52,41,60,45,50,70,55] }
+  ],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] },
+  colors: ['#2ecc71','#5b73e8'],
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.04 } },
+  stroke: { curve: 'smooth', width: 2 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  datetime: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+// Generate datetime series data
+var data = [];
+var t = new Date('2023-01-01').getTime();
+for (var i = 0; i < 80; i++) {
+  data.push([t, Math.floor(Math.random() * 80) + 10]);
+  t += 86400000 * 4;
+}
+var options = {
+  chart: { type: 'area', height: 280, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [{ name: 'XYZ MOTORS', data: data }],
+  xaxis: { type: 'datetime' },
+  colors: ['#fd7e14'],
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.02 } },
+  stroke: { curve: 'straight', width: 1.5 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light', x: { format: 'dd MMM yyyy' } }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  negative: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'area', height: 280, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'Cash Flow', data: [1.45,5.42,5.9,-0.42,-12.6,-18.1,-18.2,-14.16,-11.1,-6.09,0.34,3.88,13.07,5,8.15,13.9,7,-0.9,-4.5,-8.4] },
+    { name: 'Revenue',   data: [0.5,3.2,3.1,-1.0,-8.0,-12.0,-10.5,-8.0,-5.5,-2.5,2.0,5.0,8.5,2.5,5.0,9.5,4.0,-2.0,-6.0,-10.0] }
+  ],
+  xaxis: { categories: ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12','W13','W14','W15','W16','W17','W18','W19','W20'] },
+  colors: ['#2ecc71','#f1c40f'],
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.04 } },
+  stroke: { curve: 'smooth', width: 2 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  stacked: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'area', height: 300, stacked: true, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'South',   data: [31,40,28,51,42,109,100] },
+    { name: 'North',   data: [11,32,45,32,34,52,41] },
+    { name: 'Central', data: [20,15,30,25,18,40,35] }
+  ],
+  xaxis: { categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul'] },
+  colors: ['#5b73e8','#fd7e14','#2ecc71'],
+  fill: { type: 'solid', opacity: 0.65 },
+  stroke: { width: 0 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  irregular: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'area', height: 280, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'Product A', data: [[1327359600000,30],[1327446000000,40],[1327618800000,35],[1327878000000,50],[1328137200000,45],[1328310000000,55],[1328482800000,60],[1328655600000,65]] },
+    { name: 'Product B', data: [[1327359600000,15],[1327446000000,25],[1327618800000,20],[1327878000000,30],[1328137200000,28],[1328310000000,38],[1328482800000,42],[1328655600000,48]] }
+  ],
+  xaxis: { type: 'datetime' },
+  colors: ['#5b73e8','#e74c3c'],
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.04 } },
+  stroke: { curve: 'smooth', width: 2 },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'top' },
+  tooltip: { theme: 'light', x: { format: 'dd MMM yyyy' } }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  nullVal: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'area', height: 280, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'Sales', data: [12,14,null,18,null,15,20,null,25,18,null,22,28,30,null,26,null,32] },
+    { name: 'Leads', data: [null,8,12,null,16,10,null,18,14,null,20,15,null,22,18,null,24,20] }
+  ],
+  xaxis: { categories: ['P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14','P15','P16','P17','P18'] },
+  colors: ['#fd7e14','#f1c40f'],
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.04 } },
+  stroke: { curve: 'smooth', width: 2, dashArray: [0, 5] },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
 }
 
 function copy(text) {

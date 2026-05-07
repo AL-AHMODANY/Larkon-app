@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Heatmap Charts</h4>
       <p class="cp-subtitle">ApexCharts heatmap chart examples with copy-ready snippets.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -64,7 +66,27 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic Heatmap', height: 350,
     series: Array.from({ length: 8 }, (_, i) => heatRow(`W${i + 1}`, 12)),
     opts: { ...base.value, colors: ['#fd7e14'], xaxis: { ...base.value.xaxis, categories: months } },
-    snip: `<apexchart type="heatmap" height="350" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function makeRow(name) {
+  return { name: name, data: months.map(function(m) { return { x: m, y: Math.floor(Math.random() * 90) }; }) };
+}
+var options = {
+  chart: { type: 'heatmap', height: 350, toolbar: { show: false } },
+  series: ['W1','W2','W3','W4','W5','W6','W7','W8'].map(makeRow),
+  xaxis: { categories: months },
+  colors: ['#fd7e14'],
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7' },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'multiple-colors', title: 'Heatmap — Multiple Colors', height: 350,
@@ -87,13 +109,65 @@ const charts = computed(() => [
         },
       },
     },
-    snip: `<apexchart type="heatmap" height="350" :options="multiColorOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function makeRow(name) {
+  return { name: name, data: months.map(function(m) { return { x: m, y: Math.floor(Math.random() * 90) }; }) };
+}
+var options = {
+  chart: { type: 'heatmap', height: 350, toolbar: { show: false } },
+  series: ['W1','W2','W3','W4','W5','W6','W7','W8'].map(makeRow),
+  xaxis: { categories: months },
+  plotOptions: {
+    heatmap: {
+      shadeIntensity: 0.5, radius: 0, useFillColorAsStroke: true,
+      colorScale: {
+        ranges: [
+          { from: 0,  to: 20, name: 'low',    color: '#2ecc71' },
+          { from: 21, to: 50, name: 'medium', color: '#f1c40f' },
+          { from: 51, to: 90, name: 'high',   color: '#e74c3c' }
+        ]
+      }
+    }
+  },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7' },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'rounded', title: 'Rounded Heatmap', height: 350,
     series: Array.from({ length: 6 }, (_, i) => heatRow(`Series ${i + 1}`, 12)),
     opts: { ...base.value, colors: ['#5b73e8'], xaxis: { ...base.value.xaxis, categories: months }, plotOptions: { heatmap: { radius: 6, enableShades: true, shadeIntensity: 0.5 } } },
-    snip: `<apexchart type="heatmap" height="350" :options="roundedOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function makeRow(name) {
+  return { name: name, data: months.map(function(m) { return { x: m, y: Math.floor(Math.random() * 90) }; }) };
+}
+var options = {
+  chart: { type: 'heatmap', height: 350, toolbar: { show: false } },
+  series: ['Series 1','Series 2','Series 3','Series 4','Series 5','Series 6'].map(makeRow),
+  xaxis: { categories: months },
+  colors: ['#5b73e8'],
+  plotOptions: { heatmap: { radius: 6, enableShades: true, shadeIntensity: 0.5 } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7' },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

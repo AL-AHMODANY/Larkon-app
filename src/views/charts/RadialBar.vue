@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">RadialBar Charts</h4>
       <p class="cp-subtitle">ApexCharts radial bar and circular gauge chart examples.</p>
@@ -30,6 +31,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -60,37 +62,160 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic RadialBar', height: 350,
     series: [70],
     opts: { ...base.value, colors: ['#fd7e14'], labels: ['Cricket'], plotOptions: { radialBar: { ...base.value.plotOptions.radialBar, hollow: { size: '60%' } } } },
-    snip: `<apexchart type="radialBar" height="350" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radialBar', height: 350, toolbar: { show: false } },
+  series: [70],
+  labels: ['Cricket'],
+  colors: ['#fd7e14'],
+  plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { name: { fontSize: '16px' }, value: { fontSize: '16px', fontWeight: 700 } } } },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'multiple', title: 'Multiple RadialBars', height: 350,
     series: [44, 55, 67, 83],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c'], labels: ['Apples','Mangoes','Oranges','Grapes'], plotOptions: { radialBar: { ...base.value.plotOptions.radialBar, hollow: { size: '30%' } } } },
-    snip: `<apexchart type="radialBar" height="350" :options="multipleOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radialBar', height: 350, toolbar: { show: false } },
+  series: [44, 55, 67, 83],
+  labels: ['Apples','Mangoes','Oranges','Grapes'],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c'],
+  plotOptions: { radialBar: { hollow: { size: '30%' }, dataLabels: { name: { fontSize: '13px' }, value: { fontSize: '14px', fontWeight: 700 } } } },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'custom-angle', title: 'Custom Angle Circle', height: 350,
     series: [76, 67, 61, 90],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c'], labels: ['Vimeo','Messenger','Facebook','LinkedIn'], plotOptions: { radialBar: { offsetY: 0, startAngle: 0, endAngle: 270, hollow: { margin: 5, size: '30%', background: 'transparent' }, dataLabels: { name: { show: false }, value: { show: false }, total: { show: true, label: 'Total', color: lc.value, formatter: () => '249' } } } }, legend: { show: true, floating: true, fontSize: '13px', position: 'left', offsetX: 10, offsetY: 10, labels: { useSeriesColors: true }, markers: { size: 0 }, formatter: (seriesName, opts) => seriesName + ':  ' + opts.w.globals.series[opts.seriesIndex], itemMargin: { vertical: 3 } } },
-    snip: `<apexchart type="radialBar" height="350" :options="customAngleOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radialBar', height: 350, toolbar: { show: false } },
+  series: [76, 67, 61, 90],
+  labels: ['Vimeo','Messenger','Facebook','LinkedIn'],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c'],
+  plotOptions: {
+    radialBar: {
+      offsetY: 0, startAngle: 0, endAngle: 270,
+      hollow: { margin: 5, size: '30%', background: 'transparent' },
+      dataLabels: {
+        name: { show: false }, value: { show: false },
+        total: { show: true, label: 'Total', formatter: function() { return '249'; } }
+      }
+    }
+  },
+  legend: {
+    show: true, floating: true, fontSize: '13px', position: 'left',
+    offsetX: 10, offsetY: 10, labels: { useSeriesColors: true },
+    markers: { size: 0 },
+    formatter: function(seriesName, opts) { return seriesName + ':  ' + opts.w.globals.series[opts.seriesIndex]; },
+    itemMargin: { vertical: 3 }
+  },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'semi-circle', title: 'Semi Circle Gauge', height: 300,
     series: [76],
     opts: { ...base.value, colors: ['#fd7e14'], labels: ['Average Results'], plotOptions: { radialBar: { startAngle: -90, endAngle: 90, track: { background: isDark.value ? 'rgba(255,255,255,0.08)' : '#eef2f7', strokeWidth: '97%', margin: 5 }, dataLabels: { name: { show: false }, value: { offsetY: -2, fontSize: '22px', fontWeight: 700, color: lc.value } } } }, fill: { type: 'gradient', gradient: { shade: 'light', shadeIntensity: 0.4, inverseColors: false, opacityFrom: 1, opacityTo: 1, stops: [0, 50, 53, 91] } }, legend: { show: false }, grid: { padding: { bottom: -10 } } },
-    snip: `<apexchart type="radialBar" height="300" :options="semiCircleOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radialBar', height: 300, toolbar: { show: false } },
+  series: [76],
+  labels: ['Average Results'],
+  colors: ['#fd7e14'],
+  plotOptions: {
+    radialBar: {
+      startAngle: -90, endAngle: 90,
+      track: { background: '#eef2f7', strokeWidth: '97%', margin: 5 },
+      dataLabels: { name: { show: false }, value: { offsetY: -2, fontSize: '22px', fontWeight: 700 } }
+    }
+  },
+  fill: { type: 'gradient', gradient: { shade: 'light', shadeIntensity: 0.4, inverseColors: false, opacityFrom: 1, opacityTo: 1, stops: [0,50,53,91] } },
+  grid: { padding: { bottom: -10 } },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'gradient', title: 'Gradient RadialBar', height: 350,
     series: [67],
     opts: { ...base.value, colors: ['#fd7e14'], labels: ['Percent'], fill: { type: 'gradient', gradient: { shade: 'dark', type: 'horizontal', shadeIntensity: 0.5, gradientToColors: ['#5b73e8'], inverseColors: true, opacityFrom: 1, opacityTo: 1, stops: [0, 100] } }, stroke: { lineCap: 'round' }, plotOptions: { radialBar: { ...base.value.plotOptions.radialBar, hollow: { size: '60%' } } } },
-    snip: `<apexchart type="radialBar" height="350" :options="gradientOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radialBar', height: 350, toolbar: { show: false } },
+  series: [67],
+  labels: ['Percent'],
+  colors: ['#fd7e14'],
+  fill: { type: 'gradient', gradient: { shade: 'dark', type: 'horizontal', shadeIntensity: 0.5, gradientToColors: ['#5b73e8'], inverseColors: true, opacityFrom: 1, opacityTo: 1, stops: [0,100] } },
+  stroke: { lineCap: 'round' },
+  plotOptions: { radialBar: { hollow: { size: '60%' }, dataLabels: { name: { fontSize: '16px' }, value: { fontSize: '16px', fontWeight: 700 } } } },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'stroked', title: 'Stroked Circular Gauge', height: 350,
     series: [67],
     opts: { ...base.value, colors: ['#2ecc71'], labels: ['Percent'], fill: { type: 'solid' }, stroke: { lineCap: 'round' }, plotOptions: { radialBar: { hollow: { size: '60%' }, track: { strokeWidth: '67%', margin: 0 }, dataLabels: { show: true, name: { offsetY: -10, show: true, color: lc.value, fontSize: '13px' }, value: { formatter: v => v + '%', color: lc.value, fontSize: '30px', fontWeight: 700, show: true } } } } },
-    snip: `<apexchart type="radialBar" height="350" :options="strokedOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radialBar', height: 350, toolbar: { show: false } },
+  series: [67],
+  labels: ['Percent'],
+  colors: ['#2ecc71'],
+  fill: { type: 'solid' },
+  stroke: { lineCap: 'round' },
+  plotOptions: {
+    radialBar: {
+      hollow: { size: '60%' },
+      track: { strokeWidth: '67%', margin: 0 },
+      dataLabels: {
+        show: true,
+        name: { offsetY: -10, show: true, fontSize: '13px' },
+        value: { formatter: function(v) { return v + '%'; }, fontSize: '30px', fontWeight: 700, show: true }
+      }
+    }
+  },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

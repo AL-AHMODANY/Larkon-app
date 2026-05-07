@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="collapse-page">
+    <CdnSection />
 
     <!-- Page Header -->
     <div class="page-header mb-4">
@@ -159,6 +160,7 @@
 </template>
 
 <script>
+import CdnSection from '../../components/CdnSection.vue'
 // footer
 import PageFooter from '../../components/layout/Footer.vue'
 export default {
@@ -337,7 +339,7 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-/* Buttons — match Larkon orange primary */
+/* Buttons — match AL-AHMODANY orange primary */
 :deep(.btn-primary),
 .btn-primary {
   background-color: #f05a28;

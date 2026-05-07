@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="placeholders-page">
+    <CdnSection />
     <div class="right-nav d-none d-xl-block">
       <div class="right-nav-title">ON THIS PAGE</div>
       <a href="#default" :class="{ active: activeSection === 'default' }">Default Example</a>
@@ -49,16 +50,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card-body"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;h5</span> <span class="attr">class</span>=<span class="val">"card-title"</span><span class="tag">&gt;</span>Special title treatment<span class="tag">&lt;/h5&gt;</span>
-    <span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="val">"card-text"</span><span class="tag">&gt;</span>
-      <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-6"</span><span class="tag">&gt;&lt;/span&gt;</span>
-      <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-4"</span><span class="tag">&gt;&lt;/span&gt;</span>
-    <span class="tag">&lt;/p&gt;</span>
-    <span class="tag">&lt;a</span> <span class="attr">class</span>=<span class="val">"btn btn-primary disabled placeholder col-3"</span><span class="tag">&gt;&lt;/a&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;/div&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.default }}</code></pre>
         </div>
       </div>
 
@@ -73,12 +65,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12 bg-primary"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12 bg-secondary"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12 bg-success"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12 bg-danger"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12 bg-warning"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12 bg-info"</span><span class="tag">&gt;&lt;/span&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.colors }}</code></pre>
         </div>
       </div>
 
@@ -96,10 +83,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder placeholder-xs"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder placeholder-sm"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder placeholder-lg"</span><span class="tag">&gt;&lt;/span&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.sizing }}</code></pre>
         </div>
       </div>
 
@@ -131,13 +115,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="val">"placeholder-glow"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;/p&gt;</span>
-
-<span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="val">"placeholder-wave"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"placeholder col-12"</span><span class="tag">&gt;&lt;/span&gt;</span>
-<span class="tag">&lt;/p&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.animation }}</code></pre>
         </div>
       </div>
     </div>
@@ -146,15 +124,68 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref } from 'vue'
 
 const activeSection = ref('default')
 const colors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info']
 
+const codeMap = {
+  default: `<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+
+<!-- Placeholder version -->
+<div class="card">
+  <div class="card-body">
+    <div class="placeholder-glow">
+      <span class="placeholder col-12"></span>
+    </div>
+    <p class="card-text placeholder-glow">
+      <span class="placeholder col-7"></span>
+      <span class="placeholder col-4"></span>
+      <span class="placeholder col-6"></span>
+      <span class="placeholder col-8"></span>
+      <span class="placeholder col-5"></span>
+    </p>
+    <a href="#" class="btn btn-primary disabled placeholder col-3"></a>
+  </div>
+</div>`,
+  colors: `<span class="placeholder col-12 bg-primary"></span>
+<span class="placeholder col-12 bg-secondary"></span>
+<span class="placeholder col-12 bg-success"></span>
+<span class="placeholder col-12 bg-danger"></span>
+<span class="placeholder col-12 bg-warning"></span>
+<span class="placeholder col-12 bg-info"></span>`,
+  sizing: `<span class="placeholder placeholder-xs col-12"></span>
+<span class="placeholder placeholder-sm col-12"></span>
+<span class="placeholder col-12"></span>
+<span class="placeholder placeholder-lg col-12"></span>`,
+  animation: `<!-- Glow animation -->
+<p class="placeholder-glow">
+  <span class="placeholder col-12"></span>
+  <span class="placeholder col-12"></span>
+  <span class="placeholder col-12"></span>
+  <span class="placeholder col-12"></span>
+</p>
+
+<!-- Wave animation -->
+<p class="placeholder-wave">
+  <span class="placeholder col-12"></span>
+  <span class="placeholder col-12"></span>
+  <span class="placeholder col-12"></span>
+  <span class="placeholder col-12"></span>
+</p>`,
+}
+
 function copyCode(event) {
-  const pre = event.target.closest('.code-box').querySelector('pre')
-  navigator.clipboard.writeText(pre.innerText).then(() => {
+  const sectionId = event.target.closest('.doc-section')?.id
+  navigator.clipboard.writeText(codeMap[sectionId] || '').then(() => {
     event.target.textContent = 'Copied!'
     setTimeout(() => (event.target.textContent = 'Copy'), 1800)
   })
@@ -245,7 +276,7 @@ function copyCode(event) {
   transition: all 0.15s;
 }
 .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-pre {
+pre, pre.code-pre {
   margin: 0;
   padding: 12px 16px;
   overflow-x: auto;
@@ -255,6 +286,15 @@ pre {
   background: var(--app-bg);
   max-height: 200px;
   font-family: 'Courier New', monospace;
+}
+pre.code-pre code {
+  display: block;
+  white-space: pre;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
 }
 pre :deep(.tag)  { color: #e06c75; }
 pre :deep(.attr) { color: #d19a66; }

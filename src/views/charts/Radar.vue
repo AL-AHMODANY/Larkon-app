@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Radar Charts</h4>
       <p class="cp-subtitle">ApexCharts radar chart examples with copy-ready snippets.</p>
@@ -30,6 +31,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -65,25 +67,100 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic Radar Chart', height: 350,
     series: [{ name: 'Series 1', data: [80, 50, 30, 40, 100, 20] }],
     opts: { ...base.value, colors: ['#fd7e14'], xaxis: { ...base.value.xaxis, categories: ['January','February','March','April','May','June'] }, fill: { opacity: 0.4 }, stroke: { width: 2 } },
-    snip: `<apexchart type="radar" height="350" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radar', height: 350, toolbar: { show: false } },
+  series: [{ name: 'Series 1', data: [80, 50, 30, 40, 100, 20] }],
+  xaxis: { categories: ['January','February','March','April','May','June'] },
+  colors: ['#fd7e14'],
+  fill: { opacity: 0.4 },
+  stroke: { width: 2 },
+  dataLabels: { enabled: false },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'multiple', title: 'Radar — Multiple Series', height: 350,
     series: [{ name: 'iPhone', data: [80,90,70,85,60,75] }, { name: 'Samsung', data: [70,75,85,70,80,65] }],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14'], xaxis: { ...base.value.xaxis, categories: skills }, fill: { opacity: 0.35 }, stroke: { width: 2 } },
-    snip: `<apexchart type="radar" height="350" :options="multipleOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radar', height: 350, toolbar: { show: false } },
+  series: [
+    { name: 'iPhone',  data: [80,90,70,85,60,75] },
+    { name: 'Samsung', data: [70,75,85,70,80,65] }
+  ],
+  xaxis: { categories: ['Battery','Brand','Design','Features','Performance','Usability'] },
+  colors: ['#5b73e8','#fd7e14'],
+  fill: { opacity: 0.35 },
+  stroke: { width: 2 },
+  dataLabels: { enabled: false },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'polygon', title: 'Radar with Polygon Fill', height: 350,
     series: [{ name: 'Series 1', data: [20,100,40,30,50,80,33] }, { name: 'Series 2', data: [70,40,90,60,80,30,55] }],
     opts: { ...base.value, colors: ['#5b73e8','#2ecc71'], xaxis: { ...base.value.xaxis, categories: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] }, fill: { opacity: 0.4 }, stroke: { width: 2 }, plotOptions: { radar: { polygons: { strokeColors: gc.value, fill: { colors: [isDark.value ? 'rgba(255,255,255,0.03)' : '#f8f9fa', 'transparent'] } } } } },
-    snip: `<apexchart type="radar" height="350" :options="polygonOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radar', height: 350, toolbar: { show: false } },
+  series: [
+    { name: 'Series 1', data: [20,100,40,30,50,80,33] },
+    { name: 'Series 2', data: [70,40,90,60,80,30,55] }
+  ],
+  xaxis: { categories: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] },
+  colors: ['#5b73e8','#2ecc71'],
+  fill: { opacity: 0.4 },
+  stroke: { width: 2 },
+  plotOptions: { radar: { polygons: { strokeColors: '#eef2f7', fill: { colors: ['#f8f9fa','transparent'] } } } },
+  dataLabels: { enabled: false },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'datalabels', title: 'Radar with Data Labels', height: 350,
     series: [{ name: 'Score', data: [400,430,448,470,540,580,690,1100,1200,1380] }],
     opts: { ...base.value, colors: ['#e74c3c'], xaxis: { ...base.value.xaxis, categories: ['South Korea','Canada','United Kingdom','Netherlands','Italy','France','Japan','United States','China','Germany'] }, dataLabels: { enabled: true, background: { enabled: true, borderRadius: 2 } }, fill: { opacity: 0.4 }, stroke: { width: 2 } },
-    snip: `<apexchart type="radar" height="350" :options="dataLabelsOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'radar', height: 350, toolbar: { show: false } },
+  series: [{ name: 'Score', data: [400,430,448,470,540,580,690,1100,1200,1380] }],
+  xaxis: { categories: ['South Korea','Canada','United Kingdom','Netherlands','Italy','France','Japan','United States','China','Germany'] },
+  colors: ['#e74c3c'],
+  fill: { opacity: 0.4 },
+  stroke: { width: 2 },
+  dataLabels: { enabled: true, background: { enabled: true, borderRadius: 2 } },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

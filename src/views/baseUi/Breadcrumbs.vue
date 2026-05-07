@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-content">
+    <CdnSection />
 
     <!-- Page Title -->
     <div class="page-title-box">
@@ -163,6 +164,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref } from 'vue'
 
@@ -180,8 +182,48 @@ const scrollTo = (id) => {
 const copied = ref(null)
 const copy = (key) => {
   const snippets = {
-    default:  `<nav aria-label="breadcrumb">\n  <ol class="breadcrumb mb-0 py-0">\n    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>\n    <li class="breadcrumb-item"><a href="javascript:void(0);">Library</a></li>\n    <li class="breadcrumb-item active" aria-current="page">Data</li>\n  </ol>\n</nav>`,
-    dividers: `<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">\n  <ol class="breadcrumb mb-0 py-0">\n    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>\n    <li class="breadcrumb-item"><a href="javascript:void(0);">Library</a></li>\n    <li class="breadcrumb-item active" aria-current="page">Data</li>\n  </ol>\n</nav>`,
+    default:
+`<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0 py-0">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
+  </ol>
+</nav>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0 py-0">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Library</a></li>
+  </ol>
+</nav>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0 py-0">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Library</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Data</li>
+  </ol>
+</nav>`,
+    dividers:
+`<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0 py-0">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
+  </ol>
+</nav>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0 py-0">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Library</a></li>
+  </ol>
+</nav>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0 py-0">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Library</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Data</li>
+  </ol>
+</nav>`,
   }
   navigator.clipboard.writeText(snippets[key] || '').then(() => {
     copied.value = key
@@ -333,7 +375,7 @@ nav[style*="bs-breadcrumb-divider"] .breadcrumb-item + .breadcrumb-item::before 
   white-space: pre;
 }
 
-/* Syntax colours matching Larkon screenshot */
+/* Syntax colours matching AL-AHMODANY screenshot */
 .c-tag  { color: #e25a00; }   /* orange  – tags */
 .c-attr { color: #22863a; }   /* green   – attributes */
 .c-val  { color: #22863a; }   /* green   – values */

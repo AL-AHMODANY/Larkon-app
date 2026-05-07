@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Boxplot Charts</h4>
       <p class="cp-subtitle">ApexCharts boxplot chart examples with copy-ready snippets.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -62,13 +64,61 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic Boxplot', height: 350,
     series: [{ type: 'boxPlot', data: ['Jan','Feb','Mar','Apr','May','Jun','Jul'].map((m, i) => box(m, 30 + i * 8)) }],
     opts: { ...base.value },
-    snip: `<apexchart type="boxPlot" height="350" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'boxPlot', height: 350, toolbar: { show: false } },
+  series: [{
+    type: 'boxPlot',
+    data: [
+      { x: 'Jan', y: [30, 40, 50, 60, 75] },
+      { x: 'Feb', y: [38, 48, 58, 68, 83] },
+      { x: 'Mar', y: [46, 56, 66, 76, 91] },
+      { x: 'Apr', y: [54, 64, 74, 84, 99] },
+      { x: 'May', y: [62, 72, 82, 92, 107] },
+      { x: 'Jun', y: [70, 80, 90, 100, 115] },
+      { x: 'Jul', y: [78, 88, 98, 108, 123] }
+    ]
+  }],
+  plotOptions: { boxPlot: { colors: { upper: '#5b73e8', lower: '#fd7e14' } } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'horizontal', title: 'Horizontal Boxplot', height: 350,
     series: [{ type: 'boxPlot', data: ['Jan','Feb','Mar','Apr','May','Jun','Jul'].map((m, i) => box(m, 30 + i * 8)) }],
     opts: { ...base.value, plotOptions: { bar: { horizontal: true }, boxPlot: { colors: { upper: '#5b73e8', lower: '#fd7e14' } } } },
-    snip: `<apexchart type="boxPlot" height="350" :options="horizontalOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'boxPlot', height: 350, toolbar: { show: false } },
+  series: [{
+    type: 'boxPlot',
+    data: [
+      { x: 'Jan', y: [30, 40, 50, 60, 75] },
+      { x: 'Feb', y: [38, 48, 58, 68, 83] },
+      { x: 'Mar', y: [46, 56, 66, 76, 91] },
+      { x: 'Apr', y: [54, 64, 74, 84, 99] },
+      { x: 'May', y: [62, 72, 82, 92, 107] },
+      { x: 'Jun', y: [70, 80, 90, 100, 115] },
+      { x: 'Jul', y: [78, 88, 98, 108, 123] }
+    ]
+  }],
+  plotOptions: { bar: { horizontal: true }, boxPlot: { colors: { upper: '#5b73e8', lower: '#fd7e14' } } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'scatter-box', title: 'Boxplot with Scatter', height: 350,
@@ -77,7 +127,39 @@ const charts = computed(() => [
       { type: 'scatter', name: 'Outliers', data: [{ x: 'Jan', y: 32 }, { x: 'Mar', y: 65 }, { x: 'May', y: 18 }, { x: 'Jun', y: 72 }] },
     ],
     opts: { ...base.value, colors: ['transparent','#e74c3c'], markers: { size: [0, 6] }, legend: { show: true, position: 'bottom', labels: { colors: lc.value } } },
-    snip: `<apexchart type="boxPlot" height="350" :options="scatterBoxOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'boxPlot', height: 350, toolbar: { show: false } },
+  series: [
+    {
+      type: 'boxPlot',
+      data: [
+        { x: 'Jan', y: [30, 40, 50, 60, 75] },
+        { x: 'Feb', y: [38, 48, 58, 68, 83] },
+        { x: 'Mar', y: [46, 56, 66, 76, 91] },
+        { x: 'Apr', y: [54, 64, 74, 84, 99] },
+        { x: 'May', y: [62, 72, 82, 92, 107] },
+        { x: 'Jun', y: [70, 80, 90, 100, 115] }
+      ]
+    },
+    {
+      type: 'scatter', name: 'Outliers',
+      data: [{ x: 'Jan', y: 32 }, { x: 'Mar', y: 65 }, { x: 'May', y: 18 }, { x: 'Jun', y: 72 }]
+    }
+  ],
+  colors: ['transparent','#e74c3c'],
+  markers: { size: [0, 6] },
+  plotOptions: { boxPlot: { colors: { upper: '#5b73e8', lower: '#fd7e14' } } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

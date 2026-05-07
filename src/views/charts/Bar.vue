@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
 
     <div class="cp-header">
       <h4 class="cp-title">Bar Charts</h4>
@@ -126,6 +127,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -268,14 +270,195 @@ const patternedOpts = computed(() => ({
 }))
 
 const snip = {
-  basic:      `<apexchart type="bar" height="340" :options="chartOptions" :series="series" />`,
-  grouped:    `<apexchart type="bar" height="340" :options="groupedOptions" :series="series" />`,
-  stacked:    `<apexchart type="bar" height="360" :options="stackedOptions" :series="series" />`,
-  stacked100: `<apexchart type="bar" height="360" :options="stacked100Options" :series="series" />`,
-  negative:   `<apexchart type="bar" height="440" :options="negativeOptions" :series="series" />`,
-  reversed:   `<apexchart type="bar" height="340" :options="reversedOptions" :series="series" />`,
-  datalabels: `<apexchart type="bar" height="400" :options="dataLabelsOptions" :series="series" />`,
-  patterned:  `<apexchart type="bar" height="360" :options="patternedOptions" :series="series" />`,
+  basic: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 340, toolbar: { show: false } },
+  series: [{ name: 'Employees', data: [812,940,670,1100,750,890,1025,610,980,1200,560,870] }],
+  xaxis: { categories: ['Abbott','Beaufort','Canberra','Dawson','Edinburgh','Fairhaven','Glasgow','Harwell','Inverness','Jarrow','Kingston','Lancaster'] },
+  colors: ['#5b73e8'],
+  plotOptions: { bar: { borderRadius: 4, horizontal: true, barHeight: '55%' } },
+  dataLabels: { enabled: true, style: { colors: ['#fff'], fontSize: '11px' } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  grouped: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 340, toolbar: { show: false } },
+  series: [
+    { name: 'Series 1', data: [44,55,41,64,22,43,21] },
+    { name: 'Series 2', data: [53,32,33,52,13,44,32] }
+  ],
+  xaxis: { categories: ['2015','2016','2017','2018','2019','2020','2021'] },
+  colors: ['#5b73e8','#2ecc71'],
+  plotOptions: { bar: { borderRadius: 3, horizontal: true, barHeight: '70%' } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  stacked: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 360, stacked: true, toolbar: { show: false } },
+  series: [
+    { name: 'Marine Sprite', data: [44,55,41,37,22,43,21] },
+    { name: 'Striking Calf', data: [53,32,33,52,13,44,32] },
+    { name: 'Tank Picture',  data: [12,17,11,9,15,11,20] },
+    { name: 'Bucket Slope',  data: [9,7,5,8,6,9,4] },
+    { name: 'Reborn Kid',    data: [25,12,19,32,25,24,10] }
+  ],
+  xaxis: { categories: ['2015','2016','2017','2018','2019','2020','2021'] },
+  colors: ['#5b73e8','#2ecc71','#fd7e14','#e74c3c','#9b59b6'],
+  plotOptions: { bar: { borderRadius: 0, horizontal: true } },
+  dataLabels: { enabled: true, style: { colors: ['#fff'], fontSize: '10px' } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'top' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  stacked100: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 360, stacked: true, stackType: '100%', toolbar: { show: false } },
+  series: [
+    { name: 'Marine Sprite', data: [44,55,41,37,22,43,21] },
+    { name: 'Striking Calf', data: [53,32,33,52,13,44,32] },
+    { name: 'Tank Picture',  data: [12,17,11,9,15,11,20] },
+    { name: 'Bucket Slope',  data: [9,7,5,8,6,9,4] },
+    { name: 'Reborn Kid',    data: [25,12,19,32,25,24,10] }
+  ],
+  xaxis: { categories: ['2015','2016','2017','2018','2019','2020','2021'] },
+  colors: ['#5b73e8','#2ecc71','#fd7e14','#e74c3c','#9b59b6'],
+  plotOptions: { bar: { borderRadius: 0, horizontal: true } },
+  dataLabels: { enabled: true, formatter: function(v) { return v.toFixed(0) + '%'; }, style: { colors: ['#fff'], fontSize: '10px' } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'top' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  negative: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 440, toolbar: { show: false } },
+  series: [
+    { name: 'Males',   data: [-12.2,-9.3,-7.6,-6.8,-5.5,-4.9,-4.3,-3.8,-3.0,-2.2,-1.5,-0.9,-0.5,-0.2,0.1,0.5,0.9,1.3,2.0,2.8] },
+    { name: 'Females', data: [10.1,8.7,7.2,6.1,5.3,4.6,4.0,3.5,2.8,2.1,1.4,0.8,0.4,0.1,-0.2,-0.6,-1.0,-1.5,-2.1,-2.9] }
+  ],
+  xaxis: {
+    categories: ['85+','80-84','75-79','70-74','65-69','60-64','55-59','50-54','45-49','40-44','35-39','30-34','25-29','20-24','15-19','10-14','5-9','0-4'].reverse(),
+    labels: { formatter: function(v) { return Math.abs(v) + '%'; } }
+  },
+  colors: ['#5b73e8','#2ecc71'],
+  plotOptions: { bar: { horizontal: true, barHeight: '80%', borderRadius: 0 } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4, xaxis: { lines: { show: true } }, yaxis: { lines: { show: false } } },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  reversed: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 340, toolbar: { show: false } },
+  series: [{ name: 'Net Profit', data: [400,430,448,470,540,580,690,1100] }],
+  xaxis: { categories: ['2010','2011','2012','2013','2014','2015','2016','2017'], reversed: true },
+  yaxis: { reversed: true },
+  colors: ['#f1c40f'],
+  plotOptions: { bar: { borderRadius: 4, horizontal: true } },
+  dataLabels: { enabled: true, style: { fontSize: '11px' } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  datalabels: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 400, toolbar: { show: false } },
+  series: [
+    { name: 'South Korea', data: [400] }, { name: 'Canada', data: [430] },
+    { name: 'United Kingdom', data: [448] }, { name: 'Netherlands', data: [470] },
+    { name: 'Italy', data: [540] }, { name: 'France', data: [580] },
+    { name: 'Japan', data: [690] }, { name: 'United States', data: [1100] },
+    { name: 'China', data: [1200] }, { name: 'Germany', data: [1380] }
+  ],
+  xaxis: { categories: ['South Korea','Canada','United Kingdom','Netherlands','Italy','France','Japan','United States','China','Germany'] },
+  colors: ['#5b73e8','#2ecc71','#e74c3c','#f1c40f','#9b59b6','#e91e63','#00838f','#546e7a','#6d4c41','#2e7d32'],
+  plotOptions: { bar: { borderRadius: 4, horizontal: true, distributed: true, barHeight: '70%', dataLabels: { position: 'bottom' } } },
+  dataLabels: {
+    enabled: true, textAnchor: 'start',
+    style: { colors: ['#fff'], fontSize: '11px', fontWeight: 600 },
+    formatter: function(v, opt) { return opt.w.globals.labels[opt.dataPointIndex] + ':  ' + v; },
+    offsetX: 0
+  },
+  yaxis: { labels: { show: false } },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: false },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  patterned: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'bar', height: 360, stacked: true, toolbar: { show: false } },
+  series: [
+    { name: 'Marine Sprite', data: [44,55,41,37,22,43,21] },
+    { name: 'Striking Calf', data: [53,32,33,52,13,44,32] },
+    { name: 'Tank Picture',  data: [12,17,11,9,15,11,20] },
+    { name: 'Bucket Slope',  data: [9,7,5,8,6,9,4] }
+  ],
+  xaxis: { categories: ['2015','2016','2017','2018','2019','2020','2021'] },
+  colors: ['#5b73e8','#2ecc71','#fd7e14','#e74c3c'],
+  fill: { type: 'pattern', pattern: { style: ['verticalLines','squares','horizontalLines','circles'], width: 6, height: 6, strokeWidth: 2 } },
+  plotOptions: { bar: { borderRadius: 0, horizontal: true } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'right' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
 }
 
 function copy(text) {

@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Treemap Charts</h4>
       <p class="cp-subtitle">ApexCharts treemap chart examples with copy-ready snippets.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -58,7 +60,31 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic Treemap', height: 350,
     series: [{ data: [{ x: 'New Delhi', y: 218 }, { x: 'Kolkata', y: 149 }, { x: 'Mumbai', y: 184 }, { x: 'Ahmedabad', y: 55 }, { x: 'Bangaluru', y: 84 }, { x: 'Pune', y: 31 }, { x: 'Chennai', y: 70 }, { x: 'Jaipur', y: 30 }, { x: 'Surat', y: 44 }, { x: 'Hyderabad', y: 68 }, { x: 'Lucknow', y: 28 }, { x: 'Indore', y: 19 }, { x: 'Kanpur', y: 29 }] }],
     opts: { ...base.value, colors: ['#5b73e8'] },
-    snip: `<apexchart type="treemap" height="350" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'treemap', height: 350, toolbar: { show: false } },
+  series: [{
+    data: [
+      { x: 'New Delhi',  y: 218 }, { x: 'Kolkata',   y: 149 },
+      { x: 'Mumbai',     y: 184 }, { x: 'Ahmedabad', y: 55  },
+      { x: 'Bangaluru',  y: 84  }, { x: 'Pune',      y: 31  },
+      { x: 'Chennai',    y: 70  }, { x: 'Jaipur',    y: 30  },
+      { x: 'Surat',      y: 44  }, { x: 'Hyderabad', y: 68  },
+      { x: 'Lucknow',    y: 28  }, { x: 'Indore',    y: 19  },
+      { x: 'Kanpur',     y: 29  }
+    ]
+  }],
+  colors: ['#5b73e8'],
+  dataLabels: { enabled: true, style: { fontSize: '12px', fontWeight: 600 } },
+  legend: { show: false },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'multi-dim', title: 'Multi-dimensional Treemap', height: 350,
@@ -67,7 +93,24 @@ const charts = computed(() => [
       { name: 'Mobile',   data: [{ x: 'ABCD', y: 10 }, { x: 'DEFG', y: 20 }, { x: 'WXYZ', y: 51 }, { x: 'PQR', y: 30 }, { x: 'MNO', y: 20 }] },
     ],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14'], legend: { show: true, position: 'bottom', labels: { colors: lc.value } } },
-    snip: `<apexchart type="treemap" height="350" :options="multiDimOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'treemap', height: 350, toolbar: { show: false } },
+  series: [
+    { name: 'Desktops', data: [{ x: 'ABC', y: 10 }, { x: 'DEF', y: 60 }, { x: 'XYZ', y: 41 }] },
+    { name: 'Mobile',   data: [{ x: 'ABCD', y: 10 }, { x: 'DEFG', y: 20 }, { x: 'WXYZ', y: 51 }, { x: 'PQR', y: 30 }, { x: 'MNO', y: 20 }] }
+  ],
+  colors: ['#5b73e8','#fd7e14'],
+  dataLabels: { enabled: true, style: { fontSize: '12px', fontWeight: 600 } },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'color-range', title: 'Treemap with Color Range', height: 350,
@@ -88,13 +131,68 @@ const charts = computed(() => [
         },
       },
     },
-    snip: `<apexchart type="treemap" height="350" :options="colorRangeOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'treemap', height: 350, toolbar: { show: false } },
+  series: [{
+    data: [
+      { x: 'Item 1',  y: 4.2  }, { x: 'Item 2',  y: -2.1 },
+      { x: 'Item 3',  y: 1.8  }, { x: 'Item 4',  y: -4.5 },
+      { x: 'Item 5',  y: 3.1  }, { x: 'Item 6',  y: -1.3 },
+      { x: 'Item 7',  y: 5.7  }, { x: 'Item 8',  y: -3.2 },
+      { x: 'Item 9',  y: 2.4  }, { x: 'Item 10', y: -0.8 },
+      { x: 'Item 11', y: 4.9  }, { x: 'Item 12', y: -2.6 }
+    ]
+  }],
+  plotOptions: {
+    treemap: {
+      enableShades: true, shadeIntensity: 0.5, reverseNegativeShade: true,
+      colorScale: {
+        ranges: [
+          { from: -6,    to: 0,   color: '#e74c3c' },
+          { from: 0.001, to: 6,   color: '#2ecc71' }
+        ]
+      }
+    }
+  },
+  dataLabels: { enabled: true, style: { fontSize: '12px', fontWeight: 600 } },
+  legend: { show: false },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'distributed', title: 'Distributed Treemap', height: 350,
     series: [{ data: [{ x: 'Analysis', y: 430 }, { x: 'Finance', y: 448 }, { x: 'HR', y: 470 }, { x: 'Legal', y: 540 }, { x: 'Marketing', y: 580 }, { x: 'Operations', y: 690 }, { x: 'Product', y: 1100 }, { x: 'R&D', y: 1200 }] }],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c','#f1c40f','#9b59b6','#1abc9c','#e67e22'], plotOptions: { treemap: { distributed: true, enableShades: false } } },
-    snip: `<apexchart type="treemap" height="350" :options="distributedOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'treemap', height: 350, toolbar: { show: false } },
+  series: [{
+    data: [
+      { x: 'Analysis',   y: 430  }, { x: 'Finance',    y: 448  },
+      { x: 'HR',         y: 470  }, { x: 'Legal',      y: 540  },
+      { x: 'Marketing',  y: 580  }, { x: 'Operations', y: 690  },
+      { x: 'Product',    y: 1100 }, { x: 'R&D',        y: 1200 }
+    ]
+  }],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c','#f1c40f','#9b59b6','#1abc9c','#e67e22'],
+  plotOptions: { treemap: { distributed: true, enableShades: false } },
+  dataLabels: { enabled: true, style: { fontSize: '12px', fontWeight: 600 } },
+  legend: { show: false },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

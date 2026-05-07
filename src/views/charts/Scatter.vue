@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Scatter Charts</h4>
       <p class="cp-subtitle">ApexCharts scatter plot chart examples with copy-ready snippets.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -67,7 +69,27 @@ const charts = computed(() => [
       { name: 'Sample C', data: pts(20, 1, 10, 10, 60) },
     ],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71'] },
-    snip: `<apexchart type="scatter" height="350" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'scatter', height: 350, toolbar: { show: false }, zoom: { enabled: true, type: 'xy' } },
+  series: [
+    { name: 'Sample A', data: [[1.2,34],[2.5,45],[3.1,28],[4.8,52],[5.2,38],[6.7,61],[7.1,44],[8.3,55],[9.0,42],[1.8,29],[3.5,48],[5.9,37],[7.8,53],[2.1,41],[4.3,36],[6.2,58],[8.7,47],[9.5,33],[1.5,50],[3.8,39]] },
+    { name: 'Sample B', data: [[1.1,22],[2.3,31],[3.7,18],[4.5,42],[5.8,28],[6.1,51],[7.4,34],[8.0,45],[9.2,32],[1.9,39],[3.2,58],[5.5,27],[7.2,43],[2.7,36],[4.1,26],[6.8,48],[8.4,37],[9.8,23],[1.7,40],[3.9,29]] },
+    { name: 'Sample C', data: [[1.3,44],[2.8,55],[3.4,38],[4.9,62],[5.1,48],[6.5,71],[7.3,54],[8.6,65],[9.1,52],[1.6,39],[3.3,58],[5.7,47],[7.6,63],[2.4,51],[4.6,46],[6.3,68],[8.2,57],[9.7,43],[1.4,60],[3.6,49]] }
+  ],
+  xaxis: { tickAmount: 10 },
+  colors: ['#5b73e8','#fd7e14','#2ecc71'],
+  markers: { size: 6 },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'datetime', title: 'Scatter — Datetime X-axis', height: 350,
@@ -76,7 +98,35 @@ const charts = computed(() => [
       { name: 'Series B', data: (() => { const d=[]; let t=new Date('2023-01-01').getTime(); for(let i=0;i<20;i++){d.push([t+Math.floor(Math.random()*30)*86400000, r(10,60)])} return d })() },
     ],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14'], xaxis: { ...base.value.xaxis, type: 'datetime' } },
-    snip: `<apexchart type="scatter" height="350" :options="datetimeOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+// Generate datetime scatter data
+function genDateData(count) {
+  var data = [];
+  var base = new Date('2023-01-01').getTime();
+  for (var i = 0; i < count; i++) {
+    data.push([base + Math.floor(Math.random() * 30) * 86400000, Math.floor(Math.random() * 50) + 10]);
+  }
+  return data;
+}
+var options = {
+  chart: { type: 'scatter', height: 350, toolbar: { show: false }, zoom: { enabled: true, type: 'xy' } },
+  series: [
+    { name: 'Series A', data: genDateData(20) },
+    { name: 'Series B', data: genDateData(20) }
+  ],
+  xaxis: { type: 'datetime' },
+  colors: ['#5b73e8','#fd7e14'],
+  markers: { size: 6 },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light', x: { format: 'dd MMM yyyy' } }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'images', title: 'Scatter with Images', height: 350,
@@ -85,7 +135,26 @@ const charts = computed(() => [
       { name: 'Series B', data: pts(15, 1, 10, 10, 60) },
     ],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14'], markers: { size: 8, shape: 'circle', strokeWidth: 2, strokeColors: ['#5b73e8','#fd7e14'], fillOpacity: 0.8 } },
-    snip: `<apexchart type="scatter" height="350" :options="imagesOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'scatter', height: 350, toolbar: { show: false }, zoom: { enabled: true, type: 'xy' } },
+  series: [
+    { name: 'Series A', data: [[1.2,34],[2.5,45],[3.1,28],[4.8,52],[5.2,38],[6.7,61],[7.1,44],[8.3,55],[9.0,42],[1.8,29],[3.5,48],[5.9,37],[7.8,53],[2.1,41],[4.3,36]] },
+    { name: 'Series B', data: [[1.1,22],[2.3,31],[3.7,18],[4.5,42],[5.8,28],[6.1,51],[7.4,34],[8.0,45],[9.2,32],[1.9,39],[3.2,58],[5.5,27],[7.2,43],[2.7,36],[4.1,26]] }
+  ],
+  xaxis: { tickAmount: 10 },
+  colors: ['#5b73e8','#fd7e14'],
+  markers: { size: 8, shape: 'circle', strokeWidth: 2, strokeColors: ['#5b73e8','#fd7e14'], fillOpacity: 0.8 },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

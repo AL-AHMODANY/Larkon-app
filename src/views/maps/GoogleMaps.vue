@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
+    <CdnSection />
     <div class="page-header">
       <h4 class="page-title">Google Maps</h4>
       <p class="page-subtitle">Embedded Google Maps with various display modes and configurations.</p>
@@ -32,6 +33,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref } from 'vue'
 import PageFooter from '../../components/layout/Footer.vue'
 
@@ -103,6 +105,7 @@ const maps = [
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 const mapSrc = 'https://www.google.com/maps/embed?pb=...'
 <\/script>`,
   },

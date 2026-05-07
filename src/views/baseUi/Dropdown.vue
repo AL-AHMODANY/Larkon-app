@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="dropdown-page">
+    <CdnSection />
 
     <div class="page-header mb-4">
       <nav aria-label="breadcrumb">
@@ -338,6 +339,7 @@
 </template>
 
 <script>
+import CdnSection from '../../components/CdnSection.vue'
 // footer
 import PageFooter from '../../components/layout/Footer.vue'
 export default {

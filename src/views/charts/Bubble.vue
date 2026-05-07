@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
 
     <div class="cp-header">
       <h4 class="cp-title">Bubble Charts</h4>
@@ -51,6 +52,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -121,8 +123,80 @@ const bubble3dOpts = computed(() => ({
 }))
 
 const snip = {
-  simple:   `<apexchart type="bubble" height="380" :options="chartOptions" :series="series" />`,
-  bubble3d: `<apexchart type="bubble" height="420" :options="bubble3dOptions" :series="series" />`,
+  simple: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+function genBubble(count, xMin, xMax, yMin, yMax, zMin, zMax) {
+  var data = [];
+  for (var i = 0; i < count; i++) {
+    data.push({
+      x: Math.floor(Math.random() * (xMax - xMin + 1)) + xMin,
+      y: Math.floor(Math.random() * (yMax - yMin + 1)) + yMin,
+      z: Math.floor(Math.random() * (zMax - zMin + 1)) + zMin
+    });
+  }
+  return data;
+}
+var options = {
+  chart: { type: 'bubble', height: 380, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'Bubble 1', data: genBubble(20, 47, 738, 10, 65, 8, 50) },
+    { name: 'Bubble 2', data: genBubble(18, 60, 720, 8, 62, 5, 45) },
+    { name: 'Bubble 3', data: genBubble(15, 80, 700, 5, 60, 4, 40) }
+  ],
+  xaxis: { tickAmount: 10, min: 40, max: 750 },
+  yaxis: { min: 0, max: 70 },
+  colors: ['#5b73e8','#fd7e14','#2ecc71'],
+  fill: { opacity: 0.85 },
+  plotOptions: { bubble: { minBubbleRadius: 6, maxBubbleRadius: 38 } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
+
+  bubble3d: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var baseDate = new Date('2023-10-23').getTime();
+var day = 86400000;
+function genDateBubble(count) {
+  var data = [];
+  for (var i = 0; i < count; i++) {
+    data.push({
+      x: baseDate + Math.floor(Math.random() * 18) * day,
+      y: Math.floor(Math.random() * 60) + 8,
+      z: Math.floor(Math.random() * 45) + 10
+    });
+  }
+  return data;
+}
+var options = {
+  chart: { type: 'bubble', height: 420, toolbar: { show: false }, zoom: { enabled: false } },
+  series: [
+    { name: 'Product 1', data: genDateBubble(18) },
+    { name: 'Product 2', data: genDateBubble(16) },
+    { name: 'Product 3', data: genDateBubble(16) },
+    { name: 'Product 4', data: genDateBubble(16) }
+  ],
+  xaxis: { type: 'datetime', min: baseDate, max: baseDate + 18 * day, tickAmount: 9 },
+  yaxis: { min: 0, max: 70 },
+  colors: ['#5b73e8','#fd7e14','#e74c3c','#2ecc71'],
+  fill: { type: 'gradient', gradient: { shade: 'light', type: 'vertical', shadeIntensity: 0.4, opacityFrom: 0.95, opacityTo: 0.6, stops: [0,100] } },
+  plotOptions: { bubble: { minBubbleRadius: 8, maxBubbleRadius: 42 } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light', x: { format: 'dd MMM yyyy' } }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
 }
 
 function copy(text) {

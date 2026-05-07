@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
+    <CdnSection />
     <div class="page-header">
       <h4 class="page-title">Vector Maps</h4>
       <p class="page-subtitle">Interactive SVG vector maps with hover states and data overlays.</p>
@@ -125,6 +126,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref } from 'vue'
 import PageFooter from '../../components/layout/Footer.vue'
 
@@ -229,7 +231,7 @@ const usStates = stateData.map((s,i) => ({ ...s, color: COLORS[i % COLORS.length
 .mini-bar { height: 6px; background: var(--app-bg); border-radius: 99px; width: 80px; }
 .mini-bar__fill { height: 100%; border-radius: 99px; }
 
-/* Larkon code block */
+/* AL-AHMODANY code block */
 .code-block { border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; }
 .code-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; background: var(--app-bg); border-bottom: 1px solid var(--card-border); }
 .code-badge { background: var(--accent); color: #fff; font-size: 0.67rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.4px; }

@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Polar Area Charts</h4>
       <p class="cp-subtitle">ApexCharts polar area chart examples with copy-ready snippets.</p>
@@ -30,6 +31,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -64,13 +66,45 @@ const charts = computed(() => [
     id: 'basic', title: 'Basic Polar Area', height: 350,
     series: [14, 23, 21, 17, 15, 10],
     opts: { ...base.value, labels: ['Rose A','Rose B','Rose C','Rose D','Rose E','Rose F'] },
-    snip: `<apexchart type="polarArea" height="350" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'polarArea', height: 350, toolbar: { show: false } },
+  series: [14, 23, 21, 17, 15, 10],
+  labels: ['Rose A','Rose B','Rose C','Rose D','Rose E','Rose F'],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c','#f1c40f','#9b59b6'],
+  stroke: { colors: ['#fff'] },
+  fill: { opacity: 0.8 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'monochrome', title: 'Monochrome Polar Area', height: 350,
     series: [42, 47, 52, 58, 65, 59],
     opts: { ...base.value, labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], theme: { mode: th.value, monochrome: { enabled: true, color: '#5b73e8', shadeTo: 'light', shadeIntensity: 0.6 } } },
-    snip: `<apexchart type="polarArea" height="350" :options="monochromeOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'polarArea', height: 350, toolbar: { show: false } },
+  series: [42, 47, 52, 58, 65, 59],
+  labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+  theme: { monochrome: { enabled: true, color: '#5b73e8', shadeTo: 'light', shadeIntensity: 0.6 } },
+  stroke: { colors: ['#fff'] },
+  fill: { opacity: 0.8 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

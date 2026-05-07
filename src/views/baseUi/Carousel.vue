@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="carousel-page">
+    <CdnSection />
     <!-- Page Header -->
     <div class="page-header mb-4">
       <nav aria-label="breadcrumb">
@@ -327,6 +328,7 @@
 </template>
 
 <script>
+import CdnSection from '../../components/CdnSection.vue'
 // footer
 import Footer from '../../components/layout/Footer.vue'
 export default {
@@ -347,26 +349,26 @@ export default {
         { id: 'dark-started', label: 'Dark Started' },
       ],
       slides: [
-        { src: 'https://picsum.photos/seed/teal1/800/400', alt: 'Slide 1' },
-        { src: 'https://picsum.photos/seed/teal2/800/400', alt: 'Slide 2' },
-        { src: 'https://picsum.photos/seed/teal3/800/400', alt: 'Slide 3' },
+        { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop', alt: 'Mountain landscape' },
+        { src: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop', alt: 'City skyline' },
+        { src: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=400&fit=crop', alt: 'Forest path' },
       ],
       captionSlides: [
         {
-          src: 'https://picsum.photos/seed/cap1/800/400',
-          alt: 'Slide 1',
+          src: 'https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=800&h=400&fit=crop',
+          alt: 'Night sky',
           title: 'First slide label',
           caption: 'Some representative placeholder content for the first slide.',
         },
         {
-          src: 'https://picsum.photos/seed/cap2/800/400',
-          alt: 'Slide 2',
+          src: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=400&fit=crop',
+          alt: 'Open road',
           title: 'Second slide label',
           caption: 'Some representative placeholder content for the second slide.',
         },
         {
-          src: 'https://picsum.photos/seed/cap3/800/400',
-          alt: 'Slide 3',
+          src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=400&fit=crop',
+          alt: 'Sunlit forest',
           title: 'Third slide label',
           caption: 'Some representative placeholder content for the third slide.',
         },
@@ -375,22 +377,49 @@ export default {
         slidesOnly: `<div id="carouselSlidesOnly" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="..." class="d-block w-100" alt="...">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Mountain landscape"
+           style="height:280px;object-fit:cover;">
     </div>
     <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
+      <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="City skyline"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Forest path"
+           style="height:280px;object-fit:cover;">
     </div>
   </div>
 </div>`,
         withControls: `<div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">...</div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Mountain landscape"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="City skyline"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Forest path"
+           style="height:280px;object-fit:cover;">
+    </div>
+  </div>
   <button class="carousel-control-prev" type="button"
     data-bs-target="#carouselControls" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
   </button>
   <button class="carousel-control-next" type="button"
     data-bs-target="#carouselControls" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
   </button>
 </div>`,
         withIndicators: `<div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -399,49 +428,222 @@ export default {
       data-bs-slide-to="0" class="active" aria-current="true"></button>
     <button type="button" data-bs-target="#carouselIndicators"
       data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#carouselIndicators"
+      data-bs-slide-to="2"></button>
   </div>
-  <div class="carousel-inner">...</div>
-  <button class="carousel-control-prev" ...>...</button>
-  <button class="carousel-control-next" ...>...</button>
-</div>`,
-        withCaptions: `<div class="carousel-item active">
-  <img src="..." class="d-block w-100" alt="...">
-  <div class="carousel-caption d-none d-md-block">
-    <h5>First slide label</h5>
-    <p>Some representative placeholder content for the first slide.</p>
-  </div>
-</div>`,
-        crossfade: `<div id="carouselFade" class="carousel slide carousel-fade"
-  data-bs-ride="carousel">
-  <div class="carousel-inner">...</div>
-  <button class="carousel-control-prev" ...>...</button>
-  <button class="carousel-control-next" ...>...</button>
-</div>`,
-        interval: `<div id="carouselInterval" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="1000">...</div>
-    <div class="carousel-item" data-bs-interval="2000">...</div>
-    <div class="carousel-item">...</div>
-  </div>
-</div>`,
-        noTouch: `<div id="carouselNoTouch" class="carousel slide"
-  data-bs-touch="false" data-bs-ride="carousel">
-  <div class="carousel-inner">...</div>
-  <button class="carousel-control-prev" ...>...</button>
-  <button class="carousel-control-next" ...>...</button>
-</div>`,
-        darkVariant: `<div id="carouselDark" class="carousel carousel-dark slide"
-  data-bs-ride="carousel">
-  <div class="carousel-indicators">...</div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="..." class="d-block w-100" alt="...">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Mountain landscape"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="City skyline"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Forest path"
+           style="height:280px;object-fit:cover;">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button"
+    data-bs-target="#carouselIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button"
+    data-bs-target="#carouselIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>`,
+        withCaptions: `<div id="carouselCaptions" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselCaptions"
+      data-bs-slide-to="0" class="active" aria-current="true"></button>
+    <button type="button" data-bs-target="#carouselCaptions"
+      data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#carouselCaptions"
+      data-bs-slide-to="2"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Night sky"
+           style="height:280px;object-fit:cover;">
       <div class="carousel-caption d-none d-md-block">
         <h5>First slide label</h5>
-        <p>Caption text here.</p>
+        <p>Some representative placeholder content for the first slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Open road"
+           style="height:280px;object-fit:cover;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Second slide label</h5>
+        <p>Some representative placeholder content for the second slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Sunlit forest"
+           style="height:280px;object-fit:cover;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
       </div>
     </div>
   </div>
+  <button class="carousel-control-prev" type="button"
+    data-bs-target="#carouselCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button"
+    data-bs-target="#carouselCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>`,
+        crossfade: `<div id="carouselFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Mountain landscape"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="City skyline"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Forest path"
+           style="height:280px;object-fit:cover;">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button"
+    data-bs-target="#carouselFade" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button"
+    data-bs-target="#carouselFade" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>`,
+        interval: `<div id="carouselInterval" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="1000">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Mountain landscape"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item" data-bs-interval="2000">
+      <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="City skyline"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Forest path"
+           style="height:280px;object-fit:cover;">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button"
+    data-bs-target="#carouselInterval" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button"
+    data-bs-target="#carouselInterval" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>`,
+        noTouch: `<div id="carouselNoTouch" class="carousel slide"
+  data-bs-touch="false" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Mountain landscape"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="City skyline"
+           style="height:280px;object-fit:cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Forest path"
+           style="height:280px;object-fit:cover;">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button"
+    data-bs-target="#carouselNoTouch" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button"
+    data-bs-target="#carouselNoTouch" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>`,
+        darkVariant: `<div id="carouselDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselDark"
+      data-bs-slide-to="0" class="active" aria-current="true"></button>
+    <button type="button" data-bs-target="#carouselDark"
+      data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#carouselDark"
+      data-bs-slide-to="2"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" style="background:#f5f5f5">
+      <img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Night sky"
+           style="height:280px;object-fit:cover;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>First slide label</h5>
+        <p>Some representative placeholder content for the first slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item" style="background:#f5f5f5">
+      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Open road"
+           style="height:280px;object-fit:cover;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Second slide label</h5>
+        <p>Some representative placeholder content for the second slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item" style="background:#f5f5f5">
+      <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=400&fit=crop"
+           class="d-block w-100" alt="Sunlit forest"
+           style="height:280px;object-fit:cover;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button"
+    data-bs-target="#carouselDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button"
+    data-bs-target="#carouselDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>`,
       },
     }

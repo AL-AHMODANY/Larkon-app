@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="toasts-page">
+    <CdnSection />
     <div class="right-nav d-none d-xl-block">
       <div class="right-nav-title">ON THIS PAGE</div>
       <a href="#default" :class="{ active: activeSection === 'default' }">Default Toast</a>
@@ -35,17 +36,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast"</span> <span class="attr">role</span>=<span class="val">"alert"</span> <span class="attr">aria-live</span>=<span class="val">"assertive"</span> <span class="attr">aria-atomic</span>=<span class="val">"true"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-header"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"..."</span> <span class="attr">class</span>=<span class="val">"rounded me-2"</span> <span class="attr">alt</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;strong</span> <span class="attr">class</span>=<span class="val">"me-auto"</span><span class="tag">&gt;</span>Bootstrap<span class="tag">&lt;/strong&gt;</span>
-    <span class="tag">&lt;small&gt;</span>11 mins ago<span class="tag">&lt;/small&gt;</span>
-    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"button"</span> <span class="attr">class</span>=<span class="val">"btn-close"</span> <span class="attr">data-bs-dismiss</span>=<span class="val">"toast"</span><span class="tag">&gt;&lt;/button&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-body"</span><span class="tag">&gt;</span>
-    Hello, world! This is a toast message.
-  <span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;/div&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.default }}</code></pre>
         </div>
       </div>
 
@@ -75,17 +66,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"button"</span> <span class="attr">class</span>=<span class="val">"btn btn-primary"</span> <span class="attr">id</span>=<span class="val">"liveToastBtn"</span><span class="tag">&gt;</span>Show live toast<span class="tag">&lt;/button&gt;</span>
-
-<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast"</span> <span class="attr">id</span>=<span class="val">"liveToast"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-header"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;strong</span> <span class="attr">class</span>=<span class="val">"me-auto"</span><span class="tag">&gt;</span>Bootstrap<span class="tag">&lt;/strong&gt;</span>
-    <span class="tag">&lt;small&gt;</span>11 mins ago<span class="tag">&lt;/small&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-body"</span><span class="tag">&gt;</span>
-    Hello, world!
-  <span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;/div&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.live }}</code></pre>
         </div>
       </div>
 
@@ -112,15 +93,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast"</span> <span class="attr">role</span>=<span class="val">"alert"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-header"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;strong</span> <span class="attr">class</span>=<span class="val">"me-auto"</span><span class="tag">&gt;</span>Bootstrap<span class="tag">&lt;/strong&gt;</span>
-    <span class="tag">&lt;small</span> <span class="attr">class</span>=<span class="val">"text-muted"</span><span class="tag">&gt;</span>Just now<span class="tag">&lt;/small&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-body"</span><span class="tag">&gt;</span>
-    See? Just like this.
-  <span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;/div&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.translucent }}</code></pre>
         </div>
       </div>
 
@@ -158,17 +131,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-container"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast"</span> <span class="attr">role</span>=<span class="val">"alert"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-header"</span><span class="tag">&gt;</span>
-      <span class="tag">&lt;strong</span> <span class="attr">class</span>=<span class="val">"me-auto"</span><span class="tag">&gt;</span>Bootstrap<span class="tag">&lt;/strong&gt;</span>
-    <span class="tag">&lt;/div&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-body"</span><span class="tag">&gt;</span>See? This is a toast.<span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast"</span> <span class="attr">role</span>=<span class="val">"alert"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-body"</span><span class="tag">&gt;</span>Heads up, toasts will stack.<span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;/div&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.stacking }}</code></pre>
         </div>
       </div>
 
@@ -192,14 +155,7 @@
             <span class="code-lang">HTML</span>
             <button class="copy-btn" @click="copyCode($event)">Copy</button>
           </div>
-          <pre v-pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast align-items-center text-white bg-primary border-0"</span> <span class="attr">role</span>=<span class="val">"alert"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"d-flex"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"toast-body"</span><span class="tag">&gt;</span>
-      Hello, world! This is a toast message.
-    <span class="tag">&lt;/div&gt;</span>
-    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"button"</span> <span class="attr">class</span>=<span class="val">"btn-close btn-close-white me-2 m-auto"</span> <span class="attr">data-bs-dismiss</span>=<span class="val">"toast"</span><span class="tag">&gt;&lt;/button&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;/div&gt;</span></pre>
+          <pre class="code-pre"><code>{{ codeMap.custom }}</code></pre>
         </div>
       </div>
     </div>
@@ -208,6 +164,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref, onMounted } from 'vue'
 import Toast from 'bootstrap/js/dist/toast'
@@ -228,9 +185,76 @@ const showLiveToast = () => {
   }
 }
 
+const codeMap = {
+  default: `<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <img src="https://randomuser.me/api/portraits/men/32.jpg"
+         class="rounded me-2" alt="User avatar" width="24" height="24">
+    <strong class="me-auto">Bootstrap</strong>
+    <small>11 mins ago</small>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    Hello, world! This is a toast message.
+  </div>
+</div>`,
+  live: `<!-- Trigger button -->
+<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+
+<!-- Toast -->
+<div class="toast" id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="me-auto">Bootstrap</strong>
+    <small>11 mins ago</small>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">Hello, world!</div>
+</div>
+
+<script>
+var toastEl = document.getElementById('liveToast')
+var toast = new bootstrap.Toast(toastEl)
+document.getElementById('liveToastBtn').addEventListener('click', function () {
+  toast.show()
+})
+<\/script>`,
+  translucent: `<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="me-auto">Bootstrap</strong>
+    <small class="text-muted">Just now</small>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">See? Just like this.</div>
+</div>`,
+  stacking: `<div class="toast-container">
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Bootstrap</strong>
+      <small class="text-muted">just now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">See? This is a toast message.</div>
+  </div>
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Bootstrap</strong>
+      <small class="text-muted">5 seconds ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">Heads up, toasts will stack automatically.</div>
+  </div>
+</div>`,
+  custom: `<div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body">Hello, world! This is a toast message.</div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>`,
+}
+
 function copyCode(event) {
-  const pre = event.target.closest('.code-box').querySelector('pre')
-  navigator.clipboard.writeText(pre.innerText).then(() => {
+  const sectionId = event.target.closest('.doc-section')?.id
+  navigator.clipboard.writeText(codeMap[sectionId] || '').then(() => {
     event.target.textContent = 'Copied!'
     setTimeout(() => (event.target.textContent = 'Copy'), 1800)
   })
@@ -321,7 +345,7 @@ function copyCode(event) {
   transition: all 0.15s;
 }
 .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-pre {
+pre, pre.code-pre {
   margin: 0;
   padding: 12px 16px;
   overflow-x: auto;
@@ -331,6 +355,15 @@ pre {
   background: var(--app-bg);
   max-height: 200px;
   font-family: 'Courier New', monospace;
+}
+pre.code-pre code {
+  display: block;
+  white-space: pre;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
 }
 pre :deep(.tag)  { color: #e06c75; }
 pre :deep(.attr) { color: #d19a66; }

@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
+    <CdnSection />
     <div class="page-header">
       <h4 class="page-title">Tabs</h4>
       <p class="page-subtitle">Bootstrap 5 nav tabs, pills, and vertical tab examples.</p>
@@ -136,6 +137,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref } from 'vue'
 import PageFooter from '../../components/layout/Footer.vue'
 
@@ -265,7 +267,7 @@ const codes = {
   line-height: 1.6;
 }
 
-/* Override Bootstrap active color to Larkon orange */
+/* Override Bootstrap active color to AL-AHMODANY orange */
 :deep(.nav-pills .nav-link.active) {
   background-color: var(--accent) !important;
   color: #fff !important;

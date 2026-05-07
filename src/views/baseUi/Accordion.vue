@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-content">
+    <CdnSection />
     <!-- Page Title -->
     <div class="page-title-box">
       <h4 class="page-title">Accordion</h4>
@@ -216,6 +217,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 

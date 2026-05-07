@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper-adv" style="min-height: 100vh;">
+    <CdnSection />
     <div class="container-fluid">
 
       <!-- Page Title -->
@@ -79,31 +80,31 @@
               </div>
 
               <!-- Code Block -->
-              <div class="rounded-3 overflow-hidden border">
-                <div class="d-flex align-items-center justify-content-between px-3 py-2" style="background: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+              <div class="code-block rounded-3 overflow-hidden border">
+                <div class="code-header d-flex align-items-center justify-content-between px-3 py-2">
                   <div class="d-flex gap-1">
                     <button
-                      class="btn btn-sm fw-semibold"
-                      :class="activeTab[index] === 'html' ? 'tab-active-html' : 'tab-inactive'"
-                      style="font-size: 0.72rem; border-radius: 5px; padding: 0.2rem 0.65rem;"
+                      class="btn btn-sm fw-semibold code-tab"
+                      :class="activeTab[index] === 'html' ? 'code-tab-active' : ''"
                       @click="activeTab[index] = 'html'"
                     >HTML</button>
                     <button
-                      class="btn btn-sm fw-semibold"
-                      :class="activeTab[index] === 'js' ? 'tab-active-js' : 'tab-inactive'"
-                      style="font-size: 0.72rem; border-radius: 5px; padding: 0.2rem 0.65rem;"
+                      class="btn btn-sm fw-semibold code-tab"
+                      :class="activeTab[index] === 'js' ? 'code-tab-active' : ''"
                       @click="activeTab[index] = 'js'"
                     >JAVASCRIPT</button>
                   </div>
                   <button
-                    class="btn btn-sm py-1 px-2"
-                    :class="copiedIndex === index ? 'btn-success' : 'btn-outline-secondary'"
-                    style="font-size: 0.72rem;"
+                    class="btn btn-sm code-copy-btn"
+                    :class="copiedIndex === index ? 'copied' : ''"
                     @click="copyCode(index)"
-                  >{{ copiedIndex === index ? 'Copied!' : 'Copy' }}</button>
+                  >
+                    <i :class="copiedIndex === index ? 'bx bx-check' : 'bx bx-copy'"></i>
+                    {{ copiedIndex === index ? 'Copied!' : 'Copy' }}
+                  </button>
                 </div>
-                <div style="background: #fff; overflow-x: auto; max-height: 240px;">
-                  <pre class="mb-0 px-3 py-3" style="font-size: 0.76rem; color: #c0392b; font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace; line-height: 1.75; white-space: pre;">{{ activeTab[index] === 'html' ? section.htmlCode : section.jsCode }}</pre>
+                <div class="code-body">
+                  <pre class="code-pre mb-0">{{ activeTab[index] === 'html' ? section.htmlCode : section.jsCode }}</pre>
                 </div>
               </div>
 
@@ -139,7 +140,7 @@
 
       <!-- Footer -->
       <div class="text-center mt-5 pb-3">
-        <small class="text-muted">2026 © Larkon. Crafted with ❤️ by Techzaa</small>
+        <small class="text-muted">2026 © AL-AHMODANY. Crafted with ❤️ by Techzaa</small>
       </div>
 
     </div>
@@ -148,6 +149,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref, reactive, onMounted, nextTick } from 'vue'
 
@@ -1046,11 +1048,96 @@ onMounted(async () => {
   background: #e9ecef !important;
 }
 
+/* Code Block Styling */
+.code-block {
+  border: 1px solid var(--card-border, #eef2f7);
+  transition: border-color 0.2s;
+}
+.code-header {
+  background: var(--app-bg, #f3f4f9);
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  transition: background 0.2s, border-color 0.2s;
+}
+.code-tab {
+  font-size: 0.72rem;
+  border-radius: 5px;
+  padding: 0.25rem 0.75rem;
+  background: transparent;
+  color: var(--text-secondary, #6c757d);
+  border: none;
+  transition: all 0.15s;
+}
+.code-tab:hover {
+  background: var(--card-bg, #fff);
+  color: var(--text-primary, #313a46);
+}
+.code-tab-active {
+  background: var(--accent, #fd7e14) !important;
+  color: #fff !important;
+}
+.code-copy-btn {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.65rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #eef2f7);
+  color: var(--text-secondary, #6c757d);
+  border-radius: 5px;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.code-copy-btn:hover {
+  border-color: var(--accent, #fd7e14);
+  color: var(--accent, #fd7e14);
+}
+.code-copy-btn.copied {
+  border-color: var(--success, #2ecc71);
+  color: var(--success, #2ecc71);
+  background: var(--success-muted, #d4edda);
+}
+.code-copy-btn i {
+  font-size: 13px;
+}
+.code-body {
+  background: var(--app-bg, #f3f4f9);
+  overflow-x: auto;
+  max-height: 280px;
+  transition: background 0.2s;
+}
+.code-pre {
+  padding: 1rem 1.25rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary, #6c757d);
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  line-height: 1.75;
+  white-space: pre;
+  margin: 0;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
 /* ── Dark mode overrides ── */
-:global([data-theme="dark"]) .tab-inactive {
+:global([data-theme="dark"]) .code-block {
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-header {
+  background: var(--app-bg) !important;
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-body {
+  background: var(--app-bg) !important;
+}
+:global([data-theme="dark"]) .code-pre {
+  color: #c9d1d9 !important;
+}
+:global([data-theme="dark"]) .code-copy-btn {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
   color: var(--text-secondary) !important;
 }
-:global([data-theme="dark"]) .tab-inactive:hover {
-  background: var(--app-bg) !important;
+:global([data-theme="dark"]) .code-copy-btn:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
 }
 </style>

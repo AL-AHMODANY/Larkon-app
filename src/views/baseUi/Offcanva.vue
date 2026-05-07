@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="offcanvas-page">
+    <CdnSection />
 
   <!-- Theme Toggle removed — uses global theme from settings -->
 
@@ -64,7 +65,9 @@
     &lt;h5 class="offcanvas-title"&gt;Body Scrolling Enabled&lt;/h5&gt;
     &lt;button type="button" class="btn-close" data-bs-dismiss="offcanvas"&gt;&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div class="offcanvas-body"&gt;...&lt;/div&gt;
+  &lt;div class="offcanvas-body"&gt;
+    Body scrolling is enabled. Backdrop is disabled.
+  &lt;/div&gt;
 &lt;/div&gt;</pre>
         </div>
       </section>
@@ -97,7 +100,7 @@
     &lt;h5 class="offcanvas-title" id="offcanvasLeftLabel"&gt;Left Offcanvas&lt;/h5&gt;
     &lt;button type="button" class="btn-close" data-bs-dismiss="offcanvas"&gt;&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div class="offcanvas-body"&gt;Content here...&lt;/div&gt;
+  &lt;div class="offcanvas-body"&gt;Slides in from the left side of the viewport.&lt;/div&gt;
 &lt;/div&gt;</pre>
         </div>
       </section>
@@ -182,6 +185,7 @@
 </template>
 
 <script>
+import CdnSection from '../../components/CdnSection.vue'
 // footer
 import PageFooter from '../../components/layout/Footer.vue'
 export default {

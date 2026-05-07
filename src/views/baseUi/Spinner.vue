@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="spinner-page">
+    <CdnSection />
 
   <!-- Theme Toggle removed — uses global theme from settings -->
 
@@ -192,6 +193,7 @@
 </template>
 
 <script>
+import CdnSection from '../../components/CdnSection.vue'
 // footer
 import PageFooter from '../../components/layout/Footer.vue'
 export default {

@@ -1,6 +1,6 @@
-<template>
+﻿<template>
   <footer class="app-footer">
-    <span>{{ new Date().getFullYear() }} &copy; Larkon. Crafted by <a href="https://techzaa.in" target="_blank" rel="noopener">Techzaa</a></span>
+    <span>{{ new Date().getFullYear() }} &copy; AL-AHMODANY. Crafted by <a href="https://techzaa.in" target="_blank" rel="noopener">Techzaa</a></span>
   </footer>
 </template>
 

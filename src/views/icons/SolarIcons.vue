@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
+    <CdnSection />
     <div class="page-header">
       <h4 class="page-title">Solar Icons</h4>
       <p class="page-subtitle">800+ SVG icons from the Solar icon set — rendered via Bootstrap Icons as a stand-in.</p>
@@ -31,6 +32,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed } from 'vue'
 import PageFooter from '../../components/layout/Footer.vue'
 
@@ -124,14 +126,14 @@ function copyIcon(cls) {
 .page-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px; }
 .page-subtitle { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
 .demo-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px 22px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
-.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
-.icon-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; border: 1px solid var(--card-border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+.icon-item { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 8px 14px; border: 1px solid var(--card-border); border-radius: 10px; cursor: pointer; transition: all 0.15s; }
 .icon-item:hover { border-color: var(--accent); background: rgba(253,126,20,0.05); }
-.icon-item__glyph { font-size: 1.4rem; line-height: 1; display: block; color: var(--text-secondary); transition: color 0.15s; }
+.icon-item__glyph { font-size: 2rem; line-height: 1; display: block; color: var(--text-secondary); transition: color 0.15s; }
 .icon-item:hover .icon-item__glyph { color: var(--accent); }
-.icon-item__name { font-size: 0.65rem; color: var(--text-muted); text-align: center; word-break: break-all; line-height: 1.3; }
+.icon-item__name { font-size: 0.68rem; color: var(--text-muted); text-align: center; word-break: break-all; line-height: 1.3; }
 .copy-toast { position: fixed; bottom: 24px; right: 24px; background: var(--text-primary); color: var(--text-inverse); padding: 9px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index: 9999; }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.25s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
-@media (max-width: 576px) { .page-wrapper { padding: 16px; } .icon-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); } }
+@media (max-width: 576px) { .page-wrapper { padding: 16px; } .icon-grid { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); } }
 </style>

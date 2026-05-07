@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper">
+    <CdnSection />
     <div class="page-header">
       <h4 class="page-title">List Group</h4>
       <p class="page-subtitle">List groups are a flexible component for displaying a series of content.</p>
@@ -138,6 +139,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref } from 'vue'
 import PageFooter from '../../components/layout/Footer.vue'
 
@@ -310,7 +312,7 @@ const checksCode = `<!-- Checkboxes -->
   padding: 20px;
 }
 
-/* Override Bootstrap active color to match Larkon orange */
+/* Override Bootstrap active color to match AL-AHMODANY orange */
 :deep(.list-group-item.active),
 :deep(.list-group-item-action.active) {
   background-color: var(--accent) !important;

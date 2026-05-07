@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="app-layout" :class="layoutClasses">
     <!-- Sidebar -->
     <Sidebar ref="sidebarRef" />
@@ -72,7 +72,7 @@ const handleResize = () => {
   }
 };
 
-/* ── Persist body data-* attrs (Larkon reads these) ─ */
+/* ── Persist body data-* attrs (AL-AHMODANY reads these) ─ */
 const applyBodyAttrs = () => {
   if (sidebarSize.value && sidebarSize.value !== "default") {
     document.body.setAttribute("data-sidebar-size", sidebarSize.value);
@@ -84,12 +84,12 @@ const applyBodyAttrs = () => {
 /* ── Load saved settings ─────────────────────────── */
 onMounted(() => {
   try {
-    const s = JSON.parse(localStorage.getItem("larkon_settings") || "{}");
+    const s = JSON.parse(localStorage.getItem("AL-AHMODANY_settings") || "{}");
 
     document.documentElement.setAttribute("data-theme",  s.colorScheme  || "light");
     document.body.setAttribute("data-topbar", s.topbarColor || "light");
     document.body.setAttribute("data-menu",   s.menuColor   || "dark");
-    document.body.setAttribute("data-layout", "vertical"); // Larkon default
+    document.body.setAttribute("data-layout", "vertical"); // AL-AHMODANY default
 
     if (s.sidebarSize && s.sidebarSize !== "default") {
       sidebarSize.value = s.sidebarSize;
@@ -111,7 +111,7 @@ onUnmounted(() => {
 
 <style>
 /* ═══════════════════════════════════════════════════
-   LARKON LAYOUT — exact spec from techzaa.in/larkon
+   AL-AHMODANY LAYOUT — exact spec from techzaa.in/AL-AHMODANY
    ═══════════════════════════════════════════════════ */
 
 /* ── Reset ──────────────────────────────────────── */
@@ -123,13 +123,21 @@ onUnmounted(() => {
   padding: 0;
 }
 
+/* Suppress CSS transitions on initial load to prevent flash/blur */
+/* NOTE: Only suppress transition, NOT animation — Vue Transitions need animation */
+.no-transition *,
+.no-transition *::before,
+.no-transition *::after {
+  transition: none !important;
+}
+
 html,
 body {
   height: 100%;
-  /* No overflow:hidden on html/body — Larkon lets body scroll on mobile */
+  /* No overflow:hidden on html/body — AL-AHMODANY lets body scroll on mobile */
 }
 
-/* ── CSS variables (matches Larkon defaults) ─────── */
+/* ── CSS variables (matches AL-AHMODANY defaults) ─────── */
 :root {
   --sidebar-width:            260px;
   --sidebar-collapsed-width:   70px;
@@ -221,9 +229,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 999;           /* just below the sidebar (z-index: 1000) */
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  z-index: 999;
 }
 
 /* Vue <Transition name="overlay-fade"> */

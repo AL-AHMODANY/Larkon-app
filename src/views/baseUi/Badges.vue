@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="badge-page">
+    <CdnSection />
 
     <!-- Page Title -->
     <div class="page-header">
@@ -228,6 +229,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
@@ -273,11 +275,98 @@ const badgeColors = [
 // ─── Copy ─────────────────────────────────────────────────────────
 const copied = ref(null)
 const codeTexts = {
-  heading:  `<h1>h1.Example heading <span class="badge bg-primary">New</span></h1>\n<h2>h2.Example heading <span class="badge bg-secondary">New</span></h2>\n<h3>h3.Example heading <span class="badge bg-success">New</span></h3>\n<h4>h4.Example heading <span class="badge bg-info">New</span></h4>\n<h5>h5.Example heading <span class="badge bg-warning text-dark">New</span></h5>\n<h6>h6.Example heading <span class="badge bg-danger">New</span></h6>`,
-  default:  `<!-- Default badges -->\n<span class="badge bg-primary me-1">Primary</span>\n<span class="badge bg-secondary me-1">Secondary</span>\n<span class="badge bg-success me-1">Success</span>\n<span class="badge bg-info me-1">Info</span>\n<span class="badge bg-warning text-dark me-1">Warning</span>\n<span class="badge bg-danger me-1">Danger</span>\n\n<!-- Pill badges -->\n<span class="badge rounded-pill bg-primary me-1">Primary</span>\n<span class="badge rounded-pill bg-secondary me-1">Secondary</span>\n<span class="badge rounded-pill bg-success me-1">Success</span>`,
-  outline:  `<!-- Outline badges require custom CSS or a utility library -->\n<!-- Bootstrap 5 does not include outline badge variants natively -->\n<span class="badge bg-primary me-1">Primary</span>\n<span class="badge bg-secondary me-1">Secondary</span>`,
-  soft:     `<!-- Soft/subtle badges using Bootstrap 5 text-bg-* utilities -->\n<span class="badge text-bg-primary me-1">Primary</span>\n<span class="badge text-bg-secondary me-1">Secondary</span>\n<span class="badge text-bg-success me-1">Success</span>\n<span class="badge text-bg-danger me-1">Danger</span>\n<span class="badge text-bg-warning me-1">Warning</span>\n<span class="badge text-bg-info me-1">Info</span>`,
-  buttons:  `<button type="button" class="btn btn-primary me-1">\n  Notifications <span class="badge bg-danger ms-1">4</span>\n</button>\n<button type="button" class="btn btn-outline-primary me-1">\n  Notifications <span class="badge bg-primary ms-1">new</span>\n</button>\n<button type="button" class="btn btn-secondary me-1">\n  Notifications <span class="badge bg-light text-dark ms-1">11</span>\n</button>\n\n<!-- Positioned badge -->\n<button type="button" class="btn btn-primary position-relative">\n  Inbox\n  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">\n    99+\n    <span class="visually-hidden">unread messages</span>\n  </span>\n</button>`,
+  heading:
+`<h1>h1.Example heading <span class="badge bg-primary">New</span></h1>
+<h2>h2.Example heading <span class="badge bg-secondary">New</span></h2>
+<h3>h3.Example heading <span class="badge bg-success">New</span></h3>
+<h4>h4.Example heading <span class="badge bg-info">New</span></h4>
+<h5>h5.Example heading <span class="badge bg-warning">New</span></h5>
+<h6>h6.Example heading <span class="badge bg-danger">New</span></h6>`,
+
+  default:
+`<!-- Default badges -->
+<span class="badge bg-primary me-1">Primary</span>
+<span class="badge bg-secondary me-1">Secondary</span>
+<span class="badge bg-success me-1">Success</span>
+<span class="badge bg-info me-1">Info</span>
+<span class="badge bg-warning me-1">Warning</span>
+<span class="badge bg-danger me-1">Danger</span>
+<span class="badge bg-dark me-1">Dark</span>
+<span class="badge bg-purple me-1">Purple</span>
+<span class="badge bg-pink me-1">Pink</span>
+<span class="badge bg-orange me-1">Orange</span>
+
+<!-- Pill badges -->
+<span class="badge rounded-pill bg-primary me-1">Primary</span>
+<span class="badge rounded-pill bg-secondary me-1">Secondary</span>
+<span class="badge rounded-pill bg-success me-1">Success</span>
+<span class="badge rounded-pill bg-info me-1">Info</span>
+<span class="badge rounded-pill bg-warning me-1">Warning</span>
+<span class="badge rounded-pill bg-danger me-1">Danger</span>
+<span class="badge rounded-pill bg-dark me-1">Dark</span>
+<span class="badge rounded-pill bg-purple me-1">Purple</span>
+<span class="badge rounded-pill bg-pink me-1">Pink</span>
+<span class="badge rounded-pill bg-orange me-1">Orange</span>`,
+
+  outline:
+`<!-- Outline badges -->
+<span class="badge badge-outline badge-outline-primary me-1">Primary</span>
+<span class="badge badge-outline badge-outline-secondary me-1">Secondary</span>
+<span class="badge badge-outline badge-outline-success me-1">Success</span>
+<span class="badge badge-outline badge-outline-info me-1">Info</span>
+<span class="badge badge-outline badge-outline-warning me-1">Warning</span>
+<span class="badge badge-outline badge-outline-danger me-1">Danger</span>
+<span class="badge badge-outline badge-outline-dark me-1">Dark</span>
+<span class="badge badge-outline badge-outline-purple me-1">Purple</span>
+<span class="badge badge-outline badge-outline-pink me-1">Pink</span>
+<span class="badge badge-outline badge-outline-orange me-1">Orange</span>
+
+<!-- Outline pill badges -->
+<span class="badge badge-outline rounded-pill badge-outline-primary me-1">Primary</span>
+<span class="badge badge-outline rounded-pill badge-outline-secondary me-1">Secondary</span>
+<span class="badge badge-outline rounded-pill badge-outline-success me-1">Success</span>`,
+
+  soft:
+`<!-- Soft badges -->
+<span class="badge badge-soft-primary me-1">Primary</span>
+<span class="badge badge-soft-secondary me-1">Secondary</span>
+<span class="badge badge-soft-success me-1">Success</span>
+<span class="badge badge-soft-info me-1">Info</span>
+<span class="badge badge-soft-warning me-1">Warning</span>
+<span class="badge badge-soft-danger me-1">Danger</span>
+<span class="badge badge-soft-dark me-1">Dark</span>
+<span class="badge badge-soft-purple me-1">Purple</span>
+<span class="badge badge-soft-pink me-1">Pink</span>
+<span class="badge badge-soft-orange me-1">Orange</span>
+
+<!-- Soft pill badges -->
+<span class="badge badge-soft-primary rounded-pill me-1">Primary</span>
+<span class="badge badge-soft-secondary rounded-pill me-1">Secondary</span>
+<span class="badge badge-soft-success rounded-pill me-1">Success</span>`,
+
+  buttons:
+`<!-- Buttons with inline badges -->
+<button type="button" class="btn btn-primary me-1">
+  Notifications <span class="badge bg-danger ms-1">4</span>
+</button>
+<button type="button" class="btn btn-outline-primary me-1">
+  Notifications <span class="badge badge-soft-primary ms-1">new</span>
+</button>
+<button type="button" class="btn btn-soft-primary me-1">
+  Notifications <span class="badge bg-primary ms-1">11</span>
+</button>
+<button type="button" class="btn btn-secondary me-1">
+  Notifications <span class="badge bg-secondary rounded-pill ms-1">99+</span>
+</button>
+
+<!-- Positioned badge -->
+<button type="button" class="btn btn-primary position-relative">
+  Inbox
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    99+
+    <span class="visually-hidden">unread messages</span>
+  </span>
+</button>`,
 }
 const copy = (key) => {
   navigator.clipboard.writeText(codeTexts[key] || '').then(() => {

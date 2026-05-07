@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="buttons-page py-4 px-2 px-lg-3">
+    <CdnSection />
     <div class="mb-3">
       <h4 class="page-heading mb-1">Buttons</h4>
       <p class="page-subtitle mb-0">
@@ -433,6 +434,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import BaseButton from "../../components/BaseButton.vue";

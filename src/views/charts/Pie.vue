@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Pie Charts</h4>
       <p class="cp-subtitle">ApexCharts pie, donut, and related circular chart examples.</p>
@@ -30,6 +31,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -62,37 +64,144 @@ const charts = computed(() => [
     id: 'simple-pie', title: 'Simple Pie Chart', type: 'pie', height: 320,
     series: [44, 55, 13, 43, 22],
     opts: { ...base.value, labels: ['Team A','Team B','Team C','Team D','Team E'] },
-    snip: `<apexchart type="pie" height="320" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'pie', height: 320, toolbar: { show: false } },
+  series: [44, 55, 13, 43, 22],
+  labels: ['Team A','Team B','Team C','Team D','Team E'],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c','#f1c40f'],
+  dataLabels: { enabled: true },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'simple-donut', title: 'Simple Donut Chart', type: 'donut', height: 320,
     series: [44, 55, 41, 17, 15],
     opts: { ...base.value, labels: ['Apple','Mango','Orange','Watermelon','Pineapple'], plotOptions: { pie: { donut: { size: '65%' } } } },
-    snip: `<apexchart type="donut" height="320" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'donut', height: 320, toolbar: { show: false } },
+  series: [44, 55, 41, 17, 15],
+  labels: ['Apple','Mango','Orange','Watermelon','Pineapple'],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c','#f1c40f'],
+  plotOptions: { pie: { donut: { size: '65%' } } },
+  dataLabels: { enabled: true },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'monochrome', title: 'Monochrome Pie', type: 'pie', height: 320,
     series: [25, 15, 44, 55, 41, 17],
     opts: { ...base.value, theme: { mode: th.value, monochrome: { enabled: true, color: '#fd7e14', shadeTo: 'light', shadeIntensity: 0.65 } }, labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'] },
-    snip: `<apexchart type="pie" height="320" :options="monochromeOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'pie', height: 320, toolbar: { show: false } },
+  series: [25, 15, 44, 55, 41, 17],
+  labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+  theme: { monochrome: { enabled: true, color: '#fd7e14', shadeTo: 'light', shadeIntensity: 0.65 } },
+  dataLabels: { enabled: true },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'gradient-donut', title: 'Gradient Donut', type: 'donut', height: 320,
     series: [44, 55, 41, 17, 15],
     opts: { ...base.value, labels: ['Apple','Mango','Orange','Watermelon','Pineapple'], fill: { type: 'gradient' }, plotOptions: { pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'Total', color: lc.value } } } } } },
-    snip: `<apexchart type="donut" height="320" :options="gradientOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'donut', height: 320, toolbar: { show: false } },
+  series: [44, 55, 41, 17, 15],
+  labels: ['Apple','Mango','Orange','Watermelon','Pineapple'],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c','#f1c40f'],
+  fill: { type: 'gradient' },
+  plotOptions: { pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'Total' } } } } },
+  dataLabels: { enabled: true },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'semi-donut', title: 'Semi Donut', type: 'donut', height: 280,
     series: [44, 55, 41, 17, 15],
     opts: { ...base.value, labels: ['Apple','Mango','Orange','Watermelon','Pineapple'], plotOptions: { pie: { startAngle: -90, endAngle: 90, offsetY: 10, donut: { size: '70%' } } }, grid: { padding: { bottom: -80 } } },
-    snip: `<apexchart type="donut" height="280" :options="semiDonutOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'donut', height: 280, toolbar: { show: false } },
+  series: [44, 55, 41, 17, 15],
+  labels: ['Apple','Mango','Orange','Watermelon','Pineapple'],
+  colors: ['#5b73e8','#fd7e14','#2ecc71','#e74c3c','#f1c40f'],
+  plotOptions: { pie: { startAngle: -90, endAngle: 90, offsetY: 10, donut: { size: '70%' } } },
+  grid: { padding: { bottom: -80 } },
+  dataLabels: { enabled: true },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'image-fill', title: 'Pie with Image Fill', type: 'pie', height: 320,
     series: [44, 55, 41, 17, 15],
     opts: { ...base.value, labels: ['Apple','Mango','Orange','Watermelon','Pineapple'], fill: { type: 'image', image: { src: ['https://apexcharts.com/wp-content/uploads/2018/05/apple.png','https://apexcharts.com/wp-content/uploads/2018/05/mango.png','https://apexcharts.com/wp-content/uploads/2018/05/orange.png','https://apexcharts.com/wp-content/uploads/2018/05/watermelon.png','https://apexcharts.com/wp-content/uploads/2018/05/pineapple.png'], width: 25, height: 25 } } },
-    snip: `<apexchart type="pie" height="320" :options="imageFillOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'pie', height: 320, toolbar: { show: false } },
+  series: [44, 55, 41, 17, 15],
+  labels: ['Apple','Mango','Orange','Watermelon','Pineapple'],
+  fill: {
+    type: 'image',
+    image: {
+      src: [
+        'https://apexcharts.com/wp-content/uploads/2018/05/apple.png',
+        'https://apexcharts.com/wp-content/uploads/2018/05/mango.png',
+        'https://apexcharts.com/wp-content/uploads/2018/05/orange.png',
+        'https://apexcharts.com/wp-content/uploads/2018/05/watermelon.png',
+        'https://apexcharts.com/wp-content/uploads/2018/05/pineapple.png'
+      ],
+      width: 25, height: 25
+    }
+  },
+  dataLabels: { enabled: true },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

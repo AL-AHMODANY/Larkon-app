@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="modal-page">
+    <CdnSection />
 
     <!-- Page Header -->
     <div class="page-header">
@@ -309,6 +310,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 

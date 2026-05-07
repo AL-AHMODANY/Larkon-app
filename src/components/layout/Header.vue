@@ -6,7 +6,7 @@
         <!-- Logo -->
         <div class="auth-logo">
           <span class="auth-logo__icon">⚡</span>
-          <span class="auth-logo__text">Larkon</span>
+          <span class="auth-logo__text">AL-AHMODANY</span>
         </div>
 
         <!-- Tab Switch -->
@@ -28,7 +28,7 @@
         <Transition name="form-slide" mode="out-in">
           <div v-if="authMode === 'login'" key="login" class="auth-form">
             <p class="auth-welcome">Welcome back 👋</p>
-            <p class="auth-sub">Sign in to continue to Larkon.</p>
+            <p class="auth-sub">Sign in to continue to AL-AHMODANY.</p>
 
             <div class="auth-field" :class="{ error: loginErrors.email }">
               <label class="auth-label">Email Address</label>
@@ -37,7 +37,7 @@
                 <input
                   v-model="loginForm.email"
                   type="email"
-                  placeholder="admin@larkon.com"
+                  placeholder="admin@AL-AHMODANY.com"
                   class="auth-input"
                   @keydown.enter="doLogin"
                 />
@@ -91,7 +91,7 @@
           <!-- SIGNUP FORM -->
           <div v-else key="signup" class="auth-form">
             <p class="auth-welcome">Create Account 🚀</p>
-            <p class="auth-sub">Get started with Larkon Admin.</p>
+            <p class="auth-sub">Get started with AL-AHMODANY Admin.</p>
 
             <div class="auth-field" :class="{ error: signupErrors.name }">
               <label class="auth-label">Full Name</label>
@@ -201,7 +201,7 @@
 
         <!-- Refresh (hide on mobile) -->
         <button
-          class="topbar__icon-btn topbar__icon-btn--hide-sm"
+          class="topbar__icon-btn topbar__icon-btn--hide-md"
           title="Refresh Page"
           @click="refreshPage"
         >
@@ -219,7 +219,10 @@
         </button>
 
         <!-- Messages -->
-        <div class="topbar__dropdown-wrap" ref="msgRef">
+        <div class="topbar__dropdown-wrap" ref="msgRef"
+          @mouseenter="!isTouchDevice && openDropdown('msg')"
+          @mouseleave="!isTouchDevice && scheduleClose('msg')"
+        >
           <button
             class="topbar__icon-btn topbar__icon-btn--hide-xs"
             :class="{ active: msgOpen }"
@@ -273,7 +276,10 @@
         </div>
 
         <!-- Notifications -->
-        <div class="topbar__dropdown-wrap" ref="notificationsRef">
+        <div class="topbar__dropdown-wrap" ref="notificationsRef"
+          @mouseenter="!isTouchDevice && openDropdown('notif')"
+          @mouseleave="!isTouchDevice && scheduleClose('notif')"
+        >
           <button
             class="topbar__icon-btn"
             :class="{ active: notifOpen }"
@@ -316,7 +322,10 @@
         </div>
 
         <!-- Activity Stream -->
-        <div class="topbar__dropdown-wrap topbar__icon-btn--hide-xs" ref="activityRef">
+        <div class="topbar__dropdown-wrap topbar__icon-btn--hide-xs" ref="activityRef"
+          @mouseenter="!isTouchDevice && openDropdown('activity')"
+          @mouseleave="!isTouchDevice && scheduleClose('activity')"
+        >
           <button
             class="topbar__icon-btn"
             :class="{ active: activityOpen }"
@@ -363,7 +372,10 @@
         </div>
 
         <!-- Language -->
-        <div class="topbar__dropdown-wrap topbar__icon-btn--hide-xs" ref="langRef">
+        <div class="topbar__dropdown-wrap topbar__icon-btn--hide-xs" ref="langRef"
+          @mouseenter="!isTouchDevice && openDropdown('lang')"
+          @mouseleave="!isTouchDevice && scheduleClose('lang')"
+        >
           <button
             class="topbar__icon-btn"
             :class="{ active: langOpen }"
@@ -396,7 +408,10 @@
         </div>
 
         <!-- User Avatar -->
-        <div class="topbar__dropdown-wrap" ref="userRef">
+        <div class="topbar__dropdown-wrap" ref="userRef"
+          @mouseenter="!isTouchDevice && openDropdown('user')"
+          @mouseleave="!isTouchDevice && scheduleClose('user')"
+        >
           <button
             class="topbar__user-btn"
             :class="{ active: userOpen }"
@@ -488,7 +503,7 @@
                     :key="result.id"
                     href="#"
                     class="search-result-item"
-                    @click.prevent
+                    @click.prevent="result.route && router.push(result.route); clearSearch()"
                   >
                     <div class="search-result-item__icon" :style="{ background: result.iconBg }">
                       <component :is="result.icon" class="search-result-item__svg" />
@@ -632,6 +647,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
+import { useRouter } from "vue-router";
 import {
   MoonIcon, SunIcon, BellIcon, Cog6ToothIcon, GlobeAltIcon,
   MagnifyingGlassIcon, XMarkIcon, CheckIcon, ArrowRightOnRectangleIcon,
@@ -652,6 +668,8 @@ const emit = defineEmits([
   "toggle-sidebar", "open-settings", "logout", "search",
   "sidebar-size-change", "theme-change", "topbar-color-change", "menu-color-change",
 ]);
+
+const router = useRouter();
 
 // ── AUTH ────────────────────────────────────────────────────
 const isAuthenticated = ref(false);
@@ -682,17 +700,16 @@ function doLogin() {
 
   authLoading.value = true;
   setTimeout(() => {
-    const users = JSON.parse(localStorage.getItem("larkon-users") || "[]");
+    const users = JSON.parse(localStorage.getItem("AL-AHMODANY-users") || "[]");
     const found = users.find(u => u.email === email && u.password === password);
 
     if (found) {
       setSession(found, loginForm.value.remember);
     } else {
-      // demo fallback: if no users exist yet, allow a demo login
-      if (users.length === 0 && email === "admin@larkon.com" && password === "admin123") {
+      if (users.length === 0 && email === "admin@AL-AHMODANY.com" && password === "admin123") {
         const demo = { name: "Admin User", email, password, role: "Administrator", avatar: "" };
         users.push(demo);
-        localStorage.setItem("larkon-users", JSON.stringify(users));
+        localStorage.setItem("AL-AHMODANY-users", JSON.stringify(users));
         setSession(demo, loginForm.value.remember);
       } else {
         loginErrors.value.general = "Invalid email or password.";
@@ -717,7 +734,7 @@ function doSignup() {
 
   authLoading.value = true;
   setTimeout(() => {
-    const users = JSON.parse(localStorage.getItem("larkon-users") || "[]");
+    const users = JSON.parse(localStorage.getItem("AL-AHMODANY-users") || "[]");
     if (users.find(u => u.email === email)) {
       signupErrors.value.general = "An account with this email already exists.";
       authLoading.value = false;
@@ -725,7 +742,7 @@ function doSignup() {
     }
     const newUser = { name: name.trim(), email, password, role: "User", avatar: "" };
     users.push(newUser);
-    localStorage.setItem("larkon-users", JSON.stringify(users));
+    localStorage.setItem("AL-AHMODANY-users", JSON.stringify(users));
     setSession(newUser, false);
     authLoading.value = false;
   }, 800);
@@ -739,9 +756,9 @@ function setSession(user, remember) {
   };
   delete session.password;
   if (remember) {
-    localStorage.setItem("larkon-session", JSON.stringify(session));
+    localStorage.setItem("AL-AHMODANY-session", JSON.stringify(session));
   } else {
-    sessionStorage.setItem("larkon-session", JSON.stringify(session));
+    sessionStorage.setItem("AL-AHMODANY-session", JSON.stringify(session));
   }
   currentUser.value = session;
   isAuthenticated.value = true;
@@ -749,8 +766,8 @@ function setSession(user, remember) {
 }
 
 function loadSession() {
-  const ls = localStorage.getItem("larkon-session");
-  const ss = sessionStorage.getItem("larkon-session");
+  const ls = localStorage.getItem("AL-AHMODANY-session");
+  const ss = sessionStorage.getItem("AL-AHMODANY-session");
   const raw = ls || ss;
   if (raw) {
     try {
@@ -765,8 +782,8 @@ function loadSession() {
 function handleLogout() {
   userOpen.value = false;
   showInactivityWarning.value = false;
-  localStorage.removeItem("larkon-session");
-  sessionStorage.removeItem("larkon-session");
+  localStorage.removeItem("AL-AHMODANY-session");
+  sessionStorage.removeItem("AL-AHMODANY-session");
   isAuthenticated.value = false;
   currentUser.value = null;
   clearInactivityTimers();
@@ -807,7 +824,7 @@ function saveSettings() {
     sidebarSize:  sidebarSize.value,
     inactivity:   inactivityTimeout.value,
   };
-  localStorage.setItem("larkon_settings", JSON.stringify(settings));
+  localStorage.setItem("AL-AHMODANY_settings", JSON.stringify(settings));
 }
 
 function applyTheme(dark) {
@@ -853,6 +870,10 @@ const activityOpen = ref(false);
 const langOpen     = ref(false);
 const userOpen     = ref(false);
 
+// Detect touch device for hover vs click behavior
+const isTouchDevice = ref(false);
+let hoverCloseTimers = {};
+
 function toggleDropdown(name) {
   const map = { msg: msgOpen, notif: notifOpen, activity: activityOpen, lang: langOpen, user: userOpen };
   const cur = map[name];
@@ -861,13 +882,32 @@ function toggleDropdown(name) {
   cur.value = next;
 }
 
+function openDropdown(name) {
+  // Cancel any pending close for this dropdown
+  if (hoverCloseTimers[name]) {
+    clearTimeout(hoverCloseTimers[name]);
+    delete hoverCloseTimers[name];
+  }
+  const map = { msg: msgOpen, notif: notifOpen, activity: activityOpen, lang: langOpen, user: userOpen };
+  Object.entries(map).forEach(([k, v]) => { if (k !== name) v.value = false; });
+  map[name].value = true;
+}
+
+function scheduleClose(name) {
+  hoverCloseTimers[name] = setTimeout(() => {
+    const map = { msg: msgOpen, notif: notifOpen, activity: activityOpen, lang: langOpen, user: userOpen };
+    map[name].value = false;
+    delete hoverCloseTimers[name];
+  }, 120);
+}
+
 // ── Messages ─────────────────────────────────────────────────
 const msgRef = ref(null);
 const messages = ref([
-  { id: 1, name: "Josephine Thompson", initials: "JT", avatarBg: "#e3f2fd", avatar: "https://techzaa.in/larkon/admin/assets/images/users/avatar-1.jpg", text: "Wow 😍! this admin looks good and awesome design", time: "2 min ago", read: false, online: true },
+  { id: 1, name: "Josephine Thompson", initials: "JT", avatarBg: "#e3f2fd", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop&crop=face", text: "Wow 😍! this admin looks good and awesome design", time: "2 min ago", read: false, online: true },
   { id: 2, name: "Donoghue Susan", initials: "DS", avatarBg: "#fce4ec", avatar: null, text: "Hi, How are you? What about our next meeting", time: "12 min ago", read: false, online: false },
-  { id: 3, name: "Jacob Gines", initials: "JG", avatarBg: "#e8f5e9", avatar: "https://techzaa.in/larkon/admin/assets/images/users/avatar-3.jpg", text: "Answered to your comment on the cash flow forecast's graph 🔔", time: "1 hr ago", read: false, online: true },
-  { id: 4, name: "Shawn Bunch", initials: "SB", avatarBg: "#fff3e8", avatar: "https://techzaa.in/larkon/admin/assets/images/users/avatar-5.jpg", text: "Commented on Admin panel.", time: "3 hrs ago", read: true, online: false },
+  { id: 3, name: "Jacob Gines", initials: "JG", avatarBg: "#e8f5e9", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=40&h=40&fit=crop&crop=face", text: "Answered to your comment on the cash flow forecast's graph 🔔", time: "1 hr ago", read: false, online: true },
+  { id: 4, name: "Shawn Bunch", initials: "SB", avatarBg: "#fff3e8", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face", text: "Commented on Admin panel.", time: "3 hrs ago", read: true, online: false },
   { id: 5, name: "You have received", initials: "YH", avatarBg: "#f3e5f5", avatar: null, text: "20 new messages in the conversation", time: "5 hrs ago", read: true, online: false },
 ]);
 const unreadMessages = computed(() => messages.value.filter(m => !m.read).length);
@@ -889,11 +929,11 @@ function markAllRead() { notifications.value.forEach(n => (n.read = true)); }
 // ── Activity Stream ───────────────────────────────────────────
 const activityRef = ref(null);
 const activityStream = ref([
-  { id: 1, title: "Report-Fix / Update", desc: "Add 3 files to Tasks", files: ["Concept.fig", "larkon.docs"], time: "Monday, 4:24 PM", icon: DocumentTextIcon, iconBg: "#e3f2fd" },
+  { id: 1, title: "Report-Fix / Update", desc: "Add 3 files to Tasks", files: ["Concept.fig", "AL-AHMODANY.docs"], time: "Monday, 4:24 PM", icon: DocumentTextIcon, iconBg: "#e3f2fd" },
   { id: 2, title: "Project Status", desc: "Marked Design as Completed — UI/UX Figma Design", time: "Monday, 3:00 PM", icon: CheckCircleIcon, iconBg: "#e8f5e9" },
-  { id: 3, title: "Larkon Application UI v2.0.0 Latest", desc: "Get access to over 20+ pages including a dashboard layout.", time: "Monday, 2:10 PM", icon: ArrowDownTrayIcon, iconBg: "#fff3e8" },
-  { id: 4, title: "Alex Smith Attached Photos", desc: "3 photos added to the project gallery.", time: "Monday 1:00 PM", icon: PhotoIcon, iconBg: "#fce4ec", avatar: "https://techzaa.in/larkon/admin/assets/images/users/avatar-7.jpg" },
-  { id: 5, title: "Rebecca J. added a new team member", desc: "Added a new member to Front Dashboard", time: "Monday 10:00 AM", icon: UserPlusIcon, iconBg: "#e8f5e9", avatar: "https://techzaa.in/larkon/admin/assets/images/users/avatar-6.jpg" },
+  { id: 3, title: "AL-AHMODANY Application UI v2.0.0 Latest", desc: "Get access to over 20+ pages including a dashboard layout.", time: "Monday, 2:10 PM", icon: ArrowDownTrayIcon, iconBg: "#fff3e8" },
+  { id: 4, title: "Alex Smith Attached Photos", desc: "3 photos added to the project gallery.", time: "Monday 1:00 PM", icon: PhotoIcon, iconBg: "#fce4ec", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=40&h=40&fit=crop&crop=face" },
+  { id: 5, title: "Rebecca J. added a new team member", desc: "Added a new member to Front Dashboard", time: "Monday 10:00 AM", icon: UserPlusIcon, iconBg: "#e8f5e9", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" },
   { id: 6, title: "Achievements", desc: 'Earned a "Best Product Award"', time: "Monday 9:30 AM", icon: TrophyIcon, iconBg: "#fff8e1", last: true },
 ]);
 
@@ -911,7 +951,7 @@ const languages  = [
 function setLang(code) {
   activeLang.value = code;
   langOpen.value = false;
-  localStorage.setItem("larkon-lang", code);
+  localStorage.setItem("AL-AHMODANY-lang", code);
 }
 
 // ── User Menu ─────────────────────────────────────────────────
@@ -1016,20 +1056,20 @@ const searchInput   = ref(null);
 const searchWrapRef = ref(null);
 
 const allSearchData = [
-  { id: 1,  label: "Dashboard",       sub: "Page",     icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
-  { id: 2,  label: "Orders",          sub: "Page",     icon: ShoppingBagIcon,            iconBg: "#fff3e8" },
-  { id: 3,  label: "Anna M. Hines",   sub: "Customer", icon: UserCircleIcon,             iconBg: "#e3f2fd" },
-  { id: 4,  label: "Judith Fritsche", sub: "Customer", icon: UserCircleIcon,             iconBg: "#e3f2fd" },
-  { id: 5,  label: "Revenue Report",  sub: "Report",   icon: CurrencyDollarIcon,         iconBg: "#e8f5e9" },
-  { id: 6,  label: "New Leads",       sub: "CRM",      icon: UserGroupIcon,              iconBg: "#fce4ec" },
-  { id: 7,  label: "Chat",            sub: "App",      icon: ChatBubbleLeftEllipsisIcon, iconBg: "#e8f5e9" },
-  { id: 8,  label: "Calendar",        sub: "App",      icon: ClockIcon,                  iconBg: "#e3f2fd" },
-  { id: 9,  label: "Products",        sub: "Page",     icon: TagIcon,                    iconBg: "#fff3e8" },
-  { id: 10, label: "Settings",        sub: "Page",     icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
-  { id: 11, label: "Invoices",        sub: "Finance",  icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
-  { id: 12, label: "Customers",       sub: "Users",    icon: UserGroupIcon,              iconBg: "#fce4ec" },
-  { id: 13, label: "Sellers",         sub: "Users",    icon: ShieldCheckIcon,            iconBg: "#e3f2fd" },
-  { id: 14, label: "Reviews",         sub: "Content",  icon: StarIcon,                   iconBg: "#fff8e1" },
+  { id: 1,  label: "Dashboard",       sub: "Page",     route: "/dashboard",          icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
+  { id: 2,  label: "Buttons",         sub: "Base UI",  route: "/buttons",            icon: ShoppingBagIcon,            iconBg: "#fff3e8" },
+  { id: 3,  label: "Alerts",          sub: "Base UI",  route: "/alerts",             icon: UserCircleIcon,             iconBg: "#e3f2fd" },
+  { id: 4,  label: "Cards",           sub: "Base UI",  route: "/cards",              icon: UserCircleIcon,             iconBg: "#e3f2fd" },
+  { id: 5,  label: "Modal",           sub: "Base UI",  route: "/modals",             icon: CurrencyDollarIcon,         iconBg: "#e8f5e9" },
+  { id: 6,  label: "Badges",          sub: "Base UI",  route: "/badges",             icon: UserGroupIcon,              iconBg: "#fce4ec" },
+  { id: 7,  label: "Tabs",            sub: "Base UI",  route: "/tabs",               icon: ChatBubbleLeftEllipsisIcon, iconBg: "#e8f5e9" },
+  { id: 8,  label: "Accordion",       sub: "Base UI",  route: "/accordion",          icon: ClockIcon,                  iconBg: "#e3f2fd" },
+  { id: 9,  label: "Boxicons",        sub: "Icons",    route: "/icons/boxicons",     icon: TagIcon,                    iconBg: "#fff3e8" },
+  { id: 10, label: "Solar Icons",     sub: "Icons",    route: "/icons/solar",        icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
+  { id: 11, label: "Area Chart",      sub: "Charts",   route: "/area",               icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 12, label: "Basic Tables",    sub: "Tables",   route: "/tables/basic",       icon: UserGroupIcon,              iconBg: "#fce4ec" },
+  { id: 13, label: "Google Maps",     sub: "Maps",     route: "/maps/google",        icon: ShieldCheckIcon,            iconBg: "#e3f2fd" },
+  { id: 14, label: "Vector Maps",     sub: "Maps",     route: "/maps/vector",        icon: StarIcon,                   iconBg: "#fff8e1" },
 ];
 
 const searchResults = computed(() => {
@@ -1046,7 +1086,13 @@ function clearSearch() {
   searchFocused.value = false;
   searchInput.value?.blur();
 }
-function doSearch() { emit("search", searchQuery.value); }
+function doSearch() {
+  emit("search", searchQuery.value);
+  if (searchResults.value.length > 0 && searchResults.value[0].route) {
+    router.push(searchResults.value[0].route);
+    clearSearch();
+  }
+}
 
 // ── Click Outside ─────────────────────────────────────────────
 function handleClickOutside(e) {
@@ -1060,29 +1106,27 @@ function handleClickOutside(e) {
 
 // ── Lifecycle ─────────────────────────────────────────────────
 onMounted(() => {
-  // Restore session
   loadSession();
 
-  // Restore settings from localStorage
+  // Detect touch device
+  isTouchDevice.value = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
   try {
-    const s = JSON.parse(localStorage.getItem("larkon_settings") || "{}");
+    const s = JSON.parse(localStorage.getItem("AL-AHMODANY_settings") || "{}");
     if (s.colorScheme === "dark") { isDark.value = true; document.documentElement.setAttribute("data-theme", "dark"); }
     if (s.topbarColor) { topbarColor.value = s.topbarColor; document.body.setAttribute("data-topbar", s.topbarColor); }
     if (s.menuColor)   { menuColor.value   = s.menuColor;   document.body.setAttribute("data-menu",   s.menuColor); }
     if (s.sidebarSize) sidebarSize.value = s.sidebarSize;
     if (s.inactivity)  inactivityTimeout.value = parseInt(s.inactivity) || 0;
   } catch { /* noop */ }
-  const savedLang = localStorage.getItem("larkon-lang");
+  const savedLang = localStorage.getItem("AL-AHMODANY-lang");
   if (savedLang) activeLang.value = savedLang;
 
-  // Clock
   updateClock();
   clockInterval = setInterval(updateClock, 1000);
 
-  // Events
   document.addEventListener("mousedown", handleClickOutside);
 
-  // Inactivity
   INACTIVITY_EVENTS.forEach(e => document.addEventListener(e, onUserActivity, { passive: true }));
   if (isAuthenticated.value && inactivityTimeout.value > 0) startInactivityTimer();
 });
@@ -1094,7 +1138,6 @@ onBeforeUnmount(() => {
   INACTIVITY_EVENTS.forEach(e => document.removeEventListener(e, onUserActivity));
 });
 
-// Watch auth change to start/stop inactivity
 watch(isAuthenticated, (val) => {
   if (val && inactivityTimeout.value > 0) startInactivityTimer();
   else clearInactivityTimers();
@@ -1102,6 +1145,13 @@ watch(isAuthenticated, (val) => {
 </script>
 
 <style scoped>
+/* ─────────────────────────────────────────────────────────────
+   BASE RESET — prevent horizontal overflow at root
+───────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 /* ─────────────────────────────────────────────────────────────
    AUTH OVERLAY
 ───────────────────────────────────────────────────────────── */
@@ -1114,6 +1164,7 @@ watch(isAuthenticated, (val) => {
   justify-content: center;
   z-index: 9999;
   padding: 16px;
+  overflow-y: auto;
 }
 
 .auth-card {
@@ -1124,6 +1175,13 @@ watch(isAuthenticated, (val) => {
   max-width: 420px;
   padding: 36px 32px 32px;
   animation: auth-card-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 24px 20px 20px;
+    border-radius: 16px;
+  }
 }
 
 @keyframes auth-card-in {
@@ -1146,7 +1204,7 @@ watch(isAuthenticated, (val) => {
   background-clip: text;
 }
 .auth-logo__text {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 900;
   color: #313a46;
   letter-spacing: -0.5px;
@@ -1221,23 +1279,24 @@ watch(isAuthenticated, (val) => {
   font-size: 13.5px; color: #313a46;
   outline: none; padding: 11px 0;
   font-family: inherit;
+  min-width: 0;
 }
 .auth-input::placeholder { color: #b0bac5; }
 
 .auth-eye {
   border: none; background: transparent; padding: 0; cursor: pointer;
   color: #98a6ad; display: flex; align-items: center;
-  transition: color 0.12s ease;
+  transition: color 0.12s ease; flex-shrink: 0;
 }
 .auth-eye:hover { color: #fd7e14; }
 .auth-eye-icon  { width: 16px; height: 16px; stroke-width: 1.8; }
 
 .auth-error-msg { font-size: 11.5px; color: #e74c3c; margin-top: 5px; display: block; }
 
-.auth-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.auth-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 8px; flex-wrap: wrap; }
 .auth-check { display: flex; align-items: center; gap: 7px; font-size: 13px; color: #6c757d; cursor: pointer; }
-.auth-check input { accent-color: #fd7e14; width: 14px; height: 14px; }
-.auth-link  { font-size: 13px; color: #fd7e14; font-weight: 600; text-decoration: none; }
+.auth-check input { accent-color: #fd7e14; width: 14px; height: 14px; flex-shrink: 0; }
+.auth-link  { font-size: 13px; color: #fd7e14; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .auth-link:hover { text-decoration: underline; }
 
 .auth-general-error {
@@ -1262,6 +1321,7 @@ watch(isAuthenticated, (val) => {
   display: flex; align-items: center; justify-content: center;
   transition: opacity 0.15s ease, transform 0.1s ease;
   box-shadow: 0 4px 14px rgba(253,126,20,0.35);
+  touch-action: manipulation;
 }
 .auth-btn:hover:not(:disabled)  { opacity: 0.92; transform: translateY(-1px); }
 .auth-btn:active:not(:disabled) { transform: translateY(0); }
@@ -1275,10 +1335,14 @@ watch(isAuthenticated, (val) => {
   animation: spin 0.7s linear infinite;
 }
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .auth-switch { text-align: center; font-size: 13px; color: #6c757d; margin-top: 18px; }
 
 /* ─────────────────────────────────────────────────────────────
-   TOPBAR — matches Larkon exactly
+   TOPBAR
 ───────────────────────────────────────────────────────────── */
 .topbar {
   display: flex;
@@ -1288,10 +1352,17 @@ watch(isAuthenticated, (val) => {
   background: #ffffff;
   border-bottom: 1px solid #eef2f7;
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
   gap: 4px;
   transition: background 0.2s, border-color 0.2s;
+  /* Critical: prevent content from causing horizontal overflow */
   overflow: visible;
+  width: 100%;
+  min-width: 0;
 }
 
 /* Dark topbar variant */
@@ -1314,7 +1385,7 @@ watch(isAuthenticated, (val) => {
 .topbar--topbar-dark .topbar__search-input::placeholder { color: #5a6a82; }
 .topbar--topbar-dark .topbar__search-icon { color: #8996af; }
 
-/* Global dark theme — topbar auto-adapts */
+/* Global dark theme */
 .topbar--theme-dark {
   background: #313a46;
   border-bottom-color: #404954;
@@ -1341,6 +1412,7 @@ watch(isAuthenticated, (val) => {
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  min-width: 0;
 }
 .topbar__hamburger { flex-shrink: 0; }
 .topbar__title {
@@ -1353,10 +1425,10 @@ watch(isAuthenticated, (val) => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 180px;
+  max-width: 160px;
 }
 
-/* ── Center clock — flex item, truly centered, never overlaps ── */
+/* ── Center clock ── */
 .topbar__clock {
   flex: 1;
   display: flex;
@@ -1366,7 +1438,7 @@ watch(isAuthenticated, (val) => {
   line-height: 1;
   pointer-events: none;
   min-width: 0;
-  padding: 0 8px;
+  padding: 0 4px;
   overflow: hidden;
 }
 .topbar__clock-time {
@@ -1391,6 +1463,7 @@ watch(isAuthenticated, (val) => {
   align-items: center;
   gap: 2px;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 /* ── Icon button ── */
@@ -1405,13 +1478,15 @@ watch(isAuthenticated, (val) => {
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .topbar__icon-btn:hover,
 .topbar__icon-btn.active {
   background: #f4f6fb;
   color: #fd7e14;
 }
-.topbar__icon       { width: 20px; height: 20px; stroke-width: 1.7; }
+.topbar__icon       { width: 20px; height: 20px; stroke-width: 1.8; }
 .topbar__icon--xs   { width: 14px; height: 14px; }
 
 /* ── Badge ── */
@@ -1427,6 +1502,7 @@ watch(isAuthenticated, (val) => {
   display: flex; align-items: center; justify-content: center;
   border: 2px solid #ffffff;
   line-height: 1;
+  pointer-events: none;
 }
 .topbar__badge--blue { background: #5b73e8; }
 
@@ -1441,6 +1517,8 @@ watch(isAuthenticated, (val) => {
   cursor: pointer;
   transition: border-color 0.15s;
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .topbar__user-btn:hover,
 .topbar__user-btn.active { border-color: #fd7e14; }
@@ -1463,12 +1541,15 @@ watch(isAuthenticated, (val) => {
   border: 1px solid #eef2f7;
   border-radius: 8px;
   padding: 0 10px;
-  height: 36px; width: 170px;
-  transition: width 0.25s, border-color 0.15s, box-shadow 0.15s;
+  height: 36px;
+  width: 160px;
+  transition: width 0.25s ease, border-color 0.15s, box-shadow 0.15s;
   margin-left: 4px;
+  flex-shrink: 0;
+  min-width: 0;
 }
 .topbar__search.focused {
-  width: 240px;
+  width: 220px;
   border-color: #fd7e14;
   box-shadow: 0 0 0 3px rgba(253,126,20,0.1);
 }
@@ -1482,23 +1563,30 @@ watch(isAuthenticated, (val) => {
 .topbar__search-clear {
   border: none; background: transparent; padding: 0;
   display: flex; align-items: center;
-  color: #8996af; cursor: pointer;
+  color: #8996af; cursor: pointer; flex-shrink: 0;
 }
 .topbar__search-clear:hover { color: #313a46; }
 
 /* ─────────────────────────────────────────────────────────────
-   DROPDOWNS
+   DROPDOWNS — viewport-safe positioning
 ───────────────────────────────────────────────────────────── */
-.topbar__dropdown-wrap { position: relative; }
+.topbar__dropdown-wrap {
+  position: relative;
+  /* establish stacking context so dropdown z-index works correctly */
+}
 
 .dropdown {
-  position: absolute;
-  top: calc(100% + 8px); right: 0;
+  position: fixed;
+  top: 70px;
+  right: 8px;
+  left: auto;
   background: var(--card-bg, #fff);
   border: 1px solid var(--card-border, #eef2f7);
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  z-index: 200; overflow: hidden;
+  z-index: 1050;
+  overflow: hidden;
+  max-width: calc(100vw - 16px);
 }
 
 .dropdown__header {
@@ -1513,7 +1601,11 @@ watch(isAuthenticated, (val) => {
   border: none; background: transparent; cursor: pointer; font-family: inherit;
 }
 .dropdown__mark-all:hover { text-decoration: underline; }
-.dropdown__body { max-height: 360px; overflow-y: auto; }
+.dropdown__body {
+  max-height: 340px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .dropdown__body::-webkit-scrollbar { width: 4px; }
 .dropdown__body::-webkit-scrollbar-track { background: transparent; }
 .dropdown__body::-webkit-scrollbar-thumb { background: var(--card-border, #eef2f7); border-radius: 2px; }
@@ -1521,8 +1613,9 @@ watch(isAuthenticated, (val) => {
 .dropdown__footer-link { font-size: 12.5px; font-weight: 600; color: var(--accent, #fd7e14); display: block; }
 .dropdown__footer-link:hover { text-decoration: underline; }
 
-/* Messages */
-.dropdown--msg { width: 340px; }
+/* ── Messages dropdown ── */
+.dropdown--msg { width: min(320px, calc(100vw - 16px)); }
+
 .msg-item {
   display: flex; align-items: flex-start; gap: 10px;
   padding: 11px 16px; border-bottom: 1px solid var(--card-border, #eef2f7);
@@ -1545,13 +1638,14 @@ watch(isAuthenticated, (val) => {
   background: #1abc9c; border: 2px solid var(--card-bg, #fff);
 }
 .msg-item__body  { flex: 1; min-width: 0; }
-.msg-item__row   { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
-.msg-item__name  { font-size: 13px; font-weight: 700; color: var(--text-primary, #313a46); }
-.msg-item__time  { font-size: 10.5px; color: var(--text-muted, #98a6ad); flex-shrink: 0; }
-.msg-item__text  { font-size: 12px; color: var(--text-secondary, #6c757d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+.msg-item__row   { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; gap: 4px; }
+.msg-item__name  { font-size: 13px; font-weight: 700; color: var(--text-primary, #313a46); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.msg-item__time  { font-size: 10.5px; color: var(--text-muted, #98a6ad); flex-shrink: 0; white-space: nowrap; }
+.msg-item__text  { font-size: 12px; color: var(--text-secondary, #6c757d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Notifications */
-.dropdown--notif { width: 340px; }
+/* ── Notifications dropdown ── */
+.dropdown--notif { width: min(320px, calc(100vw - 16px)); }
+
 .notif-item {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 12px 16px; border-bottom: 1px solid var(--card-border, #eef2f7);
@@ -1567,8 +1661,9 @@ watch(isAuthenticated, (val) => {
 .notif-item__time      { font-size: 11px; color: var(--text-muted, #98a6ad); }
 .notif-item__dot       { width: 8px; height: 8px; border-radius: 50%; background: var(--accent, #fd7e14); flex-shrink: 0; margin-top: 4px; }
 
-/* Activity */
-.dropdown--activity    { width: 360px; }
+/* ── Activity dropdown ── */
+.dropdown--activity { width: min(340px, calc(100vw - 16px)); }
+
 .activity-item         { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; }
 .activity-item__icon-wrap { position: relative; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 .activity-item__icon   { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
@@ -1577,7 +1672,7 @@ watch(isAuthenticated, (val) => {
 .activity-item__svg    { width: 15px; height: 15px; color: var(--accent, #fd7e14); stroke-width: 1.8; }
 .activity-item__line   { width: 1px; flex: 1; min-height: 20px; background: var(--card-border, #eef2f7); margin-top: 4px; }
 .activity-item__content { flex: 1; min-width: 0; padding-bottom: 4px; }
-.activity-item__title  { font-size: 13px; font-weight: 700; color: var(--text-primary, #313a46); margin-bottom: 2px; }
+.activity-item__title  { font-size: 13px; font-weight: 700; color: var(--text-primary, #313a46); margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .activity-item__desc   { font-size: 12px; color: var(--text-secondary, #6c757d); line-height: 1.45; margin-bottom: 5px; }
 .activity-item__time   { font-size: 11px; color: var(--text-muted, #98a6ad); display: block; margin-top: 4px; }
 .activity-item__files  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 4px; }
@@ -1590,8 +1685,9 @@ watch(isAuthenticated, (val) => {
 .activity-item__file-chip:hover { background: #e3f2fd; color: #1976d2; }
 .activity-item__file-icon { width: 11px; height: 11px; stroke-width: 2; }
 
-/* Language */
-.dropdown--lang { width: 190px; }
+/* ── Language dropdown ── */
+.dropdown--lang { width: min(190px, calc(100vw - 16px)); }
+
 .lang-item {
   display: flex; align-items: center; gap: 10px;
   width: 100%; padding: 9px 16px; border: none; background: transparent;
@@ -1604,8 +1700,9 @@ watch(isAuthenticated, (val) => {
 .lang-item__name      { flex: 1; text-align: left; }
 .lang-item__check     { width: 14px; height: 14px; color: var(--accent, #fd7e14); stroke-width: 2.5; }
 
-/* User */
-.dropdown--user { width: 230px; }
+/* ── User dropdown ── */
+.dropdown--user { width: min(230px, calc(100vw - 16px)); }
+
 .dropdown__user-head {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 16px; border-bottom: 1px solid var(--card-border, #eef2f7);
@@ -1622,9 +1719,9 @@ watch(isAuthenticated, (val) => {
   color: #fff; font-size: 14px; font-weight: 800;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.dropdown__user-info { min-width: 0; }
-.dropdown__user-name { font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dropdown__user-role { font-size: 11.5px; color: var(--text-muted); }
+.dropdown__user-info { min-width: 0; flex: 1; }
+.dropdown__user-name { font-size: 13px; font-weight: 700; color: var(--text-primary, #313a46); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dropdown__user-role { font-size: 11.5px; color: var(--text-muted, #98a6ad); }
 
 .user-menu-item {
   display: flex; align-items: center; gap: 10px;
@@ -1647,8 +1744,9 @@ watch(isAuthenticated, (val) => {
 .logout-btn:hover      { background: #fce4ec; }
 .logout-btn__icon      { width: 16px; height: 16px; stroke-width: 2; }
 
-/* Search dropdown */
-.dropdown--search { top: calc(100% + 6px); right: 0; left: 0; width: auto; min-width: 300px; }
+/* ── Search dropdown ── */
+.dropdown--search { top: 70px; right: 8px; left: auto; width: min(300px, calc(100vw - 16px)); min-width: unset; }
+
 .search-result-item {
   display: flex; align-items: center; gap: 12px; padding: 10px 16px;
   border-bottom: 1px solid var(--card-border, #eef2f7);
@@ -1659,10 +1757,10 @@ watch(isAuthenticated, (val) => {
 .search-result-item__icon  { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .search-result-item__svg   { width: 16px; height: 16px; color: var(--accent, #fd7e14); stroke-width: 1.8; }
 .search-result-item__body  { flex: 1; min-width: 0; }
-.search-result-item__label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-.search-result-item__sub   { font-size: 11.5px; color: var(--text-muted); }
-.search-result-item__arrow { color: var(--text-muted); font-size: 18px; line-height: 1; }
-.search-empty { padding: 28px 16px; text-align: center; color: var(--text-muted); font-size: 13px; }
+.search-result-item__label { font-size: 13px; font-weight: 600; color: var(--text-primary, #313a46); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.search-result-item__sub   { font-size: 11.5px; color: var(--text-muted, #98a6ad); }
+.search-result-item__arrow { color: var(--text-muted, #98a6ad); font-size: 18px; line-height: 1; flex-shrink: 0; }
+.search-empty { padding: 28px 16px; text-align: center; color: var(--text-muted, #98a6ad); font-size: 13px; }
 .search-empty__icon { width: 28px; height: 28px; margin: 0 auto 8px; opacity: 0.4; }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1671,11 +1769,13 @@ watch(isAuthenticated, (val) => {
 .offcanvas-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.35);
-  z-index: 500;
+  z-index: 1100;
   display: flex; justify-content: flex-end;
 }
 .offcanvas {
-  width: 290px; height: 100%;
+  width: 280px;
+  max-width: 85vw;
+  height: 100%;
   background: var(--card-bg, #fff);
   box-shadow: -4px 0 32px rgba(0,0,0,0.15);
   display: flex; flex-direction: column; overflow: hidden;
@@ -1690,10 +1790,10 @@ watch(isAuthenticated, (val) => {
   border: none; background: var(--app-bg, #f3f4f9);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--text-secondary, #6c757d);
-  transition: background 0.12s ease;
+  transition: background 0.12s ease; flex-shrink: 0;
 }
 .offcanvas__close:hover { background: #fee2d5; color: var(--accent, #fd7e14); }
-.offcanvas__body { flex: 1; overflow-y: auto; padding: 20px; }
+.offcanvas__body { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
 
 .settings-section        { margin-bottom: 22px; }
 .settings-section__label {
@@ -1709,6 +1809,7 @@ watch(isAuthenticated, (val) => {
   cursor: pointer; font-size: 12px; font-weight: 600;
   color: var(--text-secondary, #6c757d);
   transition: border-color 0.15s ease, color 0.15s ease;
+  touch-action: manipulation;
 }
 .settings-card:hover  { border-color: var(--accent, #fd7e14); color: var(--accent, #fd7e14); }
 .settings-card.active { border-color: var(--accent, #fd7e14); color: var(--accent, #fd7e14); }
@@ -1767,6 +1868,7 @@ watch(isAuthenticated, (val) => {
 .inactivity-modal__btn {
   padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 700;
   cursor: pointer; border: none; font-family: inherit; transition: all 0.15s ease;
+  touch-action: manipulation;
 }
 .inactivity-modal__btn--primary { background: linear-gradient(135deg, #ff9b44, #fd7e14); color: #fff; box-shadow: 0 4px 14px rgba(253,126,20,0.3); }
 .inactivity-modal__btn--primary:hover { opacity: 0.9; }
@@ -1774,46 +1876,66 @@ watch(isAuthenticated, (val) => {
 .inactivity-modal__btn--ghost:hover { background: #f3f4f9; color: #e74c3c; border-color: #e74c3c; }
 
 /* ─────────────────────────────────────────────────────────────
-   RESPONSIVE
+   RESPONSIVE — matches Larkon admin exactly
 ───────────────────────────────────────────────────────────── */
 
-/* Tablet 768–1024 */
+/* ── Desktop ≥1025: sidebar-aware left offset handled by style.css ── */
+
+/* ── Tablet 768–1024 ── */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .topbar { padding: 0 16px; }
+  .topbar { padding: 0 16px; gap: 4px; left: 0 !important; right: 0 !important; }
   .topbar__clock-time { font-size: 13px; }
   .topbar__clock-date { font-size: 9px; }
-  .topbar__search { width: 130px; }
-  .topbar__search.focused { width: 190px; }
+  .topbar__search { width: 120px; }
+  .topbar__search.focused { width: 180px; }
 }
 
-/* Mobile < 768 */
+/* ── Mobile <768 ── */
 @media (max-width: 767px) {
-  .topbar { padding: 0 12px; gap: 2px; }
+  /* Full-width compact header */
+  .topbar {
+    padding: 0 10px;
+    gap: 2px;
+    height: 60px;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+  /* Hide non-essential elements */
   .topbar__clock--hide-sm    { display: none !important; }
   .topbar__title--hide-sm    { display: none !important; }
   .topbar__icon-btn--hide-sm { display: none !important; }
-  .topbar__search { width: 36px; padding: 0 8px; overflow: hidden; }
-  .topbar__search.focused { width: 160px; }
-  .topbar__right { gap: 1px; }
+  .topbar__icon-btn--hide-md { display: none !important; }
+  /* Compact buttons */
+  .topbar__icon-btn { width: 34px; height: 34px; }
+  .topbar__user-btn { width: 34px; height: 34px; }
+  .topbar__icon     { width: 18px; height: 18px; }
+  /* Collapse search to icon */
+  .topbar__search { width: 34px; padding: 0 7px; overflow: hidden; }
+  .topbar__search.focused { width: 140px; }
+  .topbar__right { gap: 0; }
+  /* Dropdowns: fixed to viewport, never overflow */
+  .dropdown {
+    position: fixed !important;
+    top: 60px !important;
+    right: 4px !important;
+    left: auto !important;
+  }
   .dropdown--msg,
-  .dropdown--notif   { width: calc(100vw - 24px); right: -60px; }
-  .dropdown--activity { width: calc(100vw - 24px); right: -80px; }
-  .dropdown--user    { width: 210px; }
-  .dropdown--search  { width: calc(100vw - 24px); right: 0; left: auto; min-width: unset; }
+  .dropdown--notif,
+  .dropdown--activity { width: calc(100vw - 8px) !important; }
+  .dropdown--user     { width: min(230px, calc(100vw - 8px)) !important; }
+  .dropdown--lang     { width: min(190px, calc(100vw - 8px)) !important; }
+  .dropdown--search   { width: calc(100vw - 8px) !important; }
 }
 
-/* Small mobile < 480 */
+/* ── Small mobile <480 ── */
 @media (max-width: 480px) {
   .topbar { padding: 0 8px; }
   .topbar__icon-btn--hide-xs { display: none !important; }
-  .topbar__search.focused    { width: 120px; }
-  .topbar__icon-btn { width: 32px; height: 32px; }
-  .topbar__icon     { width: 18px; height: 18px; }
-  .topbar__user-btn { width: 32px; height: 32px; }
-  .dropdown--notif  { right: -100px; }
+  .topbar__search.focused    { width: 110px; }
   .topbar__right { gap: 0; }
 }
-
 /* ─────────────────────────────────────────────────────────────
    TRANSITIONS
 ───────────────────────────────────────────────────────────── */
@@ -1821,24 +1943,20 @@ watch(isAuthenticated, (val) => {
 .dropdown-leave-active { transition: opacity 0.14s ease, transform 0.14s ease; }
 .dropdown-enter-from   { opacity: 0; transform: translateY(-6px); }
 .dropdown-leave-to     { opacity: 0; transform: translateY(-4px); }
-
 .offcanvas-enter-active { transition: opacity 0.22s ease; }
 .offcanvas-leave-active { transition: opacity 0.18s ease; }
 .offcanvas-enter-from, .offcanvas-leave-to { opacity: 0; }
-.offcanvas-enter-active .offcanvas { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.offcanvas-enter-active .offcanvas { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
 .offcanvas-leave-active .offcanvas  { transition: transform 0.2s ease; }
 .offcanvas-enter-from .offcanvas    { transform: translateX(100%); }
 .offcanvas-leave-to .offcanvas      { transform: translateX(100%); }
-
 .auth-fade-enter-active { transition: opacity 0.3s ease; }
 .auth-fade-leave-active { transition: opacity 0.25s ease; }
 .auth-fade-enter-from, .auth-fade-leave-to { opacity: 0; }
-
 .form-slide-enter-active { transition: opacity 0.2s ease, transform 0.2s ease; }
 .form-slide-leave-active { transition: opacity 0.15s ease, transform 0.15s ease; }
 .form-slide-enter-from   { opacity: 0; transform: translateX(12px); }
 .form-slide-leave-to     { opacity: 0; transform: translateX(-12px); }
-
 .modal-fade-enter-active { transition: opacity 0.25s ease; }
 .modal-fade-leave-active { transition: opacity 0.2s ease; }
 .modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }

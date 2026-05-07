@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="charts-page">
+    <CdnSection />
     <div class="cp-header">
       <h4 class="cp-title">Timeline Charts</h4>
       <p class="cp-subtitle">ApexCharts timeline / range bar chart examples.</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import { ref, computed, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import PageFooter from '../../components/layout/Footer.vue'
@@ -66,7 +68,40 @@ const charts = computed(() => [
       { name: 'Alice', data: [{ x: 'Design',  y: [d(2019,3,1), d(2019,3,15)] }, { x: 'Code',    y: [d(2019,4,6), d(2019,4,20)] }, { x: 'Test',    y: [d(2019,4,26),d(2019,5,5)]  }] },
     ],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71'] },
-    snip: `<apexchart type="rangeBar" height="300" :options="chartOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'rangeBar', height: 300, toolbar: { show: false } },
+  series: [
+    { name: 'Bob', data: [
+      { x: 'Design', y: [new Date(2019,2,1).getTime(), new Date(2019,2,15).getTime()] },
+      { x: 'Code',   y: [new Date(2019,3,1).getTime(), new Date(2019,3,20).getTime()] },
+      { x: 'Test',   y: [new Date(2019,4,1).getTime(), new Date(2019,4,10).getTime()] }
+    ]},
+    { name: 'Joe', data: [
+      { x: 'Design', y: [new Date(2019,2,16).getTime(), new Date(2019,2,28).getTime()] },
+      { x: 'Code',   y: [new Date(2019,3,21).getTime(), new Date(2019,4,5).getTime()] },
+      { x: 'Test',   y: [new Date(2019,4,11).getTime(), new Date(2019,4,25).getTime()] }
+    ]},
+    { name: 'Alice', data: [
+      { x: 'Design', y: [new Date(2019,3,1).getTime(), new Date(2019,3,15).getTime()] },
+      { x: 'Code',   y: [new Date(2019,4,6).getTime(), new Date(2019,4,20).getTime()] },
+      { x: 'Test',   y: [new Date(2019,4,26).getTime(), new Date(2019,5,5).getTime()] }
+    ]}
+  ],
+  xaxis: { type: 'datetime' },
+  colors: ['#5b73e8','#fd7e14','#2ecc71'],
+  plotOptions: { bar: { horizontal: true, borderRadius: 4, rangeBarGroupRows: true } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'multiple', title: 'Multiple Series Timeline', height: 350,
@@ -76,7 +111,40 @@ const charts = computed(() => [
       { name: 'Coding',   data: [{ x: 'Team A', y: [d(2019,1,6), d(2019,2,1)]  }, { x: 'Team B', y: [d(2019,2,11),d(2019,3,1)]  }, { x: 'Team C', y: [d(2019,3,16),d(2019,4,10)] }] },
     ],
     opts: { ...base.value, colors: ['#5b73e8','#fd7e14','#2ecc71'], plotOptions: { bar: { horizontal: true, borderRadius: 4, rangeBarGroupRows: false } } },
-    snip: `<apexchart type="rangeBar" height="350" :options="multipleOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'rangeBar', height: 350, toolbar: { show: false } },
+  series: [
+    { name: 'Analysis', data: [
+      { x: 'Team A', y: [new Date(2019,0,1).getTime(), new Date(2019,0,15).getTime()] },
+      { x: 'Team B', y: [new Date(2019,1,1).getTime(), new Date(2019,1,20).getTime()] },
+      { x: 'Team C', y: [new Date(2019,2,1).getTime(), new Date(2019,2,25).getTime()] }
+    ]},
+    { name: 'Design', data: [
+      { x: 'Team A', y: [new Date(2019,0,16).getTime(), new Date(2019,1,5).getTime()] },
+      { x: 'Team B', y: [new Date(2019,1,21).getTime(), new Date(2019,2,10).getTime()] },
+      { x: 'Team C', y: [new Date(2019,2,26).getTime(), new Date(2019,3,15).getTime()] }
+    ]},
+    { name: 'Coding', data: [
+      { x: 'Team A', y: [new Date(2019,1,6).getTime(), new Date(2019,2,1).getTime()] },
+      { x: 'Team B', y: [new Date(2019,2,11).getTime(), new Date(2019,3,1).getTime()] },
+      { x: 'Team C', y: [new Date(2019,3,16).getTime(), new Date(2019,4,10).getTime()] }
+    ]}
+  ],
+  xaxis: { type: 'datetime' },
+  colors: ['#5b73e8','#fd7e14','#2ecc71'],
+  plotOptions: { bar: { horizontal: true, borderRadius: 4, rangeBarGroupRows: false } },
+  dataLabels: { enabled: false },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
   {
     id: 'datalabels', title: 'Timeline with Data Labels', height: 300,
@@ -85,7 +153,39 @@ const charts = computed(() => [
       { name: 'Joe',   data: [{ x: 'Design', y: [d(2019,2,16),d(2019,2,28)], fillColor: '#2ecc71' }, { x: 'Code',   y: [d(2019,3,21),d(2019,4,5)],  fillColor: '#e74c3c' }] },
     ],
     opts: { ...base.value, dataLabels: { enabled: true, formatter: (val) => { const a = new Date(val[0]); const b = new Date(val[1]); const diff = Math.round((b - a) / 86400000); return diff + (diff > 1 ? ' days' : ' day') }, style: { colors: ['#fff'], fontSize: '11px' } } },
-    snip: `<apexchart type="rangeBar" height="300" :options="dataLabelsOptions" :series="series" />`,
+    snip: `<!-- Include ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"><\/script>
+<div id="chart"></div>
+<script>
+var options = {
+  chart: { type: 'rangeBar', height: 300, toolbar: { show: false } },
+  series: [
+    { name: 'Bob', data: [
+      { x: 'Design', y: [new Date(2019,2,1).getTime(), new Date(2019,2,15).getTime()], fillColor: '#5b73e8' },
+      { x: 'Code',   y: [new Date(2019,3,1).getTime(), new Date(2019,3,20).getTime()], fillColor: '#fd7e14' }
+    ]},
+    { name: 'Joe', data: [
+      { x: 'Design', y: [new Date(2019,2,16).getTime(), new Date(2019,2,28).getTime()], fillColor: '#2ecc71' },
+      { x: 'Code',   y: [new Date(2019,3,21).getTime(), new Date(2019,4,5).getTime()],  fillColor: '#e74c3c' }
+    ]}
+  ],
+  xaxis: { type: 'datetime' },
+  plotOptions: { bar: { horizontal: true, borderRadius: 4, rangeBarGroupRows: true } },
+  dataLabels: {
+    enabled: true,
+    formatter: function(val) {
+      var diff = Math.round((val[1] - val[0]) / 86400000);
+      return diff + (diff > 1 ? ' days' : ' day');
+    },
+    style: { colors: ['#fff'], fontSize: '11px' }
+  },
+  grid: { borderColor: '#eef2f7', strokeDashArray: 4 },
+  legend: { show: true, position: 'bottom' },
+  tooltip: { theme: 'light' }
+};
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+<\/script>`,
   },
 ])
 

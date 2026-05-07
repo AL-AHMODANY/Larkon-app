@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-wrapper-adv" style="min-height: 100vh;">
+    <CdnSection />
     <div class="container-fluid">
 
       <!-- Page Title -->
@@ -61,37 +62,31 @@
               </div>
 
               <!-- Code Tabs -->
-              <div class="rounded-3 overflow-hidden border">
-                <div
-                  class="d-flex align-items-center justify-content-between px-3 py-2"
-                  style="background: #f8f9fa; border-bottom: 1px solid #e9ecef;"
-                >
+              <div class="code-block rounded-3 overflow-hidden border">
+                <div class="code-header d-flex align-items-center justify-content-between px-3 py-2">
                   <div class="d-flex gap-1">
                     <button
-                      class="btn btn-sm fw-semibold"
-                      :class="activeTab[index] === 'html' ? 'tab-active' : 'tab-inactive'"
-                      style="font-size: 0.72rem; border-radius: 5px; padding: 0.2rem 0.65rem;"
+                      class="btn btn-sm fw-semibold code-tab"
+                      :class="activeTab[index] === 'html' ? 'code-tab-active' : ''"
                       @click="activeTab[index] = 'html'"
                     >HTML</button>
                     <button
-                      class="btn btn-sm fw-semibold"
-                      :class="activeTab[index] === 'js' ? 'tab-active' : 'tab-inactive'"
-                      style="font-size: 0.72rem; border-radius: 5px; padding: 0.2rem 0.65rem;"
+                      class="btn btn-sm fw-semibold code-tab"
+                      :class="activeTab[index] === 'js' ? 'code-tab-active' : ''"
                       @click="activeTab[index] = 'js'"
                     >JAVASCRIPT</button>
                   </div>
                   <button
-                    class="btn btn-sm py-1 px-2"
-                    :class="copiedIndex === index ? 'btn-success' : 'btn-outline-secondary'"
-                    style="font-size: 0.72rem;"
+                    class="btn btn-sm code-copy-btn"
+                    :class="copiedIndex === index ? 'copied' : ''"
                     @click="copyCode(index)"
-                  >{{ copiedIndex === index ? 'Copied!' : 'Copy' }}</button>
+                  >
+                    <i :class="copiedIndex === index ? 'bx bx-check' : 'bx bx-copy'"></i>
+                    {{ copiedIndex === index ? 'Copied!' : 'Copy' }}
+                  </button>
                 </div>
-                <div style="background: #fff; overflow-x: auto;">
-                  <pre
-                    class="mb-0 px-3 py-3"
-                    style="font-size: 0.76rem; color: #c0392b; font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace; line-height: 1.75; white-space: pre;"
-                  >{{ activeTab[index] === 'html' ? section.htmlCode : section.jsCode }}</pre>
+                <div class="code-body">
+                  <pre class="code-pre mb-0">{{ activeTab[index] === 'html' ? section.htmlCode : section.jsCode }}</pre>
                 </div>
               </div>
 
@@ -127,7 +122,7 @@
 
       <!-- Footer -->
       <div class="text-center mt-5 pb-3">
-        <small class="text-muted">2026 © Larkon. Crafted with ❤️ by Techzaa</small>
+        <small class="text-muted">2026 © AL-AHMODANY. Crafted with ❤️ by Techzaa</small>
       </div>
 
     </div>
@@ -136,6 +131,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref, reactive } from 'vue'
 import Swal from 'sweetalert2'
@@ -151,8 +147,19 @@ const sections = [
     buttons: [{ label: 'Click me', variant: 'primary' }],
     htmlCode: `<button type="button" class="btn btn-primary" id="sweetalert-basic">Click me</button>`,
     jsCode: `document.getElementById("sweetalert-basic").addEventListener("click", function () {
-  Swal.fire("Hello World!");
-});`
+  Swal.fire({
+    title: 'Any fool can use a computer',
+    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+    buttonsStyling: false,
+    showCloseButton: true
+  })
+});`,
+    fire: () => Swal.fire({
+      title: 'Any fool can use a computer',
+      confirmButtonClass: 'btn btn-primary w-xs mt-2',
+      buttonsStyling: false,
+      showCloseButton: true
+    })
   },
   {
     id: 'section-title',
@@ -160,8 +167,23 @@ const sections = [
     buttons: [{ label: 'Click me', variant: 'primary' }],
     htmlCode: `<button type="button" class="btn btn-primary" id="sweetalert-title">Click me</button>`,
     jsCode: `document.getElementById("sweetalert-title").addEventListener("click", function () {
-  Swal.fire("The Internet?", "That thing is still around?", "question");
-});`
+  Swal.fire({
+    title: "The Internet?",
+    text: 'That thing is still around?',
+    icon: 'question',
+    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+    buttonsStyling: false,
+    showCloseButton: false
+  })
+});`,
+    fire: () => Swal.fire({
+      title: 'The Internet?',
+      text: 'That thing is still around?',
+      icon: 'question',
+      confirmButtonClass: 'btn btn-primary w-xs mt-2',
+      buttonsStyling: false,
+      showCloseButton: false
+    })
   },
   {
     id: 'section-message',
@@ -176,18 +198,63 @@ const sections = [
 <button type="button" class="btn btn-warning" id="sweetalert-warning">Warning</button>
 <button type="button" class="btn btn-info"    id="sweetalert-info">Info</button>
 <button type="button" class="btn btn-danger"  id="sweetalert-error">Error</button>`,
-    jsCode: `document.getElementById("sweetalert-success").addEventListener("click", function () {
-  Swal.fire("Good job!", "You clicked the button!", "success");
+    jsCode: `// Success
+document.getElementById("sweetalert-success").addEventListener("click", function () {
+  Swal.fire({
+    title: 'Good job!',
+    text: 'You clicked the button!',
+    icon: 'success',
+    showCancelButton: true,
+    confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+    cancelButtonClass: 'btn btn-danger w-xs mt-2',
+    buttonsStyling: false
+  })
 });
+
+// Warning
 document.getElementById("sweetalert-warning").addEventListener("click", function () {
-  Swal.fire("Warning!", "Something looks a bit off...", "warning");
+  Swal.fire({
+    title: 'Oops...',
+    text: 'Something went wrong!',
+    icon: 'warning',
+    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+    buttonsStyling: false,
+    footer: '<a href="">Why do I have this issue?</a>'
+  })
 });
+
+// Info
 document.getElementById("sweetalert-info").addEventListener("click", function () {
-  Swal.fire("Info", "Here is some information.", "info");
+  Swal.fire({
+    title: 'Oops...',
+    text: 'Something went wrong!',
+    icon: 'info',
+    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+    buttonsStyling: false,
+    footer: '<a href="">Why do I have this issue?</a>'
+  })
 });
+
+// Error
 document.getElementById("sweetalert-error").addEventListener("click", function () {
-  Swal.fire("Oops...", "Something went wrong!", "error");
-});`
+  Swal.fire({
+    title: 'Oops...',
+    text: 'Something went wrong!',
+    icon: 'error',
+    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+    buttonsStyling: false,
+    footer: '<a href="">Why do I have this issue?</a>'
+  })
+});`,
+    fire: (btnIndex) => {
+      const configs = [
+        { title: 'Good job!', text: 'You clicked the button!', icon: 'success', showCancelButton: true, confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2', cancelButtonClass: 'btn btn-danger w-xs mt-2', buttonsStyling: false },
+        { title: 'Oops...', text: 'Something went wrong!', icon: 'warning', confirmButtonClass: 'btn btn-primary w-xs mt-2', buttonsStyling: false, footer: '<a href="">Why do I have this issue?</a>' },
+        { title: 'Oops...', text: 'Something went wrong!', icon: 'info', confirmButtonClass: 'btn btn-primary w-xs mt-2', buttonsStyling: false, footer: '<a href="">Why do I have this issue?</a>' },
+        { title: 'Oops...', text: 'Something went wrong!', icon: 'error', confirmButtonClass: 'btn btn-primary w-xs mt-2', buttonsStyling: false, footer: '<a href="">Why do I have this issue?</a>' },
+      ]
+      Swal.fire(configs[btnIndex])
+    }
   },
   {
     id: 'section-longcontent',
@@ -196,11 +263,20 @@ document.getElementById("sweetalert-error").addEventListener("click", function (
     htmlCode: `<button type="button" class="btn btn-primary" id="sweetalert-longcontent">Click me</button>`,
     jsCode: `document.getElementById("sweetalert-longcontent").addEventListener("click", function () {
   Swal.fire({
-    imageUrl: "https://placeholder.pics/svg/300x1500",
+    imageUrl: 'https://placeholder.pics/svg/300x1500',
     imageHeight: 1500,
-    imageAlt: "A tall image",
-  });
-});`
+    imageAlt: 'A tall image',
+    confirmButtonClass: 'btn btn-primary w-xs mt-2',
+    buttonsStyling: false
+  })
+});`,
+    fire: () => Swal.fire({
+      imageUrl: 'https://placeholder.pics/svg/300x1500',
+      imageHeight: 1500,
+      imageAlt: 'A tall image',
+      confirmButtonClass: 'btn btn-primary w-xs mt-2',
+      buttonsStyling: false
+    })
   },
   {
     id: 'section-params',
@@ -209,69 +285,62 @@ document.getElementById("sweetalert-error").addEventListener("click", function (
     htmlCode: `<button type="button" class="btn btn-primary" id="sweetalert-params">Click me</button>`,
     jsCode: `document.getElementById("sweetalert-params").addEventListener("click", function () {
   Swal.fire({
-    title: "Are you sure?",
+    title: 'Are you sure?',
     text: "You won't be able to revert this!",
-    icon: "warning",
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire("Deleted!", "Your file has been deleted.", "success");
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, cancel!',
+    confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+    cancelButtonClass: 'btn btn-danger w-xs mt-2',
+    buttonsStyling: false
+  }).then(function (result) {
+    if (result.value) {
+      Swal.fire({
+        title: 'Deleted!',
+        text: 'Your file has been deleted.',
+        icon: 'success',
+        confirmButtonClass: 'btn btn-primary w-xs mt-2',
+        buttonsStyling: false
+      })
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire({
+        title: 'Cancelled',
+        text: 'Your imaginary file is safe :)',
+        icon: 'error',
+        confirmButtonClass: 'btn btn-primary mt-2',
+        buttonsStyling: false
+      })
     }
   });
-});`
+});`,
+    fire: () => Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      confirmButtonClass: 'btn btn-primary w-xs me-2 mt-2',
+      cancelButtonClass: 'btn btn-danger w-xs mt-2',
+      buttonsStyling: false
+    }).then(function (result) {
+      if (result.value) {
+        Swal.fire({ title: 'Deleted!', text: 'Your file has been deleted.', icon: 'success', confirmButtonClass: 'btn btn-primary w-xs mt-2', buttonsStyling: false })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({ title: 'Cancelled', text: 'Your imaginary file is safe :)', icon: 'error', confirmButtonClass: 'btn btn-primary mt-2', buttonsStyling: false })
+      }
+    })
   },
 ]
 
 sections.forEach((_, i) => { activeTab[i] = 'html' })
 
 function fireAlert(sectionId, btnIndex) {
-  switch (sectionId) {
-    case 'section-basic':
-      Swal.fire('Hello World!')
-      break
-
-    case 'section-title':
-      Swal.fire('The Internet?', 'That thing is still around?', 'question')
-      break
-
-    case 'section-message': {
-      const types = [
-        () => Swal.fire('Good job!', 'You clicked the button!', 'success'),
-        () => Swal.fire('Warning!', 'Something looks a bit off...', 'warning'),
-        () => Swal.fire('Info', 'Here is some information.', 'info'),
-        () => Swal.fire('Oops...', 'Something went wrong!', 'error'),
-      ]
-      types[btnIndex]?.()
-      break
-    }
-
-    case 'section-longcontent':
-      Swal.fire({
-        imageUrl: 'https://picsum.photos/300/600',
-        imageHeight: 600,
-        imageAlt: 'A long image',
-        title: 'Long Content Image',
-      })
-      break
-
-    case 'section-params':
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
-        }
-      })
-      break
+  const section = sections.find(s => s.id === sectionId)
+  if (!section) return
+  if (typeof section.fire === 'function') {
+    section.fire(btnIndex)
   }
 }
 
@@ -316,25 +385,95 @@ function scrollToSection(id) {
   background-color: #f0f3ff;
   border-left: 2px solid #4a6cf7;
 }
-.tab-active {
-  background: #fd7e14 !important;
+
+/* Code Block Styling */
+.code-block {
+  border: 1px solid var(--card-border, #eef2f7);
+  transition: border-color 0.2s;
+}
+.code-header {
+  background: var(--app-bg, #f3f4f9);
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  transition: background 0.2s, border-color 0.2s;
+}
+.code-tab {
+  font-size: 0.72rem;
+  border-radius: 5px;
+  padding: 0.25rem 0.75rem;
+  background: transparent;
+  color: var(--text-secondary, #6c757d);
+  border: none;
+  transition: all 0.15s;
+}
+.code-tab:hover {
+  background: var(--card-bg, #fff);
+  color: var(--text-primary, #313a46);
+}
+.code-tab-active {
+  background: var(--accent, #fd7e14) !important;
   color: #fff !important;
-  border: none !important;
 }
-.tab-inactive {
-  background: transparent !important;
-  color: #6c757d !important;
-  border: none !important;
+.code-copy-btn {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.65rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #eef2f7);
+  color: var(--text-secondary, #6c757d);
+  border-radius: 5px;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
-.tab-inactive:hover {
-  background: #e9ecef !important;
+.code-copy-btn:hover {
+  border-color: var(--accent, #fd7e14);
+  color: var(--accent, #fd7e14);
+}
+.code-copy-btn.copied {
+  border-color: var(--success, #2ecc71);
+  color: var(--success, #2ecc71);
+  background: var(--success-muted, #d4edda);
+}
+.code-copy-btn i {
+  font-size: 13px;
+}
+.code-body {
+  background: var(--app-bg, #f3f4f9);
+  overflow-x: auto;
+  max-height: 280px;
+  transition: background 0.2s;
+}
+.code-pre {
+  padding: 1rem 1.25rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary, #6c757d);
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  line-height: 1.75;
+  white-space: pre;
+  margin: 0;
 }
 
 /* ── Dark mode overrides ── */
-:global([data-theme="dark"]) .tab-inactive {
+:global([data-theme="dark"]) .code-block {
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-header {
+  background: var(--app-bg) !important;
+  border-color: var(--border-color) !important;
+}
+:global([data-theme="dark"]) .code-body {
+  background: var(--app-bg) !important;
+}
+:global([data-theme="dark"]) .code-pre {
+  color: #c9d1d9 !important;
+}
+:global([data-theme="dark"]) .code-copy-btn {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
   color: var(--text-secondary) !important;
 }
-:global([data-theme="dark"]) .tab-inactive:hover {
-  background: var(--app-bg) !important;
+:global([data-theme="dark"]) .code-copy-btn:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
 }
 </style>

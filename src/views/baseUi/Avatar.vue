@@ -1,5 +1,6 @@
-<template>
+﻿<template>
   <div class="page-content">
+    <CdnSection />
 
     <!-- Page Title -->
     <div class="page-title-box">
@@ -34,11 +35,11 @@
                   {{ copied === 'basic' ? 'Copied!' : 'Copy' }}
                 </button>
               </div>
-              <pre class="code-pre"><code>&lt;img src="assets/images/users/avatar-2.jpg" alt="image" class="img-fluid avatar-xs rounded-circle" /&gt;
-&lt;img src="assets/images/users/avatar-3.jpg" alt="image" class="img-fluid avatar-sm rounded-circle" /&gt;
-&lt;img src="assets/images/users/avatar-4.jpg" alt="image" class="img-fluid avatar-md rounded-circle" /&gt;
-&lt;img src="assets/images/users/avatar-5.jpg" alt="image" class="img-fluid avatar-lg rounded-circle" /&gt;
-&lt;img src="assets/images/users/avatar-6.jpg" alt="image" class="img-fluid avatar-xl rounded-circle" /&gt;</code></pre>
+              <pre class="code-pre"><code>&lt;img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&amp;h=32&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-xs rounded-circle" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&amp;h=48&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-sm rounded-circle" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&amp;h=64&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-md rounded-circle" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&amp;h=96&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-lg rounded-circle" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&amp;h=128&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-xl rounded-circle" /&gt;</code></pre>
             </div>
           </div>
         </div>
@@ -65,9 +66,9 @@
                   {{ copied === 'rounded' ? 'Copied!' : 'Copy' }}
                 </button>
               </div>
-              <pre class="code-pre"><code>&lt;img src="assets/images/users/avatar-7.jpg" alt="image" class="img-fluid avatar-md rounded-circle" /&gt;
-&lt;img src="assets/images/users/avatar-8.jpg" alt="image" class="img-fluid avatar-lg rounded-circle" /&gt;
-&lt;img src="assets/images/users/avatar-9.jpg" alt="image" class="img-fluid avatar-xl rounded-circle" /&gt;</code></pre>
+              <pre class="code-pre"><code>&lt;img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&amp;h=64&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-md rounded-circle" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&amp;h=96&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-lg rounded-circle" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&amp;h=128&amp;fit=crop&amp;crop=face" alt="avatar" class="img-fluid avatar-xl rounded-circle" /&gt;</code></pre>
             </div>
           </div>
         </div>
@@ -97,11 +98,11 @@
                   {{ copied === 'shapes' ? 'Copied!' : 'Copy' }}
                 </button>
               </div>
-              <pre class="code-pre"><code>&lt;img src="assets/images/small/img-2.jpg"    alt="image" class="img-fluid rounded"         width="200" /&gt;
-&lt;img src="assets/images/users/avatar-5.jpg" alt="image" class="img-fluid rounded"         width="150" /&gt;
-&lt;img src="assets/images/users/avatar-7.jpg" alt="image" class="img-fluid rounded-circle"  width="150" /&gt;
-&lt;img src="assets/images/small/img-3.jpg"    alt="image" class="img-fluid img-thumbnail"   width="200" /&gt;
-&lt;img src="assets/images/users/avatar-8.jpg" alt="image" class="img-fluid rounded-circle img-thumbnail" width="150" /&gt;</code></pre>
+              <pre class="code-pre"><code>&lt;img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&amp;h=130&amp;fit=crop" alt="landscape" class="img-fluid rounded" width="200" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&amp;h=150&amp;fit=crop&amp;crop=face" alt="portrait" class="img-fluid rounded" width="150" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&amp;h=150&amp;fit=crop&amp;crop=face" alt="circle" class="img-fluid rounded-circle" width="150" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=200&amp;h=130&amp;fit=crop" alt="thumbnail" class="img-fluid img-thumbnail" width="200" /&gt;
+&lt;img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&amp;h=150&amp;fit=crop&amp;crop=face" alt="circle thumbnail" class="img-fluid rounded-circle img-thumbnail" width="150" /&gt;</code></pre>
             </div>
           </div>
         </div>
@@ -130,6 +131,7 @@
 </template>
 
 <script setup>
+import CdnSection from '../../components/CdnSection.vue'
 import PageFooter from '../../components/layout/Footer.vue'
 import { ref } from 'vue'
 
@@ -148,9 +150,19 @@ const scrollTo = (id) => {
 const copied = ref(null)
 const copy = (key) => {
   const snippets = {
-    basic:   `<img src="assets/images/users/avatar-2.jpg" alt="image" class="img-fluid avatar-xs rounded-circle" />\n<img src="assets/images/users/avatar-3.jpg" alt="image" class="img-fluid avatar-sm rounded-circle" />`,
-    rounded: `<img src="assets/images/users/avatar-7.jpg" alt="image" class="img-fluid avatar-md rounded-circle" />`,
-    shapes:  `<img src="assets/images/small/img-2.jpg" alt="image" class="img-fluid rounded" width="200" />`,
+    basic: `<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&h=32&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-xs rounded-circle" />
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-sm rounded-circle" />
+<img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-md rounded-circle" />
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-lg rounded-circle" />
+<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-xl rounded-circle" />`,
+    rounded: `<img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-md rounded-circle" />
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-lg rounded-circle" />
+<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-xl rounded-circle" />`,
+    shapes: `<img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=130&fit=crop" alt="landscape" class="img-fluid rounded" width="200" />
+<img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop&crop=face" alt="portrait" class="img-fluid rounded" width="150" />
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="circle" class="img-fluid rounded-circle" width="150" />
+<img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=200&h=130&fit=crop" alt="thumbnail" class="img-fluid img-thumbnail" width="200" />
+<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" alt="circle thumbnail" class="img-fluid rounded-circle img-thumbnail" width="150" />`,
   }
   navigator.clipboard.writeText(snippets[key] || '').then(() => {
     copied.value = key
@@ -158,44 +170,44 @@ const copy = (key) => {
   })
 }
 
-// ── Use real Unsplash avatar-style photos as placeholders
+// Real Unsplash face photos for avatars
 const basicAvatars = [
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-2.jpg',  class: 'avatar-xs', label: '.avatar-xs' },
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-3.jpg',  class: 'avatar-sm', label: '.avatar-sm' },
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-4.jpg',  class: 'avatar-md', label: '.avatar-md' },
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-5.jpg',  class: 'avatar-lg', label: '.avatar-lg' },
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-6.jpg',class: 'avatar-xl', label: '.avatar-xl' },
+  { src: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=64&h=64&fit=crop&crop=face',  class: 'avatar-xs', label: '.avatar-xs' },
+  { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop&crop=face',  class: 'avatar-sm', label: '.avatar-sm' },
+  { src: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face',  class: 'avatar-md', label: '.avatar-md' },
+  { src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face',  class: 'avatar-lg', label: '.avatar-lg' },
+  { src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face', class: 'avatar-xl', label: '.avatar-xl' },
 ]
 
 const roundedAvatars = [
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-7.jpg', class: 'avatar-md', label: '.avatar-md .rounded-circle' },
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-8.jpg', class: 'avatar-lg', label: '.avatar-lg .rounded-circle' },
-  { src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-9.jpg',class: 'avatar-xl', label: '.avatar-xl .rounded-circle' },
+  { src: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face',  class: 'avatar-md', label: '.avatar-md .rounded-circle' },
+  { src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face',  class: 'avatar-lg', label: '.avatar-lg .rounded-circle' },
+  { src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face', class: 'avatar-xl', label: '.avatar-xl .rounded-circle' },
 ]
 
 const shapeAvatars = [
   {
-    src: 'https://techzaa.in/larkon/admin/assets/images/small/img-2.jpg',
+    src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=260&fit=crop',
     class: 'rounded shape-landscape',
     label: '.rounded',
   },
   {
-    src: 'https://techzaa.in/larkon/admin/assets/images/small/img-3.jpg',
+    src: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=300&h=300&fit=crop&crop=face',
     class: 'rounded shape-portrait',
     label: '.rounded',
   },
   {
-    src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-7.jpg',
+    src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
     class: 'rounded-circle shape-portrait',
     label: '.rounded-circle',
   },
   {
-    src: 'https://techzaa.in/larkon/admin/assets/images/small/img-3.jpg',
+    src: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&h=260&fit=crop',
     class: 'img-thumbnail shape-landscape',
     label: '.img-thumbnail',
   },
   {
-    src: 'https://techzaa.in/larkon/admin/assets/images/users/avatar-8.jpg',
+    src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
     class: 'rounded-circle img-thumbnail shape-portrait',
     label: '.rounded-circle .img-thumbnail',
   },
