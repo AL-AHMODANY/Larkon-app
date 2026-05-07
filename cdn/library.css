@@ -918,3 +918,116 @@ img.avatar-xl  { width: 96px;  height: 96px;  display: inline-block; }
 @media (max-width: 480px) {
   .lk-topbar { padding: 0 8px; }
 }
+
+/* =========================================================
+   DOC SECTION PATTERN
+   Used by: Progress, Pagination, Toasts, Tooltips,
+            Placeholders, Scrollspy, Alerts
+========================================================= */
+.doc-section { margin-bottom: 44px; }
+.doc-section h5 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.doc-section p.desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
+
+/* =========================================================
+   CONTENT LAYOUT + ANCHOR NAV
+   Used by: Collapse, Carousel, Dropdown pages
+========================================================= */
+.content-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.anchor-nav {
+  width: 200px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+}
+.anchor-nav ul { border-left: 2px solid var(--card-border); padding-left: 0.75rem; list-style: none; margin: 0; }
+.anchor-nav li { margin-bottom: 0.4rem; }
+.anchor-nav a { font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; display: block; }
+.anchor-nav a:hover, .anchor-nav a.active { color: var(--accent); font-weight: 500; }
+@media (max-width: 991px) {
+  .content-layout { flex-direction: column; }
+  .anchor-nav { display: none; }
+}
+
+/* =========================================================
+   CODE WRAPPER PATTERN (Spinner, Offcanvas pages)
+   Uses .code-wrapper + .code-block (pre element)
+========================================================= */
+.code-wrapper {
+  border: 1px solid var(--card-border);
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+/* =========================================================
+   SCROLLSPY DEMO CLASSES
+   Used by: Scrollspy page
+========================================================= */
+.scrollspy-demo {
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.scrollspy-example,
+.scrollspy-example-2 {
+  height: 200px;
+  overflow: auto;
+  padding: 1rem;
+  font-size: 13px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+/* =========================================================
+   SYNTAX HIGHLIGHT — Breadcrumbs.vue uses .c-tag .c-attr .c-val
+========================================================= */
+.c-tag  { color: #e25a00; }
+.c-attr { color: #22863a; }
+.c-val  { color: #22863a; }
+
+/* =========================================================
+   CAROUSEL IMAGE
+   Used by: Carousel page
+========================================================= */
+.carousel-img {
+  height: 280px;
+  object-fit: cover;
+  border-radius: 0.375rem;
+}
+@media (max-width: 576px) { .carousel-img { height: 180px; } }
+
+/* =========================================================
+   POSITION LIST (Offcanvas page)
+========================================================= */
+.position-list { list-style: disc; padding-left: 1.25rem; font-size: 0.87rem; color: var(--text-secondary); }
+.position-list li { margin-bottom: 0.3rem; }
+
+/* =========================================================
+   TOAST OVERRIDES (Toasts page)
+========================================================= */
+.toast { background: var(--card-bg); border: 1px solid var(--card-border); }
+.toast-header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+.toast-body { color: var(--text-primary); }
+.toast-header img { width: 24px; height: 24px; }
+
+/* =========================================================
+   DARK MODE — additional overrides for remaining pages
+========================================================= */
+[data-theme="dark"] .anchor-nav ul { border-left-color: var(--border-color); }
+[data-theme="dark"] .anchor-nav a { color: var(--text-secondary); }
+[data-theme="dark"] .anchor-nav a:hover,
+[data-theme="dark"] .anchor-nav a.active { color: var(--accent); }
+[data-theme="dark"] .scrollspy-example,
+[data-theme="dark"] .scrollspy-example-2 { background: var(--card-bg) !important; color: var(--text-primary) !important; }
+[data-theme="dark"] .scrollspy-demo { border-color: var(--border-color) !important; }
+[data-theme="dark"] .toast { background: var(--card-bg) !important; border-color: var(--card-border) !important; }
+[data-theme="dark"] .toast-header { background: var(--card-bg) !important; border-bottom-color: var(--border-color) !important; color: var(--text-primary) !important; }
+[data-theme="dark"] .toast-body { color: var(--text-primary) !important; }
+[data-theme="dark"] .code-wrapper { border-color: var(--border-color) !important; }
+[data-theme="dark"] .doc-section h5 { color: var(--text-primary) !important; }
+[data-theme="dark"] .doc-section p.desc { color: var(--text-secondary) !important; }
