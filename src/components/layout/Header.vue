@@ -210,7 +210,7 @@
 
         <!-- Dark mode toggle -->
         <button
-          class="topbar__icon-btn"
+          class="topbar__icon-btn topbar__darkmode-btn"
           :title="isDark ? 'Switch to Light' : 'Switch to Dark'"
           @click="toggleTheme"
         >
@@ -276,12 +276,12 @@
         </div>
 
         <!-- Notifications -->
-        <div class="topbar__dropdown-wrap" ref="notificationsRef"
+        <div class="topbar__dropdown-wrap topbar__notif-wrap" ref="notificationsRef"
           @mouseenter="!isTouchDevice && openDropdown('notif')"
           @mouseleave="!isTouchDevice && scheduleClose('notif')"
         >
           <button
-            class="topbar__icon-btn"
+            class="topbar__icon-btn topbar__bell-btn"
             :class="{ active: notifOpen }"
             title="Notifications"
             @click="toggleDropdown('notif')"
@@ -297,25 +297,32 @@
                 <button class="dropdown__mark-all" @click="markAllRead">Clear All</button>
               </div>
               <div class="dropdown__body">
-                <div
-                  v-for="notif in notifications"
+                <a
+                  v-for="notif in notifItems"
                   :key="notif.id"
-                  class="notif-item"
+                  href="#"
+                  class="notif-msg-item"
                   :class="{ unread: !notif.read }"
-                  @click="readNotif(notif)"
+                  @click.prevent="readNotifItem(notif)"
                 >
-                  <div class="notif-item__icon" :style="{ background: notif.iconBg }">
-                    <component :is="notif.icon" class="notif-item__svg" />
+                  <div class="notif-msg-item__avatar-wrap">
+                    <div
+                      class="notif-msg-item__avatar"
+                      :style="notif.avatar ? {} : { background: notif.avatarBg }"
+                    >
+                      <img v-if="notif.avatar" :src="notif.avatar" :alt="notif.name" class="notif-msg-item__avatar-img" @error="notif.avatar = null" />
+                      <span v-else class="notif-msg-item__initials">{{ notif.initials }}</span>
+                    </div>
                   </div>
-                  <div class="notif-item__body">
-                    <p class="notif-item__text" v-html="notif.text"></p>
-                    <span class="notif-item__time">{{ notif.time }}</span>
+                  <div class="notif-msg-item__body">
+                    <p class="notif-msg-item__name" v-if="notif.name">{{ notif.name }}</p>
+                    <p class="notif-msg-item__text">{{ notif.text }}</p>
                   </div>
                   <span v-if="!notif.read" class="notif-item__dot"></span>
-                </div>
+                </a>
               </div>
-              <div class="dropdown__footer">
-                <a href="#" class="dropdown__footer-link" @click.prevent>View all notifications</a>
+              <div class="dropdown__footer dropdown__footer--btn">
+                <a href="#" class="dropdown__view-all-btn" @click.prevent>View All Notification →</a>
               </div>
             </div>
           </Transition>
@@ -408,7 +415,7 @@
         </div>
 
         <!-- User Avatar -->
-        <div class="topbar__dropdown-wrap" ref="userRef"
+        <div class="topbar__dropdown-wrap topbar__user-wrap" ref="userRef"
           @mouseenter="!isTouchDevice && openDropdown('user')"
           @mouseleave="!isTouchDevice && scheduleClose('user')"
         >
@@ -429,21 +436,8 @@
 
           <Transition name="dropdown">
             <div v-if="userOpen" class="dropdown dropdown--user">
-              <div class="dropdown__user-head">
-                <div class="dropdown__avatar-img-wrap">
-                  <img
-                    v-if="currentUser && currentUser.avatar && !avatarError"
-                    :src="currentUser.avatar"
-                    :alt="currentUser.name"
-                    class="dropdown__avatar-img"
-                    @error="avatarError = true"
-                  />
-                  <div v-else class="dropdown__avatar">{{ userInitials }}</div>
-                </div>
-                <div class="dropdown__user-info">
-                  <p class="dropdown__user-name">Welcome {{ currentUser?.firstName || currentUser?.name?.split(' ')[0] }}!</p>
-                  <p class="dropdown__user-role">{{ currentUser?.role || 'User' }}</p>
-                </div>
+              <div class="dropdown__user-welcome">
+                Welcome {{ currentUser?.firstName || currentUser?.name?.split(' ')[0] }}!
               </div>
               <div class="dropdown__body">
                 <a
@@ -458,7 +452,7 @@
                   <span v-if="item.badge" class="user-menu-item__badge">{{ item.badge }}</span>
                 </a>
               </div>
-              <div class="dropdown__footer">
+              <div class="dropdown__footer dropdown__footer--logout">
                 <button class="logout-btn" @click="handleLogout">
                   <ArrowRightOnRectangleIcon class="logout-btn__icon" />
                   Logout
@@ -915,16 +909,20 @@ function readMsg(msg) { msg.read = true; }
 
 // ── Notifications ─────────────────────────────────────────────
 const notificationsRef = ref(null);
-const notifications = ref([
-  { id: 1, text: "New order <strong>#RB9652</strong> received from Judith Fritsche.", time: "2 min ago", read: false, icon: ShoppingBagIcon, iconBg: "#fff3e8" },
-  { id: 2, text: "Payment of <strong>$750.95</strong> processed successfully.", time: "15 min ago", read: false, icon: CurrencyDollarIcon, iconBg: "#e8f5e9" },
-  { id: 3, text: "<strong>3 new leads</strong> added this week.", time: "1 hr ago", read: false, icon: UserGroupIcon, iconBg: "#e3f2fd" },
-  { id: 4, text: "Server maintenance scheduled for tonight at 2AM.", time: "3 hrs ago", read: true, icon: Cog6ToothIcon, iconBg: "#f3f4f9" },
-  { id: 5, text: "Your monthly report is ready to download.", time: "Yesterday", read: true, icon: EnvelopeIcon, iconBg: "#fce4ec" },
+
+// Notification items styled like the reference — avatar/initial based
+const notifItems = ref([
+  { id: 1, name: null, initials: "JT", avatarBg: "#e3f2fd", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop&crop=face", text: 'Josephine Thompson commented on admin panel " Wow 😍! this admin looks good and awesome design"', read: false },
+  { id: 2, name: "Donoghue Susan", initials: "D", avatarBg: "#b2dfdb", avatar: null, text: "Hi, How are you? What about our next meeting", read: false },
+  { id: 3, name: "Jacob Gines", initials: "JG", avatarBg: "#e8f5e9", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=40&h=40&fit=crop&crop=face", text: "Answered to your comment on the cash flow forecast's graph 🔔", read: false },
 ]);
-const unreadCount = computed(() => notifications.value.filter(n => !n.read).length);
+const unreadCount = computed(() => notifItems.value.filter(n => !n.read).length);
+function readNotifItem(notif) { notif.read = true; }
+function markAllRead() { notifItems.value.forEach(n => (n.read = true)); }
+
+// Keep old notifications array for backward compat (not shown in dropdown anymore)
+const notifications = ref([]);
 function readNotif(notif) { notif.read = true; }
-function markAllRead() { notifications.value.forEach(n => (n.read = true)); }
 
 // ── Activity Stream ───────────────────────────────────────────
 const activityRef = ref(null);
@@ -1643,23 +1641,102 @@ watch(isAuthenticated, (val) => {
 .msg-item__time  { font-size: 10.5px; color: var(--text-muted, #98a6ad); flex-shrink: 0; white-space: nowrap; }
 .msg-item__text  { font-size: 12px; color: var(--text-secondary, #6c757d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* ── Notifications dropdown ── */
-.dropdown--notif { width: min(320px, calc(100vw - 16px)); }
+/* unread dot — shared */
+.notif-item__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent, #fd7e14); flex-shrink: 0; margin-top: 6px; }
 
-.notif-item {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px 16px; border-bottom: 1px solid var(--card-border, #eef2f7);
-  cursor: pointer; transition: background 0.12s ease; position: relative;
+/* ── Notifications dropdown — avatar/initial style ── */
+.dropdown--notif { width: min(360px, calc(100vw - 16px)); }
+
+.notif-msg-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 16px; border-bottom: 1px solid var(--card-border, #eef2f7);
+  cursor: pointer; text-decoration: none;
+  transition: background 0.12s ease; position: relative;
 }
-.notif-item:last-child { border-bottom: none; }
-.notif-item:hover      { background: var(--app-bg, #f3f4f9); }
-.notif-item.unread     { background: rgba(253,126,20,0.03); }
-.notif-item__icon      { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.notif-item__svg       { width: 17px; height: 17px; color: var(--accent, #fd7e14); stroke-width: 1.8; }
-.notif-item__body      { flex: 1; min-width: 0; }
-.notif-item__text      { font-size: 12.5px; line-height: 1.5; color: var(--text-primary, #313a46); margin-bottom: 3px; }
-.notif-item__time      { font-size: 11px; color: var(--text-muted, #98a6ad); }
-.notif-item__dot       { width: 8px; height: 8px; border-radius: 50%; background: var(--accent, #fd7e14); flex-shrink: 0; margin-top: 4px; }
+.notif-msg-item:last-child { border-bottom: none; }
+.notif-msg-item:hover      { background: var(--app-bg, #f3f4f9); }
+.notif-msg-item.unread     { background: rgba(253,126,20,0.02); }
+
+.notif-msg-item__avatar-wrap { flex-shrink: 0; }
+.notif-msg-item__avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.notif-msg-item__avatar-img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;
+}
+.notif-msg-item__initials {
+  font-size: 16px; font-weight: 800;
+  color: var(--text-primary, #313a46);
+}
+.notif-msg-item__body  { flex: 1; min-width: 0; }
+.notif-msg-item__name  {
+  font-size: 13.5px; font-weight: 700;
+  color: var(--text-primary, #313a46); margin-bottom: 3px;
+}
+.notif-msg-item__text  {
+  font-size: 13px; color: var(--text-secondary, #6c757d);
+  line-height: 1.55;
+}
+
+/* View All button footer */
+.dropdown__footer--btn {
+  padding: 14px 16px;
+  border-top: 1px solid var(--card-border, #eef2f7);
+  text-align: center;
+}
+.dropdown__view-all-btn {
+  display: inline-block;
+  background: #fd7e14;
+  color: #fff;
+  font-size: 13.5px; font-weight: 700;
+  padding: 11px 32px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.dropdown__view-all-btn:hover {
+  background: #e96d00;
+  transform: translateY(-1px);
+}
+
+/* ── User dropdown — welcome style ── */
+.dropdown--user { width: min(240px, calc(100vw - 16px)); }
+
+.dropdown__user-welcome {
+  padding: 14px 18px 12px;
+  font-size: 13.5px; font-weight: 700;
+  color: var(--text-primary, #313a46);
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  background: var(--card-bg, #fff);
+}
+
+.user-menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 18px; font-size: 14px; color: var(--text-secondary, #6c757d);
+  border-bottom: 1px solid var(--card-border, #eef2f7);
+  text-decoration: none; transition: background 0.12s ease, color 0.12s ease;
+}
+.user-menu-item:last-child { border-bottom: none; }
+.user-menu-item:hover { background: var(--app-bg, #f3f4f9); color: var(--text-primary, #313a46); }
+.user-menu-item__icon  { width: 18px; height: 18px; stroke-width: 1.8; flex-shrink: 0; color: var(--text-secondary, #6c757d); }
+.user-menu-item__badge { margin-left: auto; background: var(--accent, #fd7e14); color: #fff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 99px; }
+
+.dropdown__footer--logout {
+  border-top: 1px solid var(--card-border, #eef2f7);
+  padding: 0;
+}
+.logout-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 13px 18px;
+  border: none; background: transparent;
+  font-size: 14px; font-weight: 600; color: #e74c3c;
+  cursor: pointer; font-family: inherit; transition: background 0.12s ease;
+}
+.logout-btn:hover      { background: #fce4ec; }
+.logout-btn__icon      { width: 18px; height: 18px; stroke-width: 2; }
 
 /* ── Activity dropdown ── */
 .dropdown--activity { width: min(340px, calc(100vw - 16px)); }
@@ -1701,8 +1778,6 @@ watch(isAuthenticated, (val) => {
 .lang-item__check     { width: 14px; height: 14px; color: var(--accent, #fd7e14); stroke-width: 2.5; }
 
 /* ── User dropdown ── */
-.dropdown--user { width: min(230px, calc(100vw - 16px)); }
-
 .dropdown__user-head {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 16px; border-bottom: 1px solid var(--card-border, #eef2f7);
@@ -1722,27 +1797,6 @@ watch(isAuthenticated, (val) => {
 .dropdown__user-info { min-width: 0; flex: 1; }
 .dropdown__user-name { font-size: 13px; font-weight: 700; color: var(--text-primary, #313a46); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dropdown__user-role { font-size: 11.5px; color: var(--text-muted, #98a6ad); }
-
-.user-menu-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 16px; font-size: 13px; color: var(--text-secondary, #6c757d);
-  border-bottom: 1px solid var(--card-border, #eef2f7);
-  text-decoration: none; transition: background 0.12s ease, color 0.12s ease;
-}
-.user-menu-item:last-child { border-bottom: none; }
-.user-menu-item:hover { background: var(--app-bg, #f3f4f9); color: var(--accent, #fd7e14); }
-.user-menu-item__icon  { width: 16px; height: 16px; stroke-width: 1.8; flex-shrink: 0; }
-.user-menu-item__badge { margin-left: auto; background: var(--accent, #fd7e14); color: #fff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 99px; }
-
-.logout-btn {
-  display: flex; align-items: center; gap: 8px;
-  width: 100%; padding: 10px 16px;
-  border: none; background: transparent;
-  font-size: 13px; font-weight: 600; color: var(--danger, #e74c3c);
-  cursor: pointer; font-family: inherit; transition: background 0.12s ease;
-}
-.logout-btn:hover      { background: #fce4ec; }
-.logout-btn__icon      { width: 16px; height: 16px; stroke-width: 2; }
 
 /* ── Search dropdown ── */
 .dropdown--search { top: 70px; right: 8px; left: auto; width: min(300px, calc(100vw - 16px)); min-width: unset; }
@@ -1894,46 +1948,51 @@ watch(isAuthenticated, (val) => {
 @media (max-width: 767px) {
   /* Full-width compact header */
   .topbar {
-    padding: 0 10px;
-    gap: 2px;
+    padding: 0 12px;
+    gap: 4px;
     height: 60px;
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
   }
-  /* Hide non-essential elements */
+
+  /* Show title on mobile (override hide-sm) */
+  .topbar__title--hide-sm { display: block !important; }
+
+  /* Hide non-essential elements on mobile */
   .topbar__clock--hide-sm    { display: none !important; }
-  .topbar__title--hide-sm    { display: none !important; }
   .topbar__icon-btn--hide-sm { display: none !important; }
   .topbar__icon-btn--hide-md { display: none !important; }
+  .topbar__icon-btn--hide-xs { display: none !important; }
+
+  /* Hide: refresh, messages, activity, language, settings, search */
+  .topbar__right > .topbar__icon-btn:not(.topbar__darkmode-btn):not(.topbar__bell-btn) { display: none !important; }
+  .topbar__right > .topbar__dropdown-wrap:not(.topbar__notif-wrap):not(.topbar__user-wrap) { display: none !important; }
+  .topbar__search { display: none !important; }
+
   /* Compact buttons */
-  .topbar__icon-btn { width: 34px; height: 34px; }
-  .topbar__user-btn { width: 34px; height: 34px; }
-  .topbar__icon     { width: 18px; height: 18px; }
-  /* Collapse search to icon */
-  .topbar__search { width: 34px; padding: 0 7px; overflow: hidden; }
-  .topbar__search.focused { width: 140px; }
-  .topbar__right { gap: 0; }
-  /* Dropdowns: fixed to viewport, never overflow */
+  .topbar__icon-btn { width: 36px; height: 36px; }
+  .topbar__user-btn { width: 36px; height: 36px; }
+  .topbar__icon     { width: 20px; height: 20px; }
+
+  /* Dropdowns: fixed to viewport */
   .dropdown {
     position: fixed !important;
     top: 60px !important;
     right: 4px !important;
     left: auto !important;
   }
+  .dropdown--notif  { width: calc(100vw - 8px) !important; }
+  .dropdown--user   { width: min(240px, calc(100vw - 8px)) !important; }
   .dropdown--msg,
-  .dropdown--notif,
   .dropdown--activity { width: calc(100vw - 8px) !important; }
-  .dropdown--user     { width: min(230px, calc(100vw - 8px)) !important; }
-  .dropdown--lang     { width: min(190px, calc(100vw - 8px)) !important; }
-  .dropdown--search   { width: calc(100vw - 8px) !important; }
+  .dropdown--lang   { width: min(190px, calc(100vw - 8px)) !important; }
+  .dropdown--search { width: calc(100vw - 8px) !important; }
 }
 
 /* ── Small mobile <480 ── */
 @media (max-width: 480px) {
-  .topbar { padding: 0 8px; }
-  .topbar__icon-btn--hide-xs { display: none !important; }
-  .topbar__search.focused    { width: 110px; }
+  .topbar { padding: 0 10px; }
   .topbar__right { gap: 0; }
 }
 /* ─────────────────────────────────────────────────────────────
