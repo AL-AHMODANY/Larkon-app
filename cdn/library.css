@@ -1031,3 +1031,190 @@ img.avatar-xl  { width: 96px;  height: 96px;  display: inline-block; }
 [data-theme="dark"] .code-wrapper { border-color: var(--border-color) !important; }
 [data-theme="dark"] .doc-section h5 { color: var(--text-primary) !important; }
 [data-theme="dark"] .doc-section p.desc { color: var(--text-secondary) !important; }
+
+/* =========================================================
+   ADVANCED UI — page-wrapper-adv
+   Used by: Rating, Scrollbar, Sweetalert, Swiperslider
+========================================================= */
+.page-wrapper-adv {
+  padding: 1.5rem 1rem;
+  min-height: 100vh;
+  background: var(--bg-body);
+  color: var(--text-primary);
+}
+
+/* =========================================================
+   ADVANCED UI — TOC link (adv pages use different colors)
+   Used by: Rating, Scrollbar, Sweetalert, Swiperslider
+========================================================= */
+.toc-active {
+  color: #4a6cf7 !important;
+  background-color: rgba(74,108,247,0.08);
+  border-left: 2px solid #4a6cf7;
+}
+
+/* =========================================================
+   ADVANCED UI — Tab buttons (HTML/JS tabs in code blocks)
+   Used by: Rating, Sweetalert, Swiperslider
+========================================================= */
+.tab-active,
+.tab-active-html {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border: none !important;
+}
+.tab-active-js {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border: none !important;
+}
+.tab-inactive {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border: none !important;
+}
+.tab-inactive:hover {
+  background: var(--app-bg) !important;
+}
+
+/* =========================================================
+   ADVANCED UI — Star rating
+   Used by: Rating page
+========================================================= */
+.star-icon.filled { color: #f5a623; }
+.star-icon.empty  { color: #dee2e6; }
+
+/* =========================================================
+   TOASTIFY PAGE — custom toast items
+   Used by: Toastify page
+========================================================= */
+.toastify-page { padding: 1.5rem; background: var(--bg-body); min-height: 100vh; }
+.toast-container {
+  position: fixed;
+  z-index: 1090;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  max-width: 380px;
+  width: auto;
+  min-width: 260px;
+}
+.toast-stack { display: flex; flex-direction: column; gap: 0.75rem; }
+.toast-top-left    { top: 20px; left: 20px; }
+.toast-top-center  { top: 20px; left: 50%; transform: translateX(-50%); }
+.toast-top-right   { top: 20px; right: 20px; }
+.toast-bottom-left { bottom: 20px; left: 20px; }
+.toast-bottom-center { bottom: 20px; left: 50%; transform: translateX(-50%); }
+.toast-bottom-right  { bottom: 20px; right: 20px; }
+.toast-item {
+  pointer-events: auto;
+  background: rgba(255,255,255,0.96);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.5);
+  width: 100%;
+}
+.toast-default  { border-left: 5px solid #3b82f6; }
+.toast-success  { border-left: 5px solid #10b981; background: rgba(240,253,244,0.96); }
+.toast-warning  { border-left: 5px solid #f59e0b; background: rgba(254,252,232,0.96); }
+.toast-error    { border-left: 5px solid #ef4444; background: rgba(254,242,242,0.96); }
+.toast-content  { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+.toast-message  { font-weight: 500; font-size: 0.9rem; line-height: 1.4; color: #1e293b; flex-grow: 1; }
+.toast-close-btn {
+  background: transparent; border: none; font-size: 1.1rem; cursor: pointer;
+  color: #94a3b8; width: 28px; height: 28px; display: flex; align-items: center;
+  justify-content: center; border-radius: 40px; transition: all 0.2s;
+}
+.toast-close-btn:hover { background: #f1f5f9; color: #0f172a; }
+
+/* =========================================================
+   MAPS — alert info box, map tooltip, legend, mini-bar
+   Used by: GoogleMaps, VectorMaps
+========================================================= */
+.alert-info-box {
+  background: rgba(91,115,232,0.1);
+  border: 1px solid rgba(91,115,232,0.25);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.83rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+.alert-info-box code { background: rgba(253,126,20,0.1); color: var(--accent); padding: 1px 5px; border-radius: 3px; font-size: 0.78rem; }
+.map-container { border-radius: 8px; overflow: hidden; }
+.world-map-wrap, .us-map-wrap { position: relative; }
+.map-tooltip {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 8px; padding: 10px 14px; font-size: 0.8rem;
+  color: var(--text-primary); box-shadow: var(--card-shadow);
+  pointer-events: none; min-width: 140px;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text-muted); }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.region-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.mini-bar { height: 6px; background: var(--app-bg); border-radius: 99px; width: 80px; }
+.mini-bar__fill { height: 100%; border-radius: 99px; }
+.demo-card__title { font-size: 0.88rem; font-weight: 700; color: var(--text-primary); margin: 0 0 14px; }
+
+/* =========================================================
+   GRID.JS — modal box, selected row
+   Used by: GridJs page
+========================================================= */
+.modal-backdrop-custom {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 1050; display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.modal-box {
+  background: var(--card-bg); border-radius: 12px; width: 100%; max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.modal-box__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--card-border); color: var(--text-primary);
+}
+.modal-box__body { padding: 20px; }
+.modal-box__footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 14px 20px; border-top: 1px solid var(--card-border);
+}
+.btn-close-custom { background: none; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; padding: 0; }
+.selected { background: rgba(253,126,20,0.05) !important; }
+
+/* =========================================================
+   FORMS — slider value display
+   Used by: Slider page
+========================================================= */
+.slider-val { font-size: 0.82rem; font-weight: 600; color: var(--accent); }
+
+/* =========================================================
+   MENU PAGES — empty state text
+   Used by: MenuItem1, MenuItem2, DisableItem
+========================================================= */
+.empty-state__text { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
+
+/* =========================================================
+   IMAGE PREVIEW — FileUpload page
+========================================================= */
+.img-preview { border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; }
+.img-preview img { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+/* =========================================================
+   DARK MODE — Advanced UI, Toastify, Maps, GridJs
+========================================================= */
+[data-theme="dark"] .page-wrapper-adv { background: var(--bg-body) !important; color: var(--text-primary) !important; }
+[data-theme="dark"] .tab-inactive { color: var(--text-secondary) !important; }
+[data-theme="dark"] .tab-inactive:hover { background: var(--app-bg) !important; }
+[data-theme="dark"] .toast-item { background: var(--card-bg) !important; border-color: var(--card-border) !important; }
+[data-theme="dark"] .toast-message { color: var(--text-primary) !important; }
+[data-theme="dark"] .toast-close-btn { color: var(--text-muted) !important; }
+[data-theme="dark"] .toast-close-btn:hover { background: var(--app-bg) !important; color: var(--text-primary) !important; }
+[data-theme="dark"] .alert-info-box { background: rgba(91,115,232,0.1) !important; border-color: rgba(91,115,232,0.25) !important; color: var(--text-primary) !important; }
+[data-theme="dark"] .map-tooltip { background: var(--card-bg) !important; border-color: var(--card-border) !important; color: var(--text-primary) !important; }
+[data-theme="dark"] .modal-box { background: var(--card-bg) !important; }
+[data-theme="dark"] .modal-box__header { border-bottom-color: var(--border-color) !important; color: var(--text-primary) !important; }
+[data-theme="dark"] .modal-box__footer { border-top-color: var(--border-color) !important; }
+[data-theme="dark"] .img-preview { border-color: var(--border-color) !important; }
+[data-theme="dark"] .toastify-page { background: var(--bg-body) !important; }
+[data-theme="dark"] .code-preview pre { background: var(--app-bg) !important; color: #c9d1d9 !important; }
