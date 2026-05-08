@@ -658,7 +658,33 @@ function labelFor(id) {
 }
 
 async function copyCode(id) {
-  await navigator.clipboard.writeText(codes[id]);
+  // Prepend CSS for snippets that use custom classes not in Bootstrap 5
+  const BUTTON_CSS = `<style>
+/* Custom button variants — paste in your <head> or stylesheet */
+.btn-purple{--bs-btn-color:#fff;--bs-btn-bg:#7f56da;--bs-btn-border-color:#7f56da;--bs-btn-hover-bg:#724dc4;--bs-btn-hover-border-color:#724dc4}
+.btn-pink{--bs-btn-color:#fff;--bs-btn-bg:#ff86c8;--bs-btn-border-color:#ff86c8;--bs-btn-hover-bg:#e679b4;--bs-btn-hover-border-color:#e679b4}
+.btn-orange{--bs-btn-color:#fff;--bs-btn-bg:#ff6c2f;--bs-btn-border-color:#ff6c2f;--bs-btn-hover-bg:#e6612a;--bs-btn-hover-border-color:#e6612a}
+.btn-outline-purple{--bs-btn-color:#7f56da;--bs-btn-border-color:#7f56da;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#7f56da;--bs-btn-hover-border-color:#7f56da}
+.btn-outline-pink{--bs-btn-color:#ff86c8;--bs-btn-border-color:#ff86c8;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ff86c8;--bs-btn-hover-border-color:#ff86c8}
+.btn-outline-orange{--bs-btn-color:#ff6c2f;--bs-btn-border-color:#ff6c2f;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ff6c2f;--bs-btn-hover-border-color:#ff6c2f}
+.btn-soft-primary{--bs-btn-color:#ff6c2f;--bs-btn-bg:rgba(255,108,47,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ff6c2f;--bs-btn-hover-border-color:#ff6c2f}
+.btn-soft-secondary{--bs-btn-color:#5d7186;--bs-btn-bg:rgba(93,113,134,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#5d7186;--bs-btn-hover-border-color:#5d7186}
+.btn-soft-success{--bs-btn-color:#22c55e;--bs-btn-bg:rgba(34,197,94,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#22c55e;--bs-btn-hover-border-color:#22c55e}
+.btn-soft-warning{--bs-btn-color:#f9b931;--bs-btn-bg:rgba(249,185,49,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#f9b931;--bs-btn-hover-border-color:#f9b931}
+.btn-soft-info{--bs-btn-color:#4ecac2;--bs-btn-bg:rgba(78,202,194,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#4ecac2;--bs-btn-hover-border-color:#4ecac2}
+.btn-soft-danger{--bs-btn-color:#ef5f5f;--bs-btn-bg:rgba(239,95,95,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ef5f5f;--bs-btn-hover-border-color:#ef5f5f}
+.btn-soft-dark{--bs-btn-color:#323a46;--bs-btn-bg:rgba(50,58,70,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#323a46;--bs-btn-hover-border-color:#323a46}
+.btn-soft-purple{--bs-btn-color:#7f56da;--bs-btn-bg:rgba(127,86,218,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#7f56da;--bs-btn-hover-border-color:#7f56da}
+.btn-soft-pink{--bs-btn-color:#ff86c8;--bs-btn-bg:rgba(255,134,200,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ff86c8;--bs-btn-hover-border-color:#ff86c8}
+.btn-width-xs{min-width:80px}.btn-width-sm{min-width:100px}
+.btn-width-md{min-width:120px}.btn-width-lg{min-width:140px}.btn-width-xl{min-width:160px}
+</style>
+
+`;
+  // These snippets use custom classes that need the CSS above
+  const needsCSS = ['soft', 'softRounded', 'outline', 'outlineRounded', 'width'];
+  const text = (needsCSS.includes(id) ? BUTTON_CSS : '') + (codes[id] || '');
+  await navigator.clipboard.writeText(text);
   copied.value = id;
   window.setTimeout(() => {
     copied.value = "";

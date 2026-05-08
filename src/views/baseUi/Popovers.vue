@@ -169,7 +169,18 @@ const codeMap = {
 
 function copyCode(event) {
   const sectionId = event.target.closest('.doc-section')?.id
-  navigator.clipboard.writeText(codeMap[sectionId] || '').then(() => {
+  const SOFT_BTN_CSS = `<style>
+/* Custom soft button variants — paste in your <head> or stylesheet */
+.btn-soft-primary{--bs-btn-color:#ff6c2f;--bs-btn-bg:rgba(255,108,47,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ff6c2f;--bs-btn-hover-border-color:#ff6c2f}
+.btn-soft-success{--bs-btn-color:#22c55e;--bs-btn-bg:rgba(34,197,94,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#22c55e;--bs-btn-hover-border-color:#22c55e}
+.btn-soft-danger{--bs-btn-color:#ef5f5f;--bs-btn-bg:rgba(239,95,95,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ef5f5f;--bs-btn-hover-border-color:#ef5f5f}
+.btn-soft-warning{--bs-btn-color:#f9b931;--bs-btn-bg:rgba(249,185,49,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#f9b931;--bs-btn-hover-border-color:#f9b931}
+.btn-soft-info{--bs-btn-color:#4ecac2;--bs-btn-bg:rgba(78,202,194,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#4ecac2;--bs-btn-hover-border-color:#4ecac2}
+</style>
+
+`
+  const text = (sectionId === 'elements' ? SOFT_BTN_CSS : '') + (codeMap[sectionId] || '')
+  navigator.clipboard.writeText(text).then(() => {
     event.target.textContent = 'Copied!'
     setTimeout(() => (event.target.textContent = 'Copy'), 1800)
   })

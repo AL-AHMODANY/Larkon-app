@@ -387,9 +387,11 @@ function scrollTo(id) {
 .star-icon.filled { color: #f5a623; }
 .star-icon.empty  { color: #dee2e6; }
 
-.toc-link { color: #495057; border-left: 2px solid transparent; transition: all 0.15s; }
-.toc-link:hover { color: #4a6cf7; background-color: #f0f3ff; border-left-color: #4a6cf7; }
-.toc-active { color: #4a6cf7 !important; background-color: #f0f3ff; border-left: 2px solid #4a6cf7; }
+.toc-link { color: var(--text-secondary, #495057); border-left: 2px solid transparent; transition: all 0.15s; }
+.toc-link:hover { color: var(--accent, #fd7e14); background-color: var(--accent-muted, #fff3e8); border-left-color: var(--accent, #fd7e14); }
+.toc-active { color: var(--accent, #fd7e14) !important; background-color: var(--accent-muted, #fff3e8); border-left: 2px solid var(--accent, #fd7e14); }
+
+:global([data-theme="dark"]) .star-icon.empty { color: #4a5568; }
 
 .code-block { border: 1px solid var(--card-border, #eef2f7); transition: border-color 0.2s; }
 .code-header { background: var(--app-bg, #f3f4f9); border-bottom: 1px solid var(--card-border, #eef2f7); transition: background 0.2s, border-color 0.2s; }

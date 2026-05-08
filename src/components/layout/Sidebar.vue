@@ -15,8 +15,8 @@
       'is-sm-hover':        isSmHover,
       'is-sm-hover-active': isSmHoverActive,
       'is-hidden':          isHiddenSize,
-      'theme-light':        menuColor.value === 'light',
-      'theme-dark':         menuColor.value === 'dark',
+      'theme-light':        menuColor === 'light',
+      'theme-dark':         menuColor === 'dark',
     }"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
@@ -158,6 +158,8 @@ import {
   MapPinIcon,
   Bars3Icon,
   NoSymbolIcon,
+  ViewColumnsIcon,
+  UserIcon,
 } from "@heroicons/vue/24/outline";
 
 const emit = defineEmits(["mobile-close"]);
@@ -297,6 +299,46 @@ const menuSections = ref([
       { name: "Disable Item", icon: NoSymbolIcon, route: "/menu/disable" },
     ],
   },
+  // ── LAYOUTS ──────────────────────────────────────────────────────────────
+  {
+    label: "Layouts",
+    items: [
+      {
+        name: "Layouts", icon: ViewColumnsIcon, isOpen: false,
+        dropdown: [
+          { name: "Dark Sidenav",    route: "/layouts/dark-sidenav"    },
+          { name: "Dark Topnav",     route: "/layouts/dark-topnav"     },
+          { name: "Small Sidenav",   route: "/layouts/small-sidenav"   },
+          { name: "Hidden Sidenav",  route: "/layouts/hidden-sidenav"  },
+          { name: "Light Mode",      route: "/layouts/light-mode", badge: "Hot" },
+        ],
+      },
+    ],
+  },
+  // ── OTHER APPS ───────────────────────────────────────────────────────────
+  {
+    label: "Other Apps",
+    items: [
+      { name: "Chat",     icon: ChatBubbleLeftRightIcon, route: "/apps/chat"     },
+      { name: "Email",    icon: EnvelopeIcon,            route: "/apps/email"    },
+      { name: "Calendar", icon: CalendarIcon,            route: "/apps/calendar" },
+    ],
+  },
+  // ── AUTHENTICATION ───────────────────────────────────────────────────────
+  {
+    label: "Authentication",
+    items: [
+      {
+        name: "Authentication", icon: UserIcon, isOpen: false,
+        dropdown: [
+          { name: "Sign In",         route: "/auth/signin"         },
+          { name: "Sign Up",         route: "/auth/signup"         },
+          { name: "Reset Password",  route: "/auth/reset-password" },
+          { name: "Lock Screen",     route: "/auth/lock-screen"    },
+        ],
+      },
+    ],
+  },
 ]);
 
 // ΓöÇΓöÇ Public API ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
@@ -312,8 +354,8 @@ const syncSize = () => {
 
 const persistSize = (size) => {
   try {
-    const s = JSON.parse(localStorage.getItem("larkon_settings") || "{}");
-    localStorage.setItem("larkon_settings", JSON.stringify({ ...s, sidebarSize: size }));
+    const s = JSON.parse(localStorage.getItem("AL-AHMODANY_settings") || "{}");
+    localStorage.setItem("AL-AHMODANY_settings", JSON.stringify({ ...s, sidebarSize: size }));
   } catch { /* noop */ }
 };
 
@@ -430,20 +472,47 @@ watch([() => route.path, isCollapsed], openActiveGroup);
 }
 .sidebar.theme-light {
   --sb-bg:            #ffffff;
-  --sb-border:        #eef2f7;
-  --sb-text:          #6c757d;
+  --sb-border:        #e8ecf1;
+  --sb-text:          #7b8fa1;
   --sb-text-hover:    #313a46;
-  --sb-text-active:   #313a46;
-  --sb-muted:         #adb5bd;
-  --sb-icon-color:    #6c757d;
+  --sb-text-active:   #fd7e14;
+  --sb-muted:         #b0bac5;
+  --sb-icon-color:    #98a6ad;
   --sb-icon-active:   #fd7e14;
-  --sb-hover-bg:      #f4f6fb;
-  --sb-active-bg:     rgba(253,126,20,0.08);
-  --sb-sub-color:     #8996af;
-  --sb-section-color: #adb5bd;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+  --sb-hover-bg:      #f5f7fa;
+  --sb-active-bg:     rgba(253,126,20,0.09);
+  --sb-sub-color:     #9aa8b5;
+  --sb-section-color: #b8c4ce;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.06);
 }
 .sidebar.theme-light .logo-wordmark { color: #313a46; }
+.sidebar.theme-light .logo-badge {
+  background: linear-gradient(135deg,#ff9b44 0%,#fd7e14 100%);
+}
+.sidebar.theme-light .nav-item__link.active {
+  background: rgba(253,126,20,0.09);
+  color: #fd7e14;
+}
+.sidebar.theme-light .nav-item.open > .nav-item__link {
+  color: #fd7e14;
+}
+.sidebar.theme-light .nav-item.open > .nav-item__link .nav-item__arrow {
+  color: #fd7e14;
+}
+.sidebar.theme-light .nav-dropdown__link.active {
+  color: #fd7e14;
+}
+.sidebar.theme-light .nav-dropdown__link.active::before {
+  background: #fd7e14;
+  border-color: #fd7e14;
+}
+.sidebar.theme-light .sidebar__body::-webkit-scrollbar-thumb {
+  background: #e0e6ed;
+}
+.sidebar.theme-light .nav-item__tooltip {
+  background: #313a46;
+  color: #e2e8f4;
+}
 
 /* -- Base sidebar --------------------------------------- */
 .sidebar {

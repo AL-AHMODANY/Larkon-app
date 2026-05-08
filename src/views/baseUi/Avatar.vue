@@ -148,16 +148,28 @@ const scrollTo = (id) => {
 }
 
 const copied = ref(null)
+
+const AVATAR_CSS = `<style>
+/* Avatar size classes — paste in your <head> or stylesheet */
+.avatar-xs { width:24px;  height:24px;  object-fit:cover; border-radius:50%; display:inline-block; }
+.avatar-sm { width:32px;  height:32px;  object-fit:cover; border-radius:50%; display:inline-block; }
+.avatar-md { width:48px;  height:48px;  object-fit:cover; border-radius:50%; display:inline-block; }
+.avatar-lg { width:64px;  height:64px;  object-fit:cover; border-radius:50%; display:inline-block; }
+.avatar-xl { width:96px;  height:96px;  object-fit:cover; border-radius:50%; display:inline-block; }
+</style>
+
+`
+
 const copy = (key) => {
   const snippets = {
-    basic: `<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&h=32&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-xs rounded-circle" />
-<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-sm rounded-circle" />
-<img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-md rounded-circle" />
-<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-lg rounded-circle" />
-<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-xl rounded-circle" />`,
-    rounded: `<img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-md rounded-circle" />
-<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-lg rounded-circle" />
-<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face" alt="avatar" class="img-fluid avatar-xl rounded-circle" />`,
+    basic: AVATAR_CSS + `<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&h=32&fit=crop&crop=face" alt="avatar" class="avatar-xs rounded-circle" />
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop&crop=face" alt="avatar" class="avatar-sm rounded-circle" />
+<img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face" alt="avatar" class="avatar-md rounded-circle" />
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face" alt="avatar" class="avatar-lg rounded-circle" />
+<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face" alt="avatar" class="avatar-xl rounded-circle" />`,
+    rounded: AVATAR_CSS + `<img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=64&h=64&fit=crop&crop=face" alt="avatar" class="avatar-md rounded-circle" />
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face" alt="avatar" class="avatar-lg rounded-circle" />
+<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face" alt="avatar" class="avatar-xl rounded-circle" />`,
     shapes: `<img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=130&fit=crop" alt="landscape" class="img-fluid rounded" width="200" />
 <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop&crop=face" alt="portrait" class="img-fluid rounded" width="150" />
 <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="circle" class="img-fluid rounded-circle" width="150" />

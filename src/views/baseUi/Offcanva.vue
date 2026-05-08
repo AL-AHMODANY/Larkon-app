@@ -186,24 +186,119 @@
 
 <script>
 import CdnSection from '../../components/CdnSection.vue'
-// footer
 import PageFooter from '../../components/layout/Footer.vue'
+
+const codeStrings = {
+  o1: `<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasLink" role="button">
+  Link with href
+</a>
+<button class="btn btn-secondary" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasButton">
+  Button with data-bs-target
+</button>
+
+<!-- Offcanvas panel -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLink">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Offcanvas Title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    Some text as placeholder. In real life you can have the elements you have chosen.
+  </div>
+</div>`,
+
+  o2: `<!-- Scrolling enabled, backdrop disabled -->
+<button class="btn btn-primary" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll">
+  Enable Body Scrolling
+</button>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false"
+  tabindex="-1" id="offcanvasScroll">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Body Scrolling Enabled</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    Body scrolling is enabled. Backdrop is disabled.
+  </div>
+</div>
+
+<!-- Backdrop enabled (default) -->
+<button class="btn btn-secondary" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasBackdrop">
+  Enable Backdrop (Default)
+</button>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasBackdrop">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Backdrop Enabled</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    Default behavior — backdrop enabled, scrolling disabled.
+  </div>
+</div>`,
+
+  o3: `<!-- Left offcanvas -->
+<button class="btn btn-primary" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft">
+  Left Offcanvas
+</button>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeft">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Left Offcanvas</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">Slides in from the left side of the viewport.</div>
+</div>
+
+<!-- Right offcanvas -->
+<button class="btn btn-secondary" type="button"
+  data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
+  Right Offcanvas
+</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Right Offcanvas</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">Slides in from the right side of the viewport.</div>
+</div>
+
+<!-- Top offcanvas -->
+<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Top Offcanvas</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">Slides in from the top.</div>
+</div>
+
+<!-- Bottom offcanvas -->
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Bottom Offcanvas</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">Slides in from the bottom.</div>
+</div>`,
+}
+
 export default {
   name: 'OffcanvasPage',
+  components: { CdnSection, PageFooter },
   data() {
-    return {
-      copied: null
-    }
+    return { copied: null }
   },
   methods: {
     copy(id) {
-      const el = document.getElementById(id)
-      if (el) {
-        navigator.clipboard.writeText(el.innerText).then(() => {
-          this.copied = id
-          setTimeout(() => { this.copied = null }, 2000)
-        })
-      }
+      const text = codeStrings[id] || ''
+      navigator.clipboard.writeText(text).then(() => {
+        this.copied = id
+        setTimeout(() => { this.copied = null }, 2000)
+      })
     }
   }
 }

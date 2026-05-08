@@ -274,6 +274,39 @@ const badgeColors = [
 
 // ─── Copy ─────────────────────────────────────────────────────────
 const copied = ref(null)
+
+// CSS for custom classes not in Bootstrap 5
+const BADGE_CSS = `<style>
+/* Custom badge variants — paste this in your <head> or stylesheet */
+.badge-outline { background-color: transparent !important; }
+.badge-outline-primary   { border: 1.5px solid #ff6c2f; color: #ff6c2f !important; }
+.badge-outline-secondary { border: 1.5px solid #6c757d; color: #6c757d !important; }
+.badge-outline-success   { border: 1.5px solid #22c55e; color: #22c55e !important; }
+.badge-outline-warning   { border: 1.5px solid #f9b931; color: #f9b931 !important; }
+.badge-outline-info      { border: 1.5px solid #4ecac2; color: #4ecac2 !important; }
+.badge-outline-danger    { border: 1.5px solid #ef5f5f; color: #ef5f5f !important; }
+.badge-outline-dark      { border: 1.5px solid #323a46; color: #323a46 !important; }
+.badge-outline-purple    { border: 1.5px solid #7f56da; color: #7f56da !important; }
+.badge-outline-pink      { border: 1.5px solid #ff86c8; color: #ff86c8 !important; }
+.badge-soft-primary   { background: rgba(255,108,47,.15)  !important; color: #ff6c2f !important; }
+.badge-soft-secondary { background: rgba(108,117,125,.15) !important; color: #6c757d !important; }
+.badge-soft-success   { background: rgba(34,197,94,.15)   !important; color: #22c55e !important; }
+.badge-soft-warning   { background: rgba(249,185,49,.15)  !important; color: #f9b931 !important; }
+.badge-soft-info      { background: rgba(78,202,194,.15)  !important; color: #4ecac2 !important; }
+.badge-soft-danger    { background: rgba(239,95,95,.15)   !important; color: #ef5f5f !important; }
+.badge-soft-dark      { background: rgba(50,58,70,.12)    !important; color: #323a46 !important; }
+.badge-soft-purple    { background: rgba(127,86,218,.15)  !important; color: #7f56da !important; }
+.badge-soft-pink      { background: rgba(255,134,200,.15) !important; color: #ff86c8 !important; }
+.bg-purple { background-color: #7f56da !important; color: #fff !important; }
+.bg-pink   { background-color: #ff86c8 !important; color: #fff !important; }
+.bg-orange { background-color: #ff6c2f !important; color: #fff !important; }
+/* Custom button soft variants */
+.btn-soft-primary   { color: #ff6c2f; background: rgba(255,108,47,.1);  border-color: transparent; }
+.btn-soft-primary:hover { color: #fff; background: #ff6c2f; }
+</style>
+
+`
+
 const codeTexts = {
   heading:
 `<h1>h1.Example heading <span class="badge bg-primary">New</span></h1>
@@ -284,6 +317,7 @@ const codeTexts = {
 <h6>h6.Example heading <span class="badge bg-danger">New</span></h6>`,
 
   default:
+BADGE_CSS +
 `<!-- Default badges -->
 <span class="badge bg-primary me-1">Primary</span>
 <span class="badge bg-secondary me-1">Secondary</span>
@@ -309,6 +343,7 @@ const codeTexts = {
 <span class="badge rounded-pill bg-orange me-1">Orange</span>`,
 
   outline:
+BADGE_CSS +
 `<!-- Outline badges -->
 <span class="badge badge-outline badge-outline-primary me-1">Primary</span>
 <span class="badge badge-outline badge-outline-secondary me-1">Secondary</span>
@@ -319,14 +354,14 @@ const codeTexts = {
 <span class="badge badge-outline badge-outline-dark me-1">Dark</span>
 <span class="badge badge-outline badge-outline-purple me-1">Purple</span>
 <span class="badge badge-outline badge-outline-pink me-1">Pink</span>
-<span class="badge badge-outline badge-outline-orange me-1">Orange</span>
 
 <!-- Outline pill badges -->
 <span class="badge badge-outline rounded-pill badge-outline-primary me-1">Primary</span>
-<span class="badge badge-outline rounded-pill badge-outline-secondary me-1">Secondary</span>
-<span class="badge badge-outline rounded-pill badge-outline-success me-1">Success</span>`,
+<span class="badge badge-outline rounded-pill badge-outline-success me-1">Success</span>
+<span class="badge badge-outline rounded-pill badge-outline-danger me-1">Danger</span>`,
 
   soft:
+BADGE_CSS +
 `<!-- Soft badges -->
 <span class="badge badge-soft-primary me-1">Primary</span>
 <span class="badge badge-soft-secondary me-1">Secondary</span>
@@ -337,7 +372,6 @@ const codeTexts = {
 <span class="badge badge-soft-dark me-1">Dark</span>
 <span class="badge badge-soft-purple me-1">Purple</span>
 <span class="badge badge-soft-pink me-1">Pink</span>
-<span class="badge badge-soft-orange me-1">Orange</span>
 
 <!-- Soft pill badges -->
 <span class="badge badge-soft-primary rounded-pill me-1">Primary</span>
@@ -345,6 +379,7 @@ const codeTexts = {
 <span class="badge badge-soft-success rounded-pill me-1">Success</span>`,
 
   buttons:
+BADGE_CSS +
 `<!-- Buttons with inline badges -->
 <button type="button" class="btn btn-primary me-1">
   Notifications <span class="badge bg-danger ms-1">4</span>
@@ -363,8 +398,7 @@ const codeTexts = {
 <button type="button" class="btn btn-primary position-relative">
   Inbox
   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    99+
-    <span class="visually-hidden">unread messages</span>
+    99+<span class="visually-hidden">unread messages</span>
   </span>
 </button>`,
 }

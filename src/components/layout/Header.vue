@@ -641,7 +641,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import {
   MoonIcon, SunIcon, BellIcon, Cog6ToothIcon, GlobeAltIcon,
   MagnifyingGlassIcon, XMarkIcon, CheckIcon, ArrowRightOnRectangleIcon,
@@ -664,6 +664,7 @@ const emit = defineEmits([
 ]);
 
 const router = useRouter();
+const route  = useRoute();
 
 // ── AUTH ────────────────────────────────────────────────────
 const isAuthenticated = ref(false);
@@ -971,22 +972,30 @@ function handleUserMenu(item) {
 const settingsOpen = ref(false);
 const sidebarSize  = ref("default");
 const sidebarSizes = [
-  { label: "Default",     value: "default"      },
-  { label: "Condensed",   value: "condensed"    },
-  { label: "Hidden",      value: "hidden"       },
-  { label: "Small Hover", value: "small-hover"  },
+  { label: "Default",     value: "default"   },
+  { label: "Condensed",   value: "condensed" },
+  { label: "Hidden",      value: "hidden"    },
+  { label: "Small Hover", value: "sm-hover"  },
 ];
 
 function setSidebarSize(size) {
   sidebarSize.value = size;
+  // Apply DOM attribute so Sidebar.vue and App.vue pick it up immediately
+  if (size && size !== "default") {
+    document.body.setAttribute("data-sidebar-size", size);
+  } else {
+    document.body.removeAttribute("data-sidebar-size");
+  }
   saveSettings();
+  // Notify App.vue via the same custom event layout pages use
+  window.dispatchEvent(new CustomEvent("larkon:layout-change", { detail: { sidebarSize: size } }));
   emit("sidebar-size-change", size);
 }
 
 function resetSettings() {
   setTheme("light");
   setTopbarColor("light");
-  setMenuColor("light");
+  setMenuColor("dark");
   setSidebarSize("default");
   setInactivityTimeout(0);
 }
@@ -1054,20 +1063,86 @@ const searchInput   = ref(null);
 const searchWrapRef = ref(null);
 
 const allSearchData = [
-  { id: 1,  label: "Dashboard",       sub: "Page",     route: "/dashboard",          icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
-  { id: 2,  label: "Buttons",         sub: "Base UI",  route: "/buttons",            icon: ShoppingBagIcon,            iconBg: "#fff3e8" },
-  { id: 3,  label: "Alerts",          sub: "Base UI",  route: "/alerts",             icon: UserCircleIcon,             iconBg: "#e3f2fd" },
-  { id: 4,  label: "Cards",           sub: "Base UI",  route: "/cards",              icon: UserCircleIcon,             iconBg: "#e3f2fd" },
-  { id: 5,  label: "Modal",           sub: "Base UI",  route: "/modals",             icon: CurrencyDollarIcon,         iconBg: "#e8f5e9" },
-  { id: 6,  label: "Badges",          sub: "Base UI",  route: "/badges",             icon: UserGroupIcon,              iconBg: "#fce4ec" },
-  { id: 7,  label: "Tabs",            sub: "Base UI",  route: "/tabs",               icon: ChatBubbleLeftEllipsisIcon, iconBg: "#e8f5e9" },
-  { id: 8,  label: "Accordion",       sub: "Base UI",  route: "/accordion",          icon: ClockIcon,                  iconBg: "#e3f2fd" },
-  { id: 9,  label: "Boxicons",        sub: "Icons",    route: "/icons/boxicons",     icon: TagIcon,                    iconBg: "#fff3e8" },
-  { id: 10, label: "Solar Icons",     sub: "Icons",    route: "/icons/solar",        icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
-  { id: 11, label: "Area Chart",      sub: "Charts",   route: "/area",               icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
-  { id: 12, label: "Basic Tables",    sub: "Tables",   route: "/tables/basic",       icon: UserGroupIcon,              iconBg: "#fce4ec" },
-  { id: 13, label: "Google Maps",     sub: "Maps",     route: "/maps/google",        icon: ShieldCheckIcon,            iconBg: "#e3f2fd" },
-  { id: 14, label: "Vector Maps",     sub: "Maps",     route: "/maps/vector",        icon: StarIcon,                   iconBg: "#fff8e1" },
+  // General
+  { id: 1,  label: "Dashboard",          sub: "Page",           route: "/dashboard",              icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
+  // Base UI
+  { id: 2,  label: "Buttons",            sub: "Base UI",        route: "/buttons",                icon: ShoppingBagIcon,            iconBg: "#fff3e8" },
+  { id: 3,  label: "Alerts",             sub: "Base UI",        route: "/alerts",                 icon: UserCircleIcon,             iconBg: "#e3f2fd" },
+  { id: 4,  label: "Cards",              sub: "Base UI",        route: "/cards",                  icon: UserCircleIcon,             iconBg: "#e3f2fd" },
+  { id: 5,  label: "Modal",              sub: "Base UI",        route: "/modals",                 icon: CurrencyDollarIcon,         iconBg: "#e8f5e9" },
+  { id: 6,  label: "Badges",             sub: "Base UI",        route: "/badges",                 icon: UserGroupIcon,              iconBg: "#fce4ec" },
+  { id: 7,  label: "Tabs",               sub: "Base UI",        route: "/tabs",                   icon: ChatBubbleLeftEllipsisIcon, iconBg: "#e8f5e9" },
+  { id: 8,  label: "Accordion",          sub: "Base UI",        route: "/accordion",              icon: ClockIcon,                  iconBg: "#e3f2fd" },
+  { id: 9,  label: "Avatar",             sub: "Base UI",        route: "/avatar",                 icon: UserCircleIcon,             iconBg: "#fce4ec" },
+  { id: 10, label: "Breadcrumbs",        sub: "Base UI",        route: "/breadcrumbs",            icon: DocumentTextIcon,           iconBg: "#f3f4f9" },
+  { id: 11, label: "Carousel",           sub: "Base UI",        route: "/carousel",               icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 12, label: "Collapse",           sub: "Base UI",        route: "/collapse",               icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  { id: 13, label: "Dropdown",           sub: "Base UI",        route: "/dropdown",               icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 14, label: "List Group",         sub: "Base UI",        route: "/listgroup",              icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 15, label: "Offcanvas",          sub: "Base UI",        route: "/offcanva",               icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 16, label: "Pagination",         sub: "Base UI",        route: "/pagination",             icon: DocumentTextIcon,           iconBg: "#f3f4f9" },
+  { id: 17, label: "Placeholders",       sub: "Base UI",        route: "/placeholders",           icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 18, label: "Popovers",           sub: "Base UI",        route: "/popovers",               icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  { id: 19, label: "Progress",           sub: "Base UI",        route: "/progress",               icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 20, label: "Scrollspy",          sub: "Base UI",        route: "/scrollspy",              icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 21, label: "Spinners",           sub: "Base UI",        route: "/spinner",                icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 22, label: "Toasts",             sub: "Base UI",        route: "/toasts",                 icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  { id: 23, label: "Tooltips",           sub: "Base UI",        route: "/tooltips",               icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  // Advanced UI
+  { id: 24, label: "Ratings",            sub: "Advanced UI",    route: "/ratings",                icon: StarIcon,                   iconBg: "#fff8e1" },
+  { id: 25, label: "Sweet Alert",        sub: "Advanced UI",    route: "/sweet-alert",            icon: CheckCircleIcon,            iconBg: "#e8f5e9" },
+  { id: 26, label: "Swiper Slider",      sub: "Advanced UI",    route: "/swiper-slider",          icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 27, label: "Scrollbar",          sub: "Advanced UI",    route: "/scrollbar",              icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 28, label: "Toastify",           sub: "Advanced UI",    route: "/toastify",               icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  // Charts
+  { id: 29, label: "Area Chart",         sub: "Charts",         route: "/area",                   icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 30, label: "Bar Chart",          sub: "Charts",         route: "/bar",                    icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 31, label: "Bubble Chart",       sub: "Charts",         route: "/bubble",                 icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 32, label: "Candlestick Chart",  sub: "Charts",         route: "/candlestick",            icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  { id: 33, label: "Column Chart",       sub: "Charts",         route: "/column",                 icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 34, label: "Heatmap Chart",      sub: "Charts",         route: "/heatmap",                icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 35, label: "Line Chart",         sub: "Charts",         route: "/line",                   icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 36, label: "Mixed Chart",        sub: "Charts",         route: "/mixed",                  icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  { id: 37, label: "Timeline Chart",     sub: "Charts",         route: "/timeline",               icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 38, label: "Boxplot Chart",      sub: "Charts",         route: "/boxplot",                icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 39, label: "Treemap Chart",      sub: "Charts",         route: "/treemap",                icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 40, label: "Pie Chart",          sub: "Charts",         route: "/pie",                    icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  { id: 41, label: "Radar Chart",        sub: "Charts",         route: "/radar",                  icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 42, label: "RadialBar Chart",    sub: "Charts",         route: "/radialbar",              icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 43, label: "Scatter Chart",      sub: "Charts",         route: "/scatter",                icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 44, label: "Polar Area Chart",   sub: "Charts",         route: "/polar-area",             icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  // Forms
+  { id: 45, label: "Basic Elements",     sub: "Forms",          route: "/forms/basic",            icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 46, label: "Checkbox & Radio",   sub: "Forms",          route: "/forms/checkbox-radio",   icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 47, label: "Validation",         sub: "Forms",          route: "/forms/validation",       icon: ShieldCheckIcon,            iconBg: "#e8f5e9" },
+  { id: 48, label: "File Upload",        sub: "Forms",          route: "/forms/file-upload",      icon: ArrowDownTrayIcon,          iconBg: "#fce4ec" },
+  { id: 49, label: "Editors",            sub: "Forms",          route: "/forms/editors",          icon: DocumentTextIcon,           iconBg: "#fff3e8" },
+  { id: 50, label: "Input Mask",         sub: "Forms",          route: "/forms/input-mask",       icon: DocumentTextIcon,           iconBg: "#e3f2fd" },
+  { id: 51, label: "Slider",             sub: "Forms",          route: "/forms/slider",           icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  // Tables
+  { id: 52, label: "Basic Tables",       sub: "Tables",         route: "/tables/basic",           icon: UserGroupIcon,              iconBg: "#fce4ec" },
+  { id: 53, label: "Grid Js",            sub: "Tables",         route: "/tables/gridjs",          icon: UserGroupIcon,              iconBg: "#e3f2fd" },
+  // Icons
+  { id: 54, label: "Boxicons",           sub: "Icons",          route: "/icons/boxicons",         icon: TagIcon,                    iconBg: "#fff3e8" },
+  { id: 55, label: "Solar Icons",        sub: "Icons",          route: "/icons/solar",            icon: Cog6ToothIcon,              iconBg: "#f3f4f9" },
+  // Maps
+  { id: 56, label: "Google Maps",        sub: "Maps",           route: "/maps/google",            icon: ShieldCheckIcon,            iconBg: "#e3f2fd" },
+  { id: 57, label: "Vector Maps",        sub: "Maps",           route: "/maps/vector",            icon: StarIcon,                   iconBg: "#fff8e1" },
+  // Menu
+  { id: 58, label: "Menu Item 1",        sub: "Menu",           route: "/menu/item-1",            icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 59, label: "Menu Item 2",        sub: "Menu",           route: "/menu/item-2",            icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 60, label: "Disable Item",       sub: "Menu",           route: "/menu/disable",           icon: DocumentTextIcon,           iconBg: "#f3f4f9" },
+  // Layouts
+  { id: 61, label: "Dark Sidenav",       sub: "Layouts",        route: "/layouts/dark-sidenav",   icon: DocumentTextIcon,           iconBg: "#313a46" },
+  { id: 62, label: "Dark Topnav",        sub: "Layouts",        route: "/layouts/dark-topnav",    icon: DocumentTextIcon,           iconBg: "#313a46" },
+  { id: 63, label: "Small Sidenav",      sub: "Layouts",        route: "/layouts/small-sidenav",  icon: DocumentTextIcon,           iconBg: "#e8f5e9" },
+  { id: 64, label: "Hidden Sidenav",     sub: "Layouts",        route: "/layouts/hidden-sidenav", icon: DocumentTextIcon,           iconBg: "#fce4ec" },
+  { id: 65, label: "Light Mode",         sub: "Layouts",        route: "/layouts/light-mode",     icon: DocumentTextIcon,           iconBg: "#fff8e1" },
+  // Authentication
+  { id: 66, label: "Sign In",            sub: "Authentication", route: "/auth/signin",            icon: UserCircleIcon,             iconBg: "#e3f2fd" },
+  { id: 67, label: "Sign Up",            sub: "Authentication", route: "/auth/signup",            icon: UserPlusIcon,               iconBg: "#e8f5e9" },
+  { id: 68, label: "Reset Password",     sub: "Authentication", route: "/auth/reset-password",    icon: LockClosedIcon,             iconBg: "#fce4ec" },
+  { id: 69, label: "Lock Screen",        sub: "Authentication", route: "/auth/lock-screen",       icon: ShieldCheckIcon,            iconBg: "#fff3e8" },
 ];
 
 const searchResults = computed(() => {
@@ -1125,6 +1200,9 @@ onMounted(() => {
 
   document.addEventListener("mousedown", handleClickOutside);
 
+  // Re-check auth when auth pages write session to localStorage (cross-tab / same-tab via storage event)
+  window.addEventListener("storage", onStorageChange);
+
   INACTIVITY_EVENTS.forEach(e => document.addEventListener(e, onUserActivity, { passive: true }));
   if (isAuthenticated.value && inactivityTimeout.value > 0) startInactivityTimer();
 });
@@ -1133,7 +1211,20 @@ onBeforeUnmount(() => {
   clearInterval(clockInterval);
   clearInactivityTimers();
   document.removeEventListener("mousedown", handleClickOutside);
+  window.removeEventListener("storage", onStorageChange);
   INACTIVITY_EVENTS.forEach(e => document.removeEventListener(e, onUserActivity));
+});
+
+// Re-check session when storage changes (auth pages write session then redirect)
+function onStorageChange(e) {
+  if (e.key === "AL-AHMODANY-session") {
+    loadSession();
+  }
+}
+
+// Re-check session on every route change (same-tab auth page → dashboard redirect)
+watch(() => route.path, () => {
+  if (!isAuthenticated.value) loadSession();
 });
 
 watch(isAuthenticated, (val) => {
@@ -1347,8 +1438,8 @@ watch(isAuthenticated, (val) => {
   align-items: center;
   height: 70px;
   padding: 0 24px;
-  background: #ffffff;
-  border-bottom: 1px solid #eef2f7;
+  background: var(--topbar-bg, #ffffff);
+  border-bottom: 1px solid var(--topbar-border, #eef2f7);
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   position: fixed;
   top: 0;
@@ -1356,53 +1447,74 @@ watch(isAuthenticated, (val) => {
   right: 0;
   z-index: 999;
   gap: 4px;
-  transition: background 0.2s, border-color 0.2s;
-  /* Critical: prevent content from causing horizontal overflow */
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
   overflow: visible;
   width: 100%;
   min-width: 0;
 }
 
-/* Dark topbar variant */
-.topbar--topbar-dark {
-  background: #313a46;
-  border-bottom-color: #404954;
+/* ── Light topbar (explicit) — white in light mode only ── */
+.topbar--topbar-light {
+  background: #ffffff !important;
+  border-bottom-color: #eef2f7 !important;
 }
-.topbar--topbar-dark .topbar__title      { color: #e2e8f0; }
-.topbar--topbar-dark .topbar__clock-time { color: #e2e8f0; }
-.topbar--topbar-dark .topbar__clock-date { color: #8996af; }
-.topbar--topbar-dark .topbar__icon-btn   { color: #8996af; }
+.topbar--topbar-light .topbar__title      { color: #313a46 !important; }
+.topbar--topbar-light .topbar__clock-time { color: #313a46 !important; }
+.topbar--topbar-light .topbar__clock-date { color: #8996af !important; }
+.topbar--topbar-light .topbar__icon-btn   { color: #6c757d !important; }
+.topbar--topbar-light .topbar__icon-btn:hover,
+.topbar--topbar-light .topbar__icon-btn.active {
+  background: #f4f6fb !important;
+  color: #fd7e14 !important;
+}
+.topbar--topbar-light .topbar__user-btn   { border-color: #eef2f7 !important; }
+.topbar--topbar-light .topbar__badge      { border-color: #ffffff !important; }
+.topbar--topbar-light .topbar__search     { background: #f4f6fb !important; border-color: #eef2f7 !important; }
+.topbar--topbar-light .topbar__search-input { color: #313a46 !important; }
+.topbar--topbar-light .topbar__search-input::placeholder { color: #8996af !important; }
+.topbar--topbar-light .topbar__search-icon { color: #8996af !important; }
+
+/* ── Dark topbar variant ── */
+.topbar--topbar-dark {
+  background: #313a46 !important;
+  border-bottom-color: #404954 !important;
+}
+.topbar--topbar-dark .topbar__title      { color: #e2e8f0 !important; }
+.topbar--topbar-dark .topbar__clock-time { color: #e2e8f0 !important; }
+.topbar--topbar-dark .topbar__clock-date { color: #8996af !important; }
+.topbar--topbar-dark .topbar__icon-btn   { color: #8996af !important; }
 .topbar--topbar-dark .topbar__icon-btn:hover,
 .topbar--topbar-dark .topbar__icon-btn.active {
-  background: rgba(255,255,255,0.08);
-  color: #fd7e14;
+  background: rgba(255,255,255,0.08) !important;
+  color: #fd7e14 !important;
 }
-.topbar--topbar-dark .topbar__badge      { border-color: #313a46; }
-.topbar--topbar-dark .topbar__search     { background: rgba(255,255,255,0.07); border-color: #404954; }
-.topbar--topbar-dark .topbar__search-input { color: #e2e8f0; }
-.topbar--topbar-dark .topbar__search-input::placeholder { color: #5a6a82; }
-.topbar--topbar-dark .topbar__search-icon { color: #8996af; }
+.topbar--topbar-dark .topbar__user-btn   { border-color: #404954 !important; }
+.topbar--topbar-dark .topbar__badge      { border-color: #313a46 !important; }
+.topbar--topbar-dark .topbar__search     { background: rgba(255,255,255,0.07) !important; border-color: #404954 !important; }
+.topbar--topbar-dark .topbar__search-input { color: #e2e8f0 !important; }
+.topbar--topbar-dark .topbar__search-input::placeholder { color: #5a6a82 !important; }
+.topbar--topbar-dark .topbar__search-icon { color: #8996af !important; }
 
-/* Global dark theme */
-.topbar--theme-dark {
+/* ── Fallback: topbar with no explicit color in dark mode ── */
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) {
   background: #313a46;
   border-bottom-color: #404954;
 }
-.topbar--theme-dark .topbar__title      { color: #e2e8f0; }
-.topbar--theme-dark .topbar__clock-time { color: #e2e8f0; }
-.topbar--theme-dark .topbar__clock-date { color: #8996af; }
-.topbar--theme-dark .topbar__icon-btn   { color: #8996af; }
-.topbar--theme-dark .topbar__icon-btn:hover,
-.topbar--theme-dark .topbar__icon-btn.active {
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__title      { color: #e2e8f0; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__clock-time { color: #e2e8f0; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__clock-date { color: #8996af; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__icon-btn   { color: #8996af; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__icon-btn:hover,
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__icon-btn.active {
   background: rgba(255,255,255,0.08);
   color: #fd7e14;
 }
-.topbar--theme-dark .topbar__user-btn   { border-color: #404954; }
-.topbar--theme-dark .topbar__badge      { border-color: #313a46; }
-.topbar--theme-dark .topbar__search     { background: rgba(255,255,255,0.07); border-color: #404954; }
-.topbar--theme-dark .topbar__search-input { color: #e2e8f0; }
-.topbar--theme-dark .topbar__search-input::placeholder { color: #5a6a82; }
-.topbar--theme-dark .topbar__search-icon { color: #8996af; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__user-btn   { border-color: #404954; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__badge      { border-color: #313a46; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__search     { background: rgba(255,255,255,0.07); border-color: #404954; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__search-input { color: #e2e8f0; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__search-input::placeholder { color: #5a6a82; }
+.topbar--theme-dark:not(.topbar--topbar-light):not(.topbar--topbar-dark) .topbar__search-icon { color: #8996af; }
 
 /* ── Left ── */
 .topbar__left {
@@ -1417,7 +1529,7 @@ watch(isAuthenticated, (val) => {
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #313a46;
+  color: var(--text-primary, #313a46);
   text-transform: uppercase;
   margin: 0;
   white-space: nowrap;
@@ -1442,7 +1554,7 @@ watch(isAuthenticated, (val) => {
 .topbar__clock-time {
   font-size: 15px;
   font-weight: 700;
-  color: #313a46;
+  color: var(--text-primary, #313a46);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
   white-space: nowrap;
@@ -1450,7 +1562,7 @@ watch(isAuthenticated, (val) => {
 .topbar__clock-date {
   font-size: 10px;
   font-weight: 500;
-  color: #8996af;
+  color: var(--text-muted, #8996af);
   margin-top: 2px;
   white-space: nowrap;
 }
@@ -1472,7 +1584,7 @@ watch(isAuthenticated, (val) => {
   border: none;
   background: transparent;
   display: flex; align-items: center; justify-content: center;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
   flex-shrink: 0;
@@ -1481,7 +1593,7 @@ watch(isAuthenticated, (val) => {
 }
 .topbar__icon-btn:hover,
 .topbar__icon-btn.active {
-  background: #f4f6fb;
+  background: var(--bg-hover, #f4f6fb);
   color: #fd7e14;
 }
 .topbar__icon       { width: 20px; height: 20px; stroke-width: 1.8; }
@@ -1498,7 +1610,7 @@ watch(isAuthenticated, (val) => {
   color: #fff;
   font-size: 9px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--topbar-bg, #ffffff);
   line-height: 1;
   pointer-events: none;
 }
@@ -1509,7 +1621,7 @@ watch(isAuthenticated, (val) => {
   position: relative;
   width: 36px; height: 36px;
   border-radius: 50%;
-  border: 2px solid #eef2f7;
+  border: 2px solid var(--card-border, #eef2f7);
   background: transparent;
   padding: 0; overflow: hidden;
   cursor: pointer;
@@ -1535,8 +1647,8 @@ watch(isAuthenticated, (val) => {
 .topbar__search {
   position: relative;
   display: flex; align-items: center; gap: 6px;
-  background: #f4f6fb;
-  border: 1px solid #eef2f7;
+  background: var(--bg-hover, #f4f6fb);
+  border: 1px solid var(--card-border, #eef2f7);
   border-radius: 8px;
   padding: 0 10px;
   height: 36px;
@@ -1551,19 +1663,19 @@ watch(isAuthenticated, (val) => {
   border-color: #fd7e14;
   box-shadow: 0 0 0 3px rgba(253,126,20,0.1);
 }
-.topbar__search-icon  { width: 15px; height: 15px; color: #8996af; flex-shrink: 0; stroke-width: 2; }
+.topbar__search-icon  { width: 15px; height: 15px; color: var(--text-muted, #8996af); flex-shrink: 0; stroke-width: 2; }
 .topbar__search-input {
   flex: 1; border: none; background: transparent;
-  font-size: 13px; color: #313a46;
+  font-size: 13px; color: var(--text-primary, #313a46);
   outline: none; font-family: inherit; min-width: 0;
 }
-.topbar__search-input::placeholder { color: #8996af; }
+.topbar__search-input::placeholder { color: var(--text-muted, #8996af); }
 .topbar__search-clear {
   border: none; background: transparent; padding: 0;
   display: flex; align-items: center;
-  color: #8996af; cursor: pointer; flex-shrink: 0;
+  color: var(--text-muted, #8996af); cursor: pointer; flex-shrink: 0;
 }
-.topbar__search-clear:hover { color: #313a46; }
+.topbar__search-clear:hover { color: var(--text-primary, #313a46); }
 
 /* ─────────────────────────────────────────────────────────────
    DROPDOWNS — viewport-safe positioning
@@ -1882,7 +1994,7 @@ watch(isAuthenticated, (val) => {
 .settings-card__preview--sidebar-default      { background: linear-gradient(to right, #3d4654 30%, #f3f4f9 30%); }
 .settings-card__preview--sidebar-condensed    { background: linear-gradient(to right, #3d4654 18%, #f3f4f9 18%); }
 .settings-card__preview--sidebar-hidden       { background: #f3f4f9; }
-.settings-card__preview--sidebar-small-hover  { background: linear-gradient(to right, #3d4654 14%, #f3f4f9 14%); }
+.settings-card__preview--sidebar-sm-hover  { background: linear-gradient(to right, #3d4654 14%, #f3f4f9 14%); }
 
 .settings-reset {
   display: flex; align-items: center; justify-content: center; gap: 7px;

@@ -17,7 +17,11 @@
       <Header @toggle-sidebar="handleSidebarToggle" />
 
       <main class="app-content">
-        <router-view />
+        <router-view v-slot="{ Component, route }">
+          <Transition name="page-fade" mode="out-in">
+            <component :is="Component" :key="route.path" />
+          </Transition>
+        </router-view>
       </main>
     </div>
   </div>
@@ -89,7 +93,7 @@ onMounted(() => {
     document.documentElement.setAttribute("data-theme",  s.colorScheme  || "light");
     document.body.setAttribute("data-topbar", s.topbarColor || "light");
     document.body.setAttribute("data-menu",   s.menuColor   || "dark");
-    document.body.setAttribute("data-layout", "vertical"); // AL-AHMODANY default
+    document.body.setAttribute("data-layout", "vertical");
 
     if (s.sidebarSize && s.sidebarSize !== "default") {
       sidebarSize.value = s.sidebarSize;
@@ -101,12 +105,34 @@ onMounted(() => {
     document.body.setAttribute("data-layout", "vertical");
   }
 
+  // Listen for layout changes dispatched by layout pages
+  window.addEventListener("larkon:layout-change", handleLayoutChange);
   window.addEventListener("resize", handleResize);
 });
 
 onUnmounted(() => {
+  window.removeEventListener("larkon:layout-change", handleLayoutChange);
   window.removeEventListener("resize", handleResize);
 });
+
+/* ── Handle layout change events from layout pages ── */
+const handleLayoutChange = (e) => {
+  const { sidebarSize: size, menuColor, topbarColor, colorScheme } = e.detail || {};
+
+  if (colorScheme) {
+    document.documentElement.setAttribute("data-theme", colorScheme);
+  }
+  if (topbarColor) {
+    document.body.setAttribute("data-topbar", topbarColor);
+  }
+  if (menuColor) {
+    document.body.setAttribute("data-menu", menuColor);
+  }
+  if (size !== undefined) {
+    sidebarSize.value = size || "default";
+    applyBodyAttrs();
+  }
+};
 </script>
 
 <style>
@@ -254,5 +280,35 @@ body {
 @media (max-width: 768px) {
   .app-content {
     padding: 16px;
+  }
+}
+
+/* ── Page transition animation ───────────────────── */
+.page-fade-enter-active {
+  animation: pageFadeIn 0.32s ease both;
+}
+.page-fade-leave-active {
+  animation: pageFadeOut 0.18s ease both;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
   }
 }</style>

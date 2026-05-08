@@ -345,9 +345,14 @@ function fireAlert(sectionId, btnIndex) {
 }
 
 async function copyCode(index) {
-  const code = activeTab[index] === 'html'
+  const SWAL_CDN = `<!-- Add to your <head> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><\/script>
+
+`
+  const rawCode = activeTab[index] === 'html'
     ? sections[index].htmlCode
     : sections[index].jsCode
+  const code = activeTab[index] === 'js' ? SWAL_CDN + rawCode : rawCode
   try {
     await navigator.clipboard.writeText(code)
   } catch {
@@ -371,19 +376,19 @@ function scrollToSection(id) {
 <style scoped>
 .page-wrapper-adv { padding: 1.5rem 1rem; min-height: 100vh; background: var(--bg-body); color: var(--text-primary); }
 .toc-link {
-  color: #495057;
+  color: var(--text-secondary, #495057);
   border-left: 2px solid transparent;
   transition: all 0.15s;
 }
 .toc-link:hover {
-  color: #4a6cf7;
-  background-color: #f0f3ff;
-  border-left-color: #4a6cf7;
+  color: var(--accent, #fd7e14);
+  background-color: var(--accent-muted, #fff3e8);
+  border-left-color: var(--accent, #fd7e14);
 }
 .toc-active {
-  color: #4a6cf7 !important;
-  background-color: #f0f3ff;
-  border-left: 2px solid #4a6cf7;
+  color: var(--accent, #fd7e14) !important;
+  background-color: var(--accent-muted, #fff3e8);
+  border-left: 2px solid var(--accent, #fd7e14);
 }
 
 /* Code Block Styling */

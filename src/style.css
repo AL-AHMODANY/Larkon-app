@@ -53,6 +53,11 @@
   --color-danger:  #e74c3c;
   --color-warning: #f1c40f;
   --color-info:    #5b73e8;
+
+  /* Alert */
+  --alert-bg:     #fff4e5;
+  --alert-border: #ffe0b2;
+  --alert-text:   #9c4b00;
 }
 
 /* ── Dark mode tokens ──────────────────────────────────── */
@@ -96,6 +101,11 @@
   --color-danger:  #e74c3c;
   --color-warning: #f1c40f;
   --color-info:    #5b73e8;
+
+  /* Alert dark overrides */
+  --alert-bg:     rgba(253,126,20,0.12);
+  --alert-border: rgba(253,126,20,0.25);
+  --alert-text:   #ffa94d;
 }
 
 /* =========================================================
@@ -1421,6 +1431,61 @@ i[class*="bi-"] {
   background: rgba(255,255,255,0.1) !important;
   color: #fd7e14 !important;
 }
+
+/* ── 9b. TOPBAR: dark mode overrides topbar-light ── */
+/* When data-theme="dark", the topbar must go dark regardless of topbarColor setting */
+[data-theme="dark"] .topbar--theme-dark {
+  background: #313a46 !important;
+  border-bottom-color: #404954 !important;
+}
+[data-theme="dark"] .topbar--theme-dark .topbar__title      { color: #e2e8f0 !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__clock-time { color: #e2e8f0 !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__clock-date { color: #8996af !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__icon-btn   { color: #8996af !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__icon-btn:hover,
+[data-theme="dark"] .topbar--theme-dark .topbar__icon-btn.active {
+  background: rgba(255,255,255,0.08) !important;
+  color: #fd7e14 !important;
+}
+[data-theme="dark"] .topbar--theme-dark .topbar__user-btn   { border-color: #404954 !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__badge      { border-color: #313a46 !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__search     { background: rgba(255,255,255,0.07) !important; border-color: #404954 !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__search-input { color: #e2e8f0 !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__search-input::placeholder { color: #5a6a82 !important; }
+[data-theme="dark"] .topbar--theme-dark .topbar__search-icon { color: #8996af !important; }
+
+/* ── 9c. SIDEBAR: dark mode overrides theme-light class ── */
+/* When data-theme="dark", sidebar must go dark regardless of menuColor setting */
+[data-theme="dark"] .sidebar {
+  --sb-bg:            #313a46 !important;
+  --sb-border:        rgba(255,255,255,0.07) !important;
+  --sb-text:          #8996af !important;
+  --sb-text-hover:    #e2e8f4 !important;
+  --sb-text-active:   #ffffff !important;
+  --sb-muted:         #4a5568 !important;
+  --sb-icon-color:    #8996af !important;
+  --sb-icon-active:   #fd7e14 !important;
+  --sb-hover-bg:      rgba(255,255,255,0.06) !important;
+  --sb-active-bg:     rgba(255,255,255,0.08) !important;
+  --sb-sub-color:     #6c7a8d !important;
+  --sb-section-color: #4a5568 !important;
+  box-shadow: none !important;
+}
+[data-theme="dark"] .sidebar .logo-wordmark { color: #ffffff !important; }
+[data-theme="dark"] .sidebar .nav-item__link.active {
+  background: rgba(255,255,255,0.08) !important;
+  color: #ffffff !important;
+}
+[data-theme="dark"] .sidebar .nav-item__link:hover {
+  background: rgba(255,255,255,0.06) !important;
+  color: #e2e8f4 !important;
+}
+[data-theme="dark"] .sidebar .nav-dropdown__link         { color: #6c7a8d !important; }
+[data-theme="dark"] .sidebar .nav-dropdown__link:hover   { color: #e2e8f4 !important; background: rgba(255,255,255,0.04) !important; }
+[data-theme="dark"] .sidebar .nav-dropdown__link.active  { color: #fd7e14 !important; }
+[data-theme="dark"] .sidebar .nav-section__label         { color: #4a5568 !important; }
+[data-theme="dark"] .sidebar .sidebar__collapse          { color: #4a5568 !important; }
+[data-theme="dark"] .sidebar .sidebar__body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07) !important; }
 
 /* ── 10. APP-MAIN: always offset for fixed header ── */
 .app-main {

@@ -104,8 +104,31 @@ onMounted(() => {
   document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new Tooltip(el))
 })
 
+// Bootstrap JS + tooltip init required for tooltips to work
+const TOOLTIP_JS = `<!-- Bootstrap 5 JS Bundle (required) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"><\/script>
+<script>
+// Initialize all tooltips on the page
+document.addEventListener('DOMContentLoaded', function () {
+  var tooltipEls = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  tooltipEls.forEach(function (el) { new bootstrap.Tooltip(el); });
+});
+<\/script>
+
+`
+
+const SOFT_BTN_CSS = `<style>
+.btn-soft-primary{--bs-btn-color:#ff6c2f;--bs-btn-bg:rgba(255,108,47,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ff6c2f;--bs-btn-hover-border-color:#ff6c2f}
+.btn-soft-success{--bs-btn-color:#22c55e;--bs-btn-bg:rgba(34,197,94,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#22c55e;--bs-btn-hover-border-color:#22c55e}
+.btn-soft-danger{--bs-btn-color:#ef5f5f;--bs-btn-bg:rgba(239,95,95,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#ef5f5f;--bs-btn-hover-border-color:#ef5f5f}
+.btn-soft-warning{--bs-btn-color:#f9b931;--bs-btn-bg:rgba(249,185,49,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#f9b931;--bs-btn-hover-border-color:#f9b931}
+.btn-soft-info{--bs-btn-color:#4ecac2;--bs-btn-bg:rgba(78,202,194,.1);--bs-btn-border-color:transparent;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#4ecac2;--bs-btn-hover-border-color:#4ecac2}
+</style>
+
+`
+
 const codeMap = {
-  overview:
+  overview: TOOLTIP_JS +
 `<button type="button" class="btn btn-primary"
   title="Tooltip on top" data-bs-toggle="tooltip" data-bs-placement="top">
   Tooltip on top
@@ -123,7 +146,7 @@ const codeMap = {
   Tooltip on left
 </button>`,
 
-  directions:
+  directions: TOOLTIP_JS +
 `<!-- Top -->
 <button type="button" class="btn btn-secondary"
   data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
@@ -148,14 +171,19 @@ const codeMap = {
   Tooltip on left
 </button>`,
 
-  elements:
-`<button type="button" class="btn btn-soft-primary" title="Primary Tooltip">Primary</button>
-<button type="button" class="btn btn-soft-success" title="Success Tooltip">Success</button>
-<button type="button" class="btn btn-soft-danger"  title="Danger Tooltip">Danger</button>
-<button type="button" class="btn btn-soft-warning" title="Warning Tooltip">Warning</button>
-<button type="button" class="btn btn-soft-info"    title="Info Tooltip">Info</button>`,
+  elements: TOOLTIP_JS + SOFT_BTN_CSS +
+`<button type="button" class="btn btn-soft-primary"
+  data-bs-toggle="tooltip" title="Primary Tooltip">Primary</button>
+<button type="button" class="btn btn-soft-success"
+  data-bs-toggle="tooltip" title="Success Tooltip">Success</button>
+<button type="button" class="btn btn-soft-danger"
+  data-bs-toggle="tooltip" title="Danger Tooltip">Danger</button>
+<button type="button" class="btn btn-soft-warning"
+  data-bs-toggle="tooltip" title="Warning Tooltip">Warning</button>
+<button type="button" class="btn btn-soft-info"
+  data-bs-toggle="tooltip" title="Info Tooltip">Info</button>`,
 
-  disabled:
+  disabled: TOOLTIP_JS +
 `<span class="d-inline-block" tabindex="0"
   data-bs-toggle="tooltip" title="Disabled tooltip">
   <button class="btn btn-primary" type="button" disabled>Disabled button</button>

@@ -281,6 +281,25 @@ const routes = [
   { path: "/menu/item-1",  name: "MenuItem1",   component: MenuItem1   },
   { path: "/menu/item-2",  name: "MenuItem2",   component: MenuItem2   },
   { path: "/menu/disable", name: "DisableItem", component: DisableItem },
+
+  // Layouts
+  { path: "/layouts/dark-sidenav",   name: "LayoutDarkSidenav",   component: () => import("../views/layouts/DarkSidenav.vue")   },
+  { path: "/layouts/dark-topnav",    name: "LayoutDarkTopnav",    component: () => import("../views/layouts/DarkTopnav.vue")    },
+  { path: "/layouts/small-sidenav",  name: "LayoutSmallSidenav",  component: () => import("../views/layouts/SmallSidenav.vue")  },
+  { path: "/layouts/hidden-sidenav", name: "LayoutHiddenSidenav", component: () => import("../views/layouts/HiddenSidenav.vue") },
+  { path: "/layouts/light-mode",     name: "LayoutLightMode",     component: () => import("../views/layouts/LightMode.vue")     },
+
+  // Authentication
+  { path: "/auth/signin",         name: "AuthSignIn",        component: () => import("../views/auth/SignIn.vue")        },
+  { path: "/auth/signup",         name: "AuthSignUp",        component: () => import("../views/auth/SignUp.vue")        },
+  { path: "/auth/reset-password", name: "AuthResetPassword", component: () => import("../views/auth/ResetPassword.vue") },
+  { path: "/auth/lock-screen",    name: "AuthLockScreen",    component: () => import("../views/auth/LockScreen.vue")    },
+
+  // Other Apps
+  { path: "/apps/chat",     name: "AppChat",     component: () => import("../views/apps/Chat.vue")     },
+  { path: "/apps/email",    name: "AppEmail",    component: () => import("../views/apps/Email.vue")    },
+  { path: "/apps/calendar", name: "AppCalendar", component: () => import("../views/apps/Calendar.vue") },
+
   {
     path: "/:pathMatch(.*)*",
     redirect: "/dashboard",

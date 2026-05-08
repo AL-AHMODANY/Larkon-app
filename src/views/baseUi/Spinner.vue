@@ -194,10 +194,50 @@
 
 <script>
 import CdnSection from '../../components/CdnSection.vue'
-// footer
 import PageFooter from '../../components/layout/Footer.vue'
+
+const codeStrings = {
+  c1: `<!-- Border Spinner -->
+<div class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>`,
+  c2: `<div class="spinner-border text-primary" role="status"></div>
+<div class="spinner-border text-secondary" role="status"></div>
+<div class="spinner-border text-success" role="status"></div>
+<div class="spinner-border text-danger" role="status"></div>
+<div class="spinner-border text-warning" role="status"></div>
+<div class="spinner-border text-info" role="status"></div>`,
+  c3: `<!-- Growing Spinner -->
+<div class="spinner-grow text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>`,
+  c4: `<div class="spinner-grow text-info" role="status"></div>
+<div class="spinner-grow text-warning" role="status"></div>
+<div class="spinner-grow text-danger" role="status"></div>`,
+  c5: `<div class="d-flex justify-content-center border p-2">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>`,
+  c6: `<div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+<div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>`,
+  c7: `<div class="d-flex align-items-center border p-2">
+  <strong>Loading...</strong>
+  <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+</div>`,
+  c8: `<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+  Loading...
+</button>
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true"></span>
+  Loading...
+</button>`,
+}
+
 export default {
   name: 'SpinnerPage',
+  components: { CdnSection, PageFooter },
   data() {
     return {
       copied: null,
@@ -206,13 +246,11 @@ export default {
   },
   methods: {
     copy(id) {
-      const el = document.getElementById(id)
-      if (el) {
-        navigator.clipboard.writeText(el.innerText).then(() => {
-          this.copied = id
-          setTimeout(() => { this.copied = null }, 2000)
-        })
-      }
+      const text = codeStrings[id] || ''
+      navigator.clipboard.writeText(text).then(() => {
+        this.copied = id
+        setTimeout(() => { this.copied = null }, 2000)
+      })
     }
   }
 }

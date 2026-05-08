@@ -340,7 +340,14 @@ document.getElementById("toast-duration").addEventListener("click", function () 
 sections.forEach((_, i) => { activeTab[i] = 'html' })
 
 async function copyCode(index) {
-  const code = activeTab[index] === 'html' ? sections[index].htmlCode : sections[index].jsCode
+  const TOASTIFY_CDN = `<!-- Add to your <head> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css" />
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"><\/script>
+
+`
+  const rawCode = activeTab[index] === 'html' ? sections[index].htmlCode : sections[index].jsCode
+  // Prepend CDN comment to JS tab so users know what library is needed
+  const code = activeTab[index] === 'js' ? TOASTIFY_CDN + rawCode : rawCode
   try { await navigator.clipboard.writeText(code) } catch {
     const ta = document.createElement('textarea')
     ta.value = code; document.body.appendChild(ta); ta.select()
@@ -359,9 +366,9 @@ function scrollTo(id) {
 <style scoped>
 .page-wrapper-adv { padding: 1.5rem 1rem; min-height: 100vh; background: var(--bg-body); color: var(--text-primary); }
 
-.toc-link { color: #495057; border-left: 2px solid transparent; transition: all 0.15s; }
-.toc-link:hover { color: #4a6cf7; background-color: #f0f3ff; border-left-color: #4a6cf7; }
-.toc-active { color: #4a6cf7 !important; background-color: #f0f3ff; border-left: 2px solid #4a6cf7; }
+.toc-link { color: var(--text-secondary, #495057); border-left: 2px solid transparent; transition: all 0.15s; }
+.toc-link:hover { color: var(--accent, #fd7e14); background-color: var(--accent-muted, #fff3e8); border-left-color: var(--accent, #fd7e14); }
+.toc-active { color: var(--accent, #fd7e14) !important; background-color: var(--accent-muted, #fff3e8); border-left: 2px solid var(--accent, #fd7e14); }
 
 /* Code block */
 .code-block { border: 1px solid var(--card-border, #eef2f7); transition: border-color 0.2s; }
@@ -386,15 +393,15 @@ function scrollTo(id) {
 .toast-bottom-center  { bottom: 20px; left: 50%; transform: translateX(-50%); }
 .toast-bottom-right   { bottom: 20px; right: 20px; }
 
-.toast-item { pointer-events: auto; background: rgba(255,255,255,0.96); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.5); width: 100%; }
+.toast-item { pointer-events: auto; background: var(--card-bg, rgba(255,255,255,0.96)); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid var(--card-border, rgba(255,255,255,0.5)); width: 100%; }
 .toast-default { border-left: 4px solid #3b82f6; }
-.toast-success { border-left: 4px solid #10b981; background: rgba(240,253,244,0.96); }
-.toast-warning { border-left: 4px solid #f59e0b; background: rgba(254,252,232,0.96); }
-.toast-error   { border-left: 4px solid #ef4444; background: rgba(254,242,242,0.96); }
+.toast-success { border-left: 4px solid #10b981; }
+.toast-warning { border-left: 4px solid #f59e0b; }
+.toast-error   { border-left: 4px solid #ef4444; }
 .toast-content { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
-.toast-message { font-weight: 500; font-size: 0.88rem; line-height: 1.4; color: #1e293b; flex: 1; }
-.toast-close-btn { background: transparent; border: none; cursor: pointer; color: #94a3b8; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.15s; }
-.toast-close-btn:hover { background: #f1f5f9; color: #0f172a; }
+.toast-message { font-weight: 500; font-size: 0.88rem; line-height: 1.4; color: var(--text-primary, #1e293b); flex: 1; }
+.toast-close-btn { background: transparent; border: none; cursor: pointer; color: var(--text-muted, #94a3b8); width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.15s; }
+.toast-close-btn:hover { background: var(--app-bg, #f1f5f9); color: var(--text-primary, #0f172a); }
 
 .toast-enter-active, .toast-leave-active { transition: all 0.25s ease; }
 .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateX(20px); }
